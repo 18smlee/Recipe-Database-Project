@@ -12,7 +12,6 @@ const connection = mysql.createConnection({
 });
 connection.connect();
 
-
 // ********************************************
 //            SIMPLE ROUTE EXAMPLE
 // ********************************************
@@ -116,6 +115,23 @@ async function all_players(req, res) {
         if (error) {
             console.log(error)
         } else if (results) {
+            res.json({ results: results })
+        }
+    });
+}
+
+// TEST
+async function test(req, res) {
+    //const pageSize = req.query.pagesize ? req.query.pagesize : 10;
+    console.log("hi")
+    var testQuery = `SELECT *
+    FROM ChoppedEpisode`
+
+    connection.query(testQuery, function (error, results, fields) {
+        if (error) {
+            console.log(error)
+        } else if (results) {
+            console.log(results)
             res.json({ results: results })
         }
     });
@@ -263,6 +279,7 @@ async function search_players(req, res) {
 }
 
 module.exports = {
+    test,
     hello,
     jersey,
     all_matches,

@@ -6,7 +6,7 @@ import {
 } from 'antd'
 
 import MenuBar from '../components/MenuBar';
-import { getAllMatches, getAllPlayers } from '../fetcher'
+import { getAllMatches, getAllPlayers, getAllChopped } from '../fetcher'
 const { Column, ColumnGroup } = Table;
 const { Option } = Select;
 
@@ -85,6 +85,9 @@ class HomePage extends React.Component {
   }
 
   componentDidMount() {
+    getAllChopped().then(res => {
+      console.log(res.results)
+    })
     getAllMatches(null, null, 'D1').then(res => {
       this.setState({ matchesResults: res.results })
     })

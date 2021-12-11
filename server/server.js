@@ -12,6 +12,8 @@ app.use(cors({
     origin: '*'
 }));
 
+app.get('/test', routes.test)
+
 // Route 1 - register as GET 
 app.get('/hello', routes.hello)
 

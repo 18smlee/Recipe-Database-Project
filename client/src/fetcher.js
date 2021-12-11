@@ -14,6 +14,13 @@ const getAllPlayers = async (page, pagesize) => {
     return res.json()
 }
 
+const getAllChopped = async () => {
+    var res = await fetch(`http://${config.server_host}:${config.server_port}/test`, {
+        method: 'GET',
+    })
+    return res.json()
+}
+
 const getMatch = async (id) => {
     var res = await fetch(`http://${config.server_host}:${config.server_port}/match?id=${id}`, {
         method: 'GET',
@@ -60,5 +67,6 @@ export {
     getMatch,
     getPlayer,
     getMatchSearch,
-    getPlayerSearch
+    getPlayerSearch,
+    getAllChopped
 }
