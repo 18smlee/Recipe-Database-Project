@@ -21,9 +21,9 @@ connection.connect();
 async function hello(req, res) {
     // a GET request to /hello?name=Steve
     if (req.query.name) {
-        res.send(`Hello, ${req.query.name}! Welcome to the FIFA server!`)
+        res.send(`Hello, ${req.query.name}! Welcome to the Food server!`)
     } else {
-        res.send(`Hello! Welcome to the FIFA server!`)
+        res.send(`Hello! Welcome to the Food server!`)
     }
 }
 
