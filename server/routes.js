@@ -2,7 +2,6 @@ const config = require('./config.json')
 const mysql = require('mysql');
 const e = require('express');
 
-// TODO: fill in your connection details here
 const connection = mysql.createConnection({
     host: config.rds_host,
     user: config.rds_user,
@@ -119,24 +118,6 @@ async function all_players(req, res) {
         }
     });
 }
-
-// TEST
-async function test(req, res) {
-    //const pageSize = req.query.pagesize ? req.query.pagesize : 10;
-    console.log("hi")
-    var testQuery = `SELECT *
-    FROM ChoppedEpisode`
-
-    connection.query(testQuery, function (error, results, fields) {
-        if (error) {
-            console.log(error)
-        } else if (results) {
-            console.log(results)
-            res.json({ results: results })
-        }
-    });
-}
-
 
 // ********************************************
 //             MATCH-SPECIFIC ROUTES
@@ -278,8 +259,214 @@ async function search_players(req, res) {
     });
 }
 
+// PROJECT ROUTES
+
+// Route 1
+async function search_recipes_by_traits(req, res) {
+    recipeSearchQuery = ``
+    connection.query(recipeSearchQuery, function (error, results, fields) {
+        if (error) {
+            res.json({ results: [] })
+        } else if (results) {
+            res.json({ results: results })
+        }
+    });
+}
+
+// Route 2
+async function search_recipes_by_review(req, res) {
+    recipeSearchQuery = ``
+    connection.query(recipeSearchQuery, function (error, results, fields) {
+        if (error) {
+            res.json({ results: [] })
+        } else if (results) {
+            res.json({ results: results })
+        }
+    });
+}
+
+// Route 3 (Mealmaker)
+async function search_recipes_by_nutrition(req, res) {
+    recipeSearchQuery = ``
+    connection.query(recipeSearchQuery, function (error, results, fields) {
+        if (error) {
+            res.json({ results: [] })
+        } else if (results) {
+            res.json({ results: results })
+        }
+    });
+}
+
+// Route 4 
+async function search_chopped_by_episode(req, res) {
+    choppedSearchQuery = ``
+    connection.query(choppedSearchQuery, function (error, results, fields) {
+        if (error) {
+            res.json({ results: [] })
+        } else if (results) {
+            res.json({ results: results })
+        }
+    });
+}
+
+// Route 5
+async function search_chopped_by_ingredients(req, res) {
+    choppedSearchQuery = ``
+    connection.query(choppedSearchQuery, function (error, results, fields) {
+        if (error) {
+            res.json({ results: [] })
+        } else if (results) {
+            res.json({ results: results })
+        }
+    });
+}
+
+// Route 6
+async function find_recipes_by_chopped(req, res) {
+    choppedSimilarRecipesSearchQuery = ``
+    connection.query(choppedSimilarRecipesSearchQuery, function (error, results, fields) {
+        if (error) {
+            res.json({ results: [] })
+        } else if (results) {
+            res.json({ results: results })
+        }
+    });
+}
+
+
+// Route 7
+async function find_chopped_likelihood(req, res) {
+    choppedLikelihoodQuery = ``
+    connection.query(choppedLikelihoodQuery, function (error, results, fields) {
+        if (error) {
+            res.json({ results: [] })
+        } else if (results) {
+            res.json({ results: results })
+        }
+    });
+}
+
+// Route 8
+async function search_recipes_by_ingredients(req, res) {
+    recipeSearchQuery = ``
+    connection.query(recipeSearchQuery, function (error, results, fields) {
+        if (error) {
+            res.json({ results: [] })
+        } else if (results) {
+            res.json({ results: results })
+        }
+    });
+}
+
+
+// Route 9
+async function search_users_by_reviews(req, res) {
+    userSearchQuery = ``
+    connection.query(userSearchQuery, function (error, results, fields) {
+        if (error) {
+            res.json({ results: [] })
+        } else if (results) {
+            res.json({ results: results })
+        }
+    });
+}
+
+// Route 10
+async function get_all_recipes_from_user(req, res) {
+    recipeSearchQuery = ``
+    connection.query(recipeSearchQuery, function (error, results, fields) {
+        if (error) {
+            res.json({ results: [] })
+        } else if (results) {
+            res.json({ results: results })
+        }
+    });
+}
+
+// Route 11
+async function get_all_reviews_from_user(req, res) {
+    reviewSearchQuery = ``
+    connection.query(reviewSearchQuery, function (error, results, fields) {
+        if (error) {
+            res.json({ results: [] })
+        } else if (results) {
+            res.json({ results: results })
+        }
+    });
+}
+
+// EXTRA ROUTES
+
+async function get_all_recipes(req, res) {
+    var recipesQuery = `SELECT *
+    FROM Recipe`
+
+    connection.query(recipesQuery, function (error, results, fields) {
+        if (error) {
+            console.log(error)
+        } else if (results) {
+            console.log(results)
+            res.json({ results: results })
+        }
+    });
+}
+
+async function get_all_chopped(req, res) {
+    var choppedQuery = `SELECT *
+    FROM ChoppedEpisode`
+
+    connection.query(choppedQuery, function (error, results, fields) {
+        if (error) {
+            console.log(error)
+        } else if (results) {
+            console.log(results)
+            res.json({ results: results })
+        }
+    });
+}
+
+async function get_all_users(req, res) {
+    var userQuery = `SELECT *
+    FROM Users`
+
+    connection.query(userQuery, function (error, results, fields) {
+        if (error) {
+            console.log(error)
+        } else if (results) {
+            console.log(results)
+            res.json({ results: results })
+        }
+    });
+}
+
+
+// not tested -> test before using
+async function get_recipe_by_id(req, res) {
+    const recipeId = req.query.recipeId ? req.query.recipeId : 1;
+
+    var recipeQuery = `SELECT *
+    FROM Recipe
+    WHERE id =${home}`
+
+    connection.query(recipeQuery, function (error, results, fields) {
+        if (error) {
+            console.log(error)
+        } else if (results) {
+            console.log(results)
+            res.json({ results: results })
+        }
+    });
+}
+
+
+
+
+
+
+
+
+
 module.exports = {
-    test,
     hello,
     jersey,
     all_matches,
@@ -287,5 +474,20 @@ module.exports = {
     match,
     player,
     search_matches,
-    search_players
+    search_players,
+    search_recipes_by_traits,
+    search_recipes_by_review,
+    search_recipes_by_nutrition,
+    search_chopped_by_episode,
+    search_chopped_by_ingredients,
+    find_recipes_by_chopped,
+    find_chopped_likelihood,
+    search_recipes_by_ingredients,
+    search_users_by_reviews,
+    get_all_recipes_from_user,
+    get_all_reviews_from_user,
+    get_all_recipes,
+    get_all_chopped,
+    get_all_users,
+    get_recipe_by_id
 }

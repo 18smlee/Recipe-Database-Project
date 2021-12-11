@@ -12,8 +12,6 @@ app.use(cors({
     origin: '*'
 }));
 
-app.get('/test', routes.test)
-
 // Route 1 - register as GET 
 app.get('/hello', routes.hello)
 
@@ -37,6 +35,54 @@ app.get('/search/matches', routes.search_matches)
 
 // Route 8 - register as GET 
 app.get('/search/players', routes.search_players)
+
+// PROJECT ROUTES
+
+// Route 1
+app.get('/search/recipes/traits', routes.search_recipes_by_traits)
+
+// Route 2
+app.get('/search/recipes/reviews', routes.search_recipes_by_review)
+
+// Route 3
+app.get('/dailymealplanner', routes.search_recipes_by_ingredients)
+
+// Route 4
+app.get('/search/chopped/episode', routes.search_chopped_by_episode)
+
+// Route 5
+app.get('/search/chopped/ingredients', routes.search_chopped_by_ingredients)
+
+// Route 6
+app.get('/chopped/similarrecipes', routes.find_recipes_by_chopped)
+
+// Route 7
+app.get('/recipes/choppedlikelihood', routes.find_chopped_likelihood)
+
+// Route 8
+app.get('/search/recipes/ingredients', routes.search_recipes_by_ingredients)
+
+// Route 9
+app.get('/search/users/review', routes.search_users_by_reviews)
+
+// Route 10
+app.get('/recipes/:userId', routes.get_all_recipes_from_user)
+
+// Route 11
+app.get('/reviews/:userId', routes.get_all_reviews_from_user)
+
+// EXTRA ROUTES
+app.get('/recipes', routes.get_all_recipes)
+
+app.get('/chopped', routes.get_all_chopped)
+
+app.get('/users', routes.get_all_users)
+
+app.get('/recipe/:recipeId', routes.get_recipe_by_id)
+
+
+
+
 
 
 
