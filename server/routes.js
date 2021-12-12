@@ -268,15 +268,23 @@ async function search_recipes_by_traits(req, res) {
     const num_steps = req.query.NumSteps ? req.query.NumSteps : 9999999;
     const pageSize = req.query.pagesize ? req.query.pagesize : 10;
     // is searching by review a different route?? or should it be combined?
-
     recipeSearchQuery = `SELECT *
-    FROM Recipe
-    WHERE name LIKE '%${recipe_name}%'
-      AND minutes <= ${cook_time}
-      AND n_steps <= ${num_steps}
-      AND avg_rating >= 2
-      LIMIT ${pageSize} OFFSET ${pageSize * req.query.page}
-      ;`
+        FROM Recipe
+        WHERE name LIKE '%${recipe_name}%'
+        AND minutes <= ${cook_time}
+        AND n_steps <= ${num_steps}
+        AND avg_rating >= 2
+        ;`
+    if (req.query.page && !isNaN(req.query.page)) {
+        recipeSearchQuery = `SELECT *
+            FROM Recipe
+            WHERE name LIKE '%${recipe_name}%'
+            AND minutes <= ${cook_time}
+            AND n_steps <= ${num_steps}
+            AND avg_rating >= 2
+            LIMIT ${pageSize} OFFSET ${pageSize * req.query.page}
+            ;`
+    }
 
     connection.query(recipeSearchQuery, function (error, results, fields) {
         if (error) {
@@ -307,16 +315,26 @@ async function search_recipes_by_nutrition(req, res) {
     const pageSize = req.query.pagesize ? req.query.pagesize : 10;
     const num_calories = req.query.Calories ? req.query.Calories : 2400;
 
-
     recipeSearchQuery = `SELECT recipe1_id, recipe2_id, rec3.id AS recipe3_id, total_calories + rec3.num_calories AS total_calories
-    FROM
-    (SELECT rec1.id AS recipe1_id, rec2.id AS recipe2_id, rec1.num_calories + rec2.num_calories AS total_calories
-    FROM Recipe rec1
-    JOIN Recipe rec2 ON rec1.num_calories + rec2.num_calories < ${num_calories}
-    WHERE rec1.id != rec2.id) agg
-    JOIN Recipe rec3 ON total_calories + rec3.num_calories BETWEEN ${num_calories - 5} AND ${num_calories + 5}
-    WHERE recipe1_id != rec3.id AND recipe2_id != rec3.id
-    LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
+        FROM
+        (SELECT rec1.id AS recipe1_id, rec2.id AS recipe2_id, rec1.num_calories + rec2.num_calories AS total_calories
+        FROM Recipe rec1
+        JOIN Recipe rec2 ON rec1.num_calories + rec2.num_calories < ${num_calories}
+        WHERE rec1.id != rec2.id) agg
+        JOIN Recipe rec3 ON total_calories + rec3.num_calories BETWEEN ${num_calories - 5} AND ${num_calories + 5}
+        WHERE recipe1_id != rec3.id AND recipe2_id != rec3.id;`
+
+    if (req.query.page && !isNaN(req.query.page)) {
+        recipeSearchQuery = `SELECT recipe1_id, recipe2_id, rec3.id AS recipe3_id, total_calories + rec3.num_calories AS total_calories
+        FROM
+        (SELECT rec1.id AS recipe1_id, rec2.id AS recipe2_id, rec1.num_calories + rec2.num_calories AS total_calories
+        FROM Recipe rec1
+        JOIN Recipe rec2 ON rec1.num_calories + rec2.num_calories < ${num_calories}
+        WHERE rec1.id != rec2.id) agg
+        JOIN Recipe rec3 ON total_calories + rec3.num_calories BETWEEN ${num_calories - 5} AND ${num_calories + 5}
+        WHERE recipe1_id != rec3.id AND recipe2_id != rec3.id
+        LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
+    }
 
     connection.query(recipeSearchQuery, function (error, results, fields) {
         if (error) {
@@ -342,15 +360,33 @@ async function search_chopped_by_episode(req, res) {
         WHERE series_episode = ${episodeNum}
             AND (Judge1 LIKE '%${judge1Name}%'
             OR Judge2 LIKE '%${judge2Name}%'
-            OR Judge3 LIKE '%${judge3Name}%')
-        LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
+            OR Judge3 LIKE '%${judge3Name}%');`
+
+        if (req.query.page && !isNaN(req.query.page)) {
+            choppedSearchQuery = `SELECT *
+                FROM ChoppedEpisode
+                WHERE series_episode = ${episodeNum}
+                    AND (Judge1 LIKE '%${judge1Name}%'
+                    OR Judge2 LIKE '%${judge2Name}%'
+                    OR Judge3 LIKE '%${judge3Name}%')
+                LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
+        }
+
     } else {
         choppedSearchQuery = `SELECT *
         FROM ChoppedEpisode
         WHERE (Judge1 LIKE '%${judge1Name}%'
             OR Judge2 LIKE '%${judge2Name}%'
-            OR Judge3 LIKE '%${judge3Name}%')
-        LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
+            OR Judge3 LIKE '%${judge3Name}%');`
+
+        if (req.query.page && !isNaN(req.query.page)) {
+            choppedSearchQuery = `SELECT *
+            FROM ChoppedEpisode
+            WHERE (Judge1 LIKE '%${judge1Name}%'
+                OR Judge2 LIKE '%${judge2Name}%'
+                OR Judge3 LIKE '%${judge3Name}%')
+            LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
+        }
     }
 
     connection.query(choppedSearchQuery, function (error, results, fields) {
@@ -373,8 +409,16 @@ async function search_chopped_by_ingredients(req, res) {
     FROM ChoppedEpisode
     WHERE (LOWER(episode_name) LIKE '%${ingredient1Name}%'
         OR LOWER(episode_name) LIKE '%${ingredient2Name}%'
-        OR LOWER(episode_name) LIKE '%${ingredient3Name}%')
-    LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
+        OR LOWER(episode_name) LIKE '%${ingredient3Name}%');`
+
+    if (req.query.page && !isNaN(req.query.page)) {
+        choppedSearchQuery = `SELECT *
+        FROM ChoppedEpisode
+        WHERE (LOWER(episode_name) LIKE '%${ingredient1Name}%'
+            OR LOWER(episode_name) LIKE '%${ingredient2Name}%'
+            OR LOWER(episode_name) LIKE '%${ingredient3Name}%')
+        LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
+    }
 
     connection.query(choppedSearchQuery, function (error, results, fields) {
         if (error) {
@@ -385,7 +429,7 @@ async function search_chopped_by_ingredients(req, res) {
     });
 }
 
-// Route 6 -- fix query to find ingredients
+// Route 6
 async function find_recipes_by_chopped(req, res) {
     const pageSize = req.query.pagesize ? req.query.pagesize : 10;
     const episodeNum = req.query.EpisodeNum;
@@ -399,14 +443,24 @@ async function find_recipes_by_chopped(req, res) {
                  WHERE ingr.series_episode IS NOT NULL
                    AND ingr.recipe_id IS NOT NULL
                    AND series_episode = ${episodeNum}
-                   AND (
-                        ingr.ingredient LIKE '%bean%'
-                         OR ingr.ingredient LIKE '%acorn%'
-                     )
              ) AS chopped_matching_recipes
         JOIN Recipe rec
-        ON chopped_matching_recipes.recipe_id = rec.id
-        LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
+        ON chopped_matching_recipes.recipe_id = rec.id;`
+
+        if (req.query.page && !isNaN(req.query.page)) {
+            choppedSimilarRecipesSearchQuery = `
+            SELECT rec.*, series_episode
+            FROM (
+                     SELECT ingr.recipe_id AS recipe_id, ingr.series_episode AS series_episode
+                     FROM Ingredients_Correct ingr
+                     WHERE ingr.series_episode IS NOT NULL
+                       AND ingr.recipe_id IS NOT NULL
+                       AND series_episode = ${episodeNum}
+                 ) AS chopped_matching_recipes
+            JOIN Recipe rec
+            ON chopped_matching_recipes.recipe_id = rec.id
+            LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
+        }
 
         connection.query(choppedSimilarRecipesSearchQuery, function (error, results, fields) {
             if (error) {
@@ -454,8 +508,38 @@ async function find_chopped_likelihood(req, res) {
             WHERE ingr.recipe_id IS NOT NULL AND ingr.recipe_id = ${recipe_id}
         )
         SELECT DISTINCT recipe_id, ingredients, avg_episode_occurrence_per_yr, total_occurrences, num_years_appeared
-        FROM MatchingRecipeIngrs
-        LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
+        FROM MatchingRecipeIngrs;`
+
+        if (req.query.page && !isNaN(req.query.page)) {
+            choppedLikelihoodQuery = `
+            WITH ChoppedIngrEpisodeCount AS (
+                SELECT *
+                FROM (
+                    SELECT uses.ingredients AS ingredients, COUNT(uses.series_episode) AS num_episodes, SUBSTR(episode.air_date, LENGTH(episode.air_date) - 1, 2) AS year
+                    FROM ChoppedUses uses
+                    JOIN ChoppedEpisode episode
+                    ON uses.series_episode = episode.series_episode
+                    GROUP BY year, ingredients
+                    ORDER BY num_episodes DESC
+                    ) AS combined_year
+                ORDER BY ingredients, num_episodes DESC
+            ),
+            ChoppedIngrAvgAppearancePerYear AS (
+                SELECT ingredients, AVG(num_episodes) AS avg_episode_occurrence_per_yr, SUM(num_episodes) AS total_occurrences, COUNT(year) AS num_years_appeared
+                FROM ChoppedIngrEpisodeCount
+                GROUP BY ingredients
+                ORDER BY num_years_appeared DESC
+            ),
+            MatchingRecipeIngrs AS (
+                SELECT ingr.recipe_id, ingr.ingredient, chop.*
+                FROM Ingredients_Correct ingr
+                JOIN ChoppedIngrAvgAppearancePerYear chop ON LOWER(ingr.ingredient) LIKE CONCAT('%', LOWER(chop.ingredients), '%')
+                WHERE ingr.recipe_id IS NOT NULL AND ingr.recipe_id = ${recipe_id}
+            )
+            SELECT DISTINCT recipe_id, ingredients, avg_episode_occurrence_per_yr, total_occurrences, num_years_appeared
+            FROM MatchingRecipeIngrs
+            LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
+        }
 
         connection.query(choppedLikelihoodQuery, function (error, results, fields) {
             if (error) {
@@ -500,8 +584,34 @@ async function search_recipes_by_ingredients(req, res) {
              ORDER BY num_matching_ingredients DESC
          ) AS all_recipes
     JOIN Recipe rec
-    ON all_recipes.recipe_id = rec.id
-    LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
+    ON all_recipes.recipe_id = rec.id;`
+
+    if (req.query.page && !isNaN(req.query.page)) {
+        recipeSearchQuery = `
+        SELECT rec.*, num_matching_ingredients
+        FROM (
+                SELECT COUNT(ingredient) AS num_matching_ingredients, recipe_id
+                FROM (
+                        SELECT ingr1.ingredient as ingredient, ingr1.recipe_id as recipe_id
+                        from Ingredients_Correct ingr1
+                        WHERE ingr1.ingredient LIKE '%${ingredient1Name}%'
+                        UNION ALL
+                        SELECT ingr2.ingredient as ingredient, ingr2.recipe_id as recipe_id
+                        from Ingredients_Correct ingr2
+                        WHERE ingr2.ingredient = '%${ingredient2Name}%'
+                        UNION ALL
+                        SELECT ingr3.ingredient as ingredient, ingr3.recipe_id as recipe_id
+                        from Ingredients_Correct ingr3
+                        WHERE ingr3.ingredient = '%${ingredient3Name}%'
+                    ) AS matching_recipes
+                WHERE recipe_id IS NOT NULL
+                GROUP BY recipe_id
+                ORDER BY num_matching_ingredients DESC
+            ) AS all_recipes
+        JOIN Recipe rec
+        ON all_recipes.recipe_id = rec.id
+        LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
+    }
 
     connection.query(recipeSearchQuery, function (error, results, fields) {
         if (error) {
@@ -527,8 +637,18 @@ async function search_users_by_reviews(req, res) {
     WHERE num_recipes >= ${numRecipes} 
         AND num_reviews >= ${numReviews}
         AND avg_rating_received >= ${avgRatingReceived} 
-        AND avg_rating_given >= ${avgRatingGiven}
-    LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
+        AND avg_rating_given >= ${avgRatingGiven};`
+
+    if (req.query.page && !isNaN(req.query.page)) { 
+        userSearchQuery = `
+        SELECT *
+        FROM Users
+        WHERE num_recipes >= ${numRecipes} 
+            AND num_reviews >= ${numReviews}
+            AND avg_rating_received >= ${avgRatingReceived} 
+            AND avg_rating_given >= ${avgRatingGiven}
+        LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
+    }
 
     connection.query(userSearchQuery, function (error, results, fields) {
         if (error) {
@@ -547,8 +667,15 @@ async function get_all_recipes_from_user(req, res) {
     recipeSearchQuery = `
     SELECT *
     FROM Recipe
-    WHERE contributor_id = ${userId}
-    LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
+    WHERE contributor_id = ${userId};`
+
+    if (req.query.page && !isNaN(req.query.page)) { 
+        recipeSearchQuery = `
+        SELECT *
+        FROM Recipe
+        WHERE contributor_id = ${userId}
+        LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
+    }
 
     connection.query(recipeSearchQuery, function (error, results, fields) {
         if (error) {
@@ -567,8 +694,15 @@ async function get_all_reviews_from_user(req, res) {
     reviewSearchQuery = `
     SELECT *
     FROM Review
-    WHERE user_id = ${userId}
-    LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
+    WHERE user_id = ${userId};`
+
+    if (req.query.page && !isNaN(req.query.page)) { 
+        reviewSearchQuery = `
+        SELECT *
+        FROM Review
+        WHERE user_id = ${userId}
+        LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
+    }
 
     connection.query(reviewSearchQuery, function (error, results, fields) {
         if (error) {
@@ -587,8 +721,14 @@ async function get_all_recipes(req, res) {
 
     var recipesQuery = `
     SELECT *
-    FROM Recipe
-    LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
+    FROM Recipe;`
+
+    if (req.query.page && !isNaN(req.query.page)) { 
+        var recipesQuery = `
+        SELECT *
+        FROM Recipe
+        LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
+    }
 
     connection.query(recipesQuery, function (error, results, fields) {
         if (error) {
@@ -602,10 +742,16 @@ async function get_all_recipes(req, res) {
 
 async function get_all_chopped(req, res) {
     const pageSize = req.query.pagesize ? req.query.pagesize : 10;
+    var choppedQuery = `
+    SELECT * 
+    FROM ChoppedEpisode;`
 
-    var choppedQuery = `SELECT *
-    FROM ChoppedEpisode
-    LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
+    if (req.query.page && !isNaN(req.query.page)) { 
+        var choppedQuery = `
+        SELECT * 
+        FROM ChoppedEpisode 
+        LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
+    }
 
     connection.query(choppedQuery, function (error, results, fields) {
         if (error) {
@@ -622,8 +768,14 @@ async function get_all_users(req, res) {
 
     var userQuery = `
     SELECT *
-    FROM Users
-    LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
+    FROM Users;`
+
+    if (req.query.page && !isNaN(req.query.page)) { 
+        var userQuery = `
+        SELECT *
+        FROM Users
+        LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
+    }
 
     connection.query(userQuery, function (error, results, fields) {
         if (error) {
