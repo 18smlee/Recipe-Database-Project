@@ -131,8 +131,8 @@ const getAllUsers = async (page, pagesize) => {
     })
     return res.json()
 }
-const getRecipe = async (recipe_id, page, pagesize) => {
-    var res = await fetch(`http://${config.server_host}:${config.server_port}/recipes/${recipe_id}?page=${page}&pagesize=${pagesize}`, {
+const getRecipe = async (recipe_id) => {
+    var res = await fetch(`http://${config.server_host}:${config.server_port}/recipes/${recipe_id}`, {
         method: 'GET',
     })
     return res.json()
