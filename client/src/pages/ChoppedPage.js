@@ -10,6 +10,9 @@ import {
 
 import MenuBar from '../components/MenuBar';
 import { getAllChopped } from '../fetcher';
+import ChoppedEpisodeCard from '../components/ChoppedEpisodeCard.js';
+import ChoppedModal from '../components/ChoppedModal';
+
 
 class ChoppedPage extends React.Component {
 
@@ -20,14 +23,28 @@ class ChoppedPage extends React.Component {
         choppedResults: [],
         choppedPageNumber: 1,
         choppedPageSize: 10,
-        pagination: null  
+        clickedEpisode: -1,
+        clickedChoppedEpisode: null,
+        pagination: null,
+        showModal: false
       }
       this.goToChoppedEpisode = this.goToChoppedEpisode.bind(this)
+      this.showModal = this.showModal.bind(this);
+      this.hideModal = this.hideModal.bind(this);
     }
   
   
     goToChoppedEpisode(choppedEpisodeId) {
       window.location = `/chopped?id=${choppedEpisodeId}`
+    }
+
+    showModal() {
+        console.log("hi")
+        this.setState({ showModal: true })
+    }
+
+    hideModal() {
+        this.setState({ showModal: false })
     }
     
     componentDidMount() {
@@ -44,8 +61,39 @@ class ChoppedPage extends React.Component {
         <div>
           <MenuBar />
           <div style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
+            <h1>Find some inspiration!</h1>
             <h3>Chopped Episodes</h3>
+            
+            <div style={{ width: "50%", marginBottom: "50px" }}>
+                {this.state.showModal ? (
+                    <ChoppedModal handleClose = {this.hideModal} seriesEpisode={this.state.clickedEpisode} choppedEpisode={this.state.clickedChoppedEpisode} />
+                ) : (
+                    <> </>
+                )}
+            </div>
+            {
+                this.state.showModal ? (<> </>) :
+                //change how results look if modal is showing
+                (!this.state.choppedResults || this.state.choppedResults.length < 1) ? (
+                     <>Oops... There's no matches.</>)
+                :
+                this.state.choppedResults.map((choppedEpisode) => (
+                    <ChoppedEpisodeCard
+                      key={choppedEpisode.series_episode}
+                      id={choppedEpisode.series_episode}
+                      episodeName={choppedEpisode.episode_name}
+                      airDate={choppedEpisode.air_date}
+                      seriesEpisode={choppedEpisode.series_episode}
+                      modalFunc = {() => {
+                          this.setState({ showModal: true });
+                          this.setState({ clickedEpisode: choppedEpisode.series_episode });
+                          this.setState({ clickedChoppedEpisode: choppedEpisode });
+                        }
+                      }/>
+                ))
+            }
           </div>
+          
         </div>
       )
     }

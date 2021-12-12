@@ -431,7 +431,6 @@ async function search_chopped_by_ingredients(req, res) {
 
 // Route 6
 async function find_recipes_by_chopped(req, res) {
-    const pageSize = req.query.pagesize ? req.query.pagesize : 10;
     const episodeNum = req.query.EpisodeNum;
     
     if (episodeNum) {
@@ -445,22 +444,8 @@ async function find_recipes_by_chopped(req, res) {
                    AND series_episode = ${episodeNum}
              ) AS chopped_matching_recipes
         JOIN Recipe rec
-        ON chopped_matching_recipes.recipe_id = rec.id;`
-
-        if (req.query.page && !isNaN(req.query.page)) {
-            choppedSimilarRecipesSearchQuery = `
-            SELECT rec.*, series_episode
-            FROM (
-                     SELECT ingr.recipe_id AS recipe_id, ingr.series_episode AS series_episode
-                     FROM Ingredients_Correct ingr
-                     WHERE ingr.series_episode IS NOT NULL
-                       AND ingr.recipe_id IS NOT NULL
-                       AND series_episode = ${episodeNum}
-                 ) AS chopped_matching_recipes
-            JOIN Recipe rec
-            ON chopped_matching_recipes.recipe_id = rec.id
-            LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
-        }
+        ON chopped_matching_recipes.recipe_id = rec.id
+        LIMIT 10;`
 
         connection.query(choppedSimilarRecipesSearchQuery, function (error, results, fields) {
             if (error) {
@@ -806,6 +791,32 @@ async function get_recipe_by_id(req, res) {
     });
 }
 
+async function get_chopped_episode_ingredients(req, res) {
+    const choppedEpisodeId = req.query.EpisodeNum;
+
+    if (choppedEpisodeId) {
+        var choppedIngredientQuery = `SELECT ingredients
+        FROM ChoppedUses
+        WHERE series_episode =${choppedEpisodeId}`
+    
+        connection.query(choppedIngredientQuery, function (error, results, fields) {
+            if (error) {
+                console.log(error)
+            } else if (results) {
+                console.log(results)
+                res.json({ results: results })
+            }
+        });
+    } else {
+        //error
+        console.log(error)
+        res.json({ results: [] })
+    }
+    
+}
+
+
+
 
 module.exports = {
     hello,
@@ -830,5 +841,6 @@ module.exports = {
     get_all_recipes,
     get_all_chopped,
     get_all_users,
-    get_recipe_by_id
+    get_recipe_by_id,
+    get_chopped_episode_ingredients
 }

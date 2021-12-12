@@ -138,6 +138,15 @@ const getRecipe = async (recipe_id) => {
     return res.json()
 }
 
+const getChoppedEpisodeIngredients = async (episode_num) => {
+    var res = await fetch(`http://${config.server_host}:${config.server_port}/chopped/ingredients?EpisodeNum=${episode_num}`, {
+        method: 'GET',
+    })
+    return res.json()
+}
+
+
+
 
 
 
@@ -176,5 +185,6 @@ export {
     getAllRecipes,
     getAllChopped,
     getAllUsers,
-    getRecipe
+    getRecipe,
+    getChoppedEpisodeIngredients
 }
