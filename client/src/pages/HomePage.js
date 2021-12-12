@@ -6,6 +6,7 @@ import {
 } from 'antd'
 
 import MenuBar from '../components/MenuBar';
+import Button from 'react-bootstrap/Button';
 import { getAllMatches, getAllPlayers, getAllChopped } from '../fetcher'
 const { Column, ColumnGroup } = Table;
 const { Option } = Select;
@@ -118,6 +119,8 @@ class HomePage extends React.Component {
              {/* TASK 3: Take a look at Dataset Information.md from MS1 and add other options to the selector here  */}
              <Option value="SP1">SP1</Option>
           </Select>
+
+          {<Button onClick={() => toggleShow(true)}>Show Toast</Button>}
           
           <Table onRow={(record, rowIndex) => {
     return {
