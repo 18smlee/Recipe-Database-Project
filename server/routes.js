@@ -266,14 +266,16 @@ async function search_recipes_by_traits(req, res) {
     const recipe_name = req.query.Name ? req.query.Name : '';
     const cook_time = req.query.TimeToCook ? req.query.TimeToCook : 9999999;
     const num_steps = req.query.NumSteps ? req.query.NumSteps : 9999999;
+    const avg_rating = req.query.AvgRating ? req.query.AvgRating : 5;
     const pageSize = req.query.pagesize ? req.query.pagesize : 10;
     // is searching by review a different route?? or should it be combined?
+    // combined them
     recipeSearchQuery = `SELECT *
         FROM Recipe
         WHERE name LIKE '%${recipe_name}%'
         AND minutes <= ${cook_time}
         AND n_steps <= ${num_steps}
-        AND avg_rating >= 2
+        AND avg_rating >= ${avg_rating}
         ;`
     if (req.query.page && !isNaN(req.query.page)) {
         recipeSearchQuery = `SELECT *
@@ -281,7 +283,7 @@ async function search_recipes_by_traits(req, res) {
             WHERE name LIKE '%${recipe_name}%'
             AND minutes <= ${cook_time}
             AND n_steps <= ${num_steps}
-            AND avg_rating >= 2
+            AND avg_rating >= ${avg_rating}
             LIMIT ${pageSize} OFFSET ${pageSize * req.query.page}
             ;`
     }
@@ -295,7 +297,8 @@ async function search_recipes_by_traits(req, res) {
     });
 }
 
-// Route 2 -- currently done in route 1, should it be separate?
+// Route 2 -- currently done in route 1, should it be separate? 
+// Update: added it to route 1
 async function search_recipes_by_review(req, res) {
     const pageSize = req.query.pagesize ? req.query.pagesize : 10;
 
