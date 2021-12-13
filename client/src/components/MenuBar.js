@@ -17,16 +17,16 @@ class MenuBar extends React.Component {
         return(
           <Navbar>
             <Container>
-              <Navbar.Brand href="#home">
+              <Navbar.Brand href="/">
               <img
-                        alt=""
-                        src={logo}
-                        width="30"
-                        height="30"
-                        className="d-inline-block align-top"
-                      />{' '}
-                    Creative Cuisine
-                    </Navbar.Brand>
+                  alt=""
+                  src={logo}
+                  width="30"
+                  height="30"
+                  className="d-inline-block align-top"
+              />{' '}
+              Creative Cuisine
+              </Navbar.Brand>
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
               <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="me-auto">
