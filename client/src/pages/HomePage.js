@@ -1,58 +1,19 @@
 import React from 'react';
-import {
-  Table,
-  Pagination,
-  Select
-} from 'antd'
 
+import logo from '../images/logo.png';
 import MenuBar from '../components/MenuBar';
-import Button from 'react-bootstrap/Button';
+import food_background from '../images/food_background.png';
 import { getAllMatches, getAllPlayers, getAllChopped } from '../fetcher'
-const { Column, ColumnGroup } = Table;
-const { Option } = Select;
 
-
-const playerColumns = [
-  {
-    title: 'Name',
-    dataIndex: 'Name',
-    key: 'Name',
-    sorter: (a, b) => a.Name.localeCompare(b.Name),
-    render: (text, row) => <a href={`/players?id=${row.PlayerId}`}>{text}</a>
-  },
-  {
-    title: 'Nationality',
-    dataIndex: 'Nationality',
-    key: 'Nationality',
-    sorter: (a, b) => a.Nationality.localeCompare(b.Nationality)
-  },
-  {
-    title: 'Rating',
-    dataIndex: 'Rating',
-    key: 'Rating',
-    sorter: (a, b) => a.Rating - b.Rating
-  },
-  // TASK 7: add a column for Potential, with the ability to (numerically) sort ,
-  {
-    title: 'Potential',
-    dataIndex: 'Potential',
-    key: 'Potential',
-    sorter: (a, b) => a.Potential - b.Potential
-  },
-  // TASK 8: add a column for Club, with the ability to (alphabetically) sort 
-  {
-    title: 'Club',
-    dataIndex: 'Club',
-    key: 'Club',
-    sorter: (a, b) => a.Club.localeCompare(b.Club)
-  },
-  // TASK 9: add a column for Value - no sorting required
-  {
-    title: 'Value',
-    dataIndex: 'Value',
-    key: 'Value'
-  },
-];
+import {
+  Container,
+  Row,
+  Col,
+  Stack,
+  Button,
+  Image,
+  Card,
+} from 'react-bootstrap';
 
 class HomePage extends React.Component {
 
@@ -66,85 +27,69 @@ class HomePage extends React.Component {
       playersResults: [],
       pagination: null  
     }
-
-    this.leagueOnChange = this.leagueOnChange.bind(this)
-    this.goToMatch = this.goToMatch.bind(this)
-  }
-
-
-  goToMatch(matchId) {
-    window.location = `/matches?id=${matchId}`
-  }
-
-  leagueOnChange(value) {
-    // TASK 2: this value should be used as a parameter to call getAllMatches in fetcher.js with the parameters page and pageSize set to null
-    // then, matchesResults in state should be set to the results returned - see a similar function call in componentDidMount()
-    getAllMatches(null, null, value).then(res => {
-      this.setState({ matchesResults: res.results })
-    })
-    
   }
 
   componentDidMount() {
     getAllChopped().then(res => {
       console.log(res.results)
     })
-    getAllMatches(null, null, 'D1').then(res => {
-      this.setState({ matchesResults: res.results })
-    })
-
-    getAllPlayers().then(res => {
-      console.log(res.results)
-      // TASK 1: set the correct state attribute to res.results
-      this.setState({ playersResults: res.results })
-    })
-
- 
   }
 
-
   render() {
+
+    var textStyle = {
+      position: 'absolute', 
+      top: '50%', 
+      left: '50%'
+    };
 
     return (
       <div>
         <MenuBar />
-        <div style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
-          <h3>Players</h3>
-          <Table dataSource={this.state.playersResults} columns={playerColumns} pagination={{ pageSizeOptions:[5, 10], defaultPageSize: 5, showQuickJumper:true }}/>
+        <div style={{ 
+          backgroundImage: `url(${food_background})`,
+          backgroundRepeat:"no-repeat",
+          backgroundSize:"cover", 
+          height:900,width:1600 }}>
         </div>
-        <div style={{ width: '70vw', margin: '0 auto', marginTop: '2vh' }}>
-          <h3>Matches</h3>
-          <Select defaultValue="D1" style={{ width: 120 }} onChange={this.leagueOnChange}>
-            <Option value="D1">Bundesliga</Option>
-             {/* TASK 3: Take a look at Dataset Information.md from MS1 and add other options to the selector here  */}
-             <Option value="SP1">SP1</Option>
-          </Select>
-
-          {<Button onClick={() => toggleShow(true)}>Show Toast</Button>}
-          
-          <Table onRow={(record, rowIndex) => {
-    return {
-      onClick: event => {this.goToMatch(record.MatchId)}, // clicking a row takes the user to a detailed view of the match in the /matches page using the MatchId parameter  
-    };
-  }} dataSource={this.state.matchesResults} pagination={{ pageSizeOptions:[5, 10], defaultPageSize: 5, showQuickJumper:true }}>
-            <ColumnGroup title="Teams">
-              {/* TASK 4: correct the title for the 'Home' column and add a similar column for 'Away' team in this ColumnGroup */}
-              <Column title="Home" dataIndex="Home" key="Home" sorter= {(a, b) => a.Home.localeCompare(b.Home)}/>
-              <Column title="Away" dataIndex="Away" key="Away" sorter= {(a, b) => a.Away.localeCompare(b.Away)}/>
-            </ColumnGroup>
-            <ColumnGroup title="Goals">
-              {/* TASK 5: add columns for home and away goals in this ColumnGroup, with the ability to sort values in these columns numerically */}
-              <Column title="Home Goals" dataIndex="HomeGoals" key="HomeGoals"  sorter= {(a, b) => a.HomeGoals - b.HomeGoals}/>
-              <Column title="Away Goals" dataIndex="AwayGoals" key="AwayGoals" sorter= {(a, b) => a.AwayGoals - b.AwayGoals}/>
-            </ColumnGroup>
-             {/* TASK 6: create two columns (independent - not in a column group) for the date and time. Do not add a sorting functionality */}
-             <Column title="Date" dataIndex="Date" key="Date"/>
-              <Column title="Time" dataIndex="Time" key="Time"/>
-          </Table>
-
-        </div>
-
-
+       
+        {/* <h1 style={textStyle}>Text over image</h1> */}
+        <Container style={{ position:'absolute', top: '30%', left: '10%'}}>
+          <div class="d-flex justify-content-center">
+          <img
+                  alt=""
+                  src={logo}
+                  width="100"
+                  height="100"
+              />
+          </div>
+          <h3 class="d-flex justify-content-center">Creative Cuisine </h3>
+          <Card style={{marginTop: '30px'}}>
+            <Card.Text style={{margin: '30px'}}>
+              <p class="text-center">
+                Creative Cuisine is a tool to inspire creativity in your cooking! 
+              </p>
+              <p class="text-left">
+                <ul>
+                Our features include: 
+                  <li style={{marginLeft: '30px'}}>
+                    an extensive database of recipes for you to try new dishes with a customizable search tool to make it easy to find the recipes that are right for you
+                  </li>
+                  <li style={{marginLeft: '30px'}}>
+                    access to the top recipe contributers so that you can find your favorite users and find which recipes they've written and reviewed
+                  </li>
+                  <li style={{marginLeft: '30px'}}>
+                    a custom meal maker tool that helps you plan what meals to make based on your nutrition and ingredient preferences
+                  </li>
+                  <li style={{marginLeft: '30px'}}>
+                    a search function to find your favorite chopped episodes and how they can inspire you to make your own unique creations
+                  </li>
+                </ul>
+              </p>
+            </Card.Text>
+          </Card>
+        </Container>
+        
       </div>
     )
   }
