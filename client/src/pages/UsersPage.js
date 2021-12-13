@@ -37,6 +37,7 @@ class UsersPage extends React.Component {
       this.handleRatingReceivedChange = this.handleRatingReceivedChange.bind(this)
       this.handleRatingGivenChange = this.handleRatingGivenChange.bind(this)
       this.updateSearchResults = this.updateSearchResults.bind(this)
+      this.nextPage = this.nextPage.bind(this)
     }
 
     handleNumRecipesChange(value) {
@@ -62,11 +63,21 @@ class UsersPage extends React.Component {
     updateSearchResults() {
       console.log("update search")
       //TASK 23: call getPlayerSearch and update playerResults in state. See componentDidMount() for a hint
-      getUserFromReviewSearch(this.state.numRecipes, this.state.numReviews, this.state.avgRatingReceived, this.state.avgRatingGiven, null, null).then(res => {
+      getUserFromReviewSearch(this.state.numRecipes, this.state.numReviews, this.state.avgRatingReceived, this.state.avgRatingGiven, 1, null).then(res => {
           console.log(res.results)
-          this.setState({ playersResults: res.results })
+          this.setState({ usersResults: res.results })
       })
-  }
+    }
+
+    nextPage() {
+      var newPage = this.state.usersPageNumber + 1
+      console.log(newPage)
+      
+      getAllUsers(this.state.usersPageNumber, this.state.usersPageSize).then(res => {
+        console.log(res.results)
+        this.setState({usersResults: res.results, usersPageNumber: newPage})
+      })
+    }
   
     // leagueOnChange(value) {
     //   // TASK 2: this value should be used as a parameter to call getAllMatches in fetcher.js with the parameters page and pageSize set to null
@@ -77,7 +88,7 @@ class UsersPage extends React.Component {
     // }
   
     componentDidMount() {
-      getAllUsers().then(res => {
+      getAllUsers(this.state.usersPageNumber, this.state.usersPageSize).then(res => {
         console.log(res.results)
         this.setState({ usersResults: res.results })
       })
@@ -127,14 +138,17 @@ class UsersPage extends React.Component {
                   key={user.id}
                   id={'user_' + user.id}
                   name={"Blah Blah"}
-                  photo={null}
-                  avgRatingReceived={user.avgRatingReceived}
+                  photo={"prof.png"}
+                  avgRatingReceived={user.avg_rating_received}
                   handler = {() => {
                     window.location = `/users?id=${user.id}`
                   }}
                   />
               ))
             }
+          </div>
+          <div style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
+            <Button onClick={this.nextPage}> More Results </Button>
           </div>
 
         </div>

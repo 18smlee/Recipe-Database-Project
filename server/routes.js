@@ -749,14 +749,14 @@ async function get_all_chopped(req, res) {
 }
 
 async function get_all_users(req, res) {
-    const pageSize = req.query.pagesize ? req.query.pagesize : 10;
-
+    // const pageSize = req.query.pagesize ? req.query.pagesize : 10;
+    const pageSize = 10
     var userQuery = `
     SELECT *
     FROM Users LIMIT 20;`
 
     if (req.query.page && !isNaN(req.query.page)) { 
-        var userQuery = `
+        userQuery = `
         SELECT *
         FROM Users
         LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
