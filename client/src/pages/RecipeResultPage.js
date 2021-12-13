@@ -24,6 +24,7 @@ class RecipeResultPage extends React.Component {
       this.state = {
         recipesResults: [],
         recipesPageNumber: 1,
+        recipeSearchText: "",
         recipesPageSize: 10,
         pagination: null, 
 
@@ -46,7 +47,6 @@ class RecipeResultPage extends React.Component {
       this.handleAvgRatingChange = this.handleAvgRatingChange.bind(this)
       this.goToRecipe = this.goToRecipe.bind(this)
     }
-
   
     goToRecipe(recipeId) {
       window.location = `/recipe?id=${recipeId}`

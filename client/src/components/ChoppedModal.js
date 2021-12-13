@@ -17,13 +17,13 @@ class ChoppedModal extends React.Component {
 
     componentDidMount() {
         getChoppedSimilarRecipes(this.state.episodeNumber).then(res => {
-          console.log(res.results)
+          //console.log(res.results)
           this.setState({ similarRecipes: res.results })
         })
 
         getChoppedEpisodeIngredients(this.state.episodeNumber).then(res => {
             const ingredientsList = res.results.map((ingr) => ingr.ingredients)
-            console.log(ingredientsList)
+            //console.log(ingredientsList)
             this.setState({ episodeIngredients: ingredientsList})
           })
       }
