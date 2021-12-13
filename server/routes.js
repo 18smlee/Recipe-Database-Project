@@ -753,7 +753,7 @@ async function get_all_users(req, res) {
 
     var userQuery = `
     SELECT *
-    FROM Users;`
+    FROM Users LIMIT 20;`
 
     if (req.query.page && !isNaN(req.query.page)) { 
         var userQuery = `

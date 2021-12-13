@@ -120,7 +120,7 @@ class HomePage extends React.Component {
              <Option value="SP1">SP1</Option>
           </Select>
 
-          {<Button onClick={() => toggleShow(true)}>Show Toast</Button>}
+          {/* {<Button onClick={() => toggleShow(true)}>Show Toast</Button>} */}
           
           <Table onRow={(record, rowIndex) => {
     return {
