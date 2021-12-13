@@ -17,7 +17,8 @@ import UsersPage from './pages/UsersPage';
 import MealMakerPage from './pages/MealMakerPage';
 import ChoppedPage from './pages/ChoppedPage';
 import RecipeDetailPage from './pages/RecipeDetailPage';
-import RecipesPage from './pages/RecipesPage';
+import RecipeSearchPage from './pages/RecipeSearchPage';
+import RecipeResultPage from './pages/RecipeResultPage';
 
 ReactDOM.render(
   <div>
@@ -61,7 +62,12 @@ ReactDOM.render(
 		<Route exact
 							path="/recipes"
 							render={() => (
-								<RecipesPage />
+								<RecipeSearchPage />
+							)}/>
+		<Route exact
+							path="/search/recipes"
+							render={() => (
+								<RecipeResultPage />
 							)}/>
       </Switch>
     </Router>

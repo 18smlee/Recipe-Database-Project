@@ -9,9 +9,13 @@ import {
 } from 'antd'
 
 import MenuBar from '../components/MenuBar';
+import RecipeCardList from '../components/RecipeCardList';
+import SearchBar from '../components/SearchBar';
+import Button from 'react-bootstrap/Button';
+
 import { getAllRecipes } from '../fetcher';
 
-class RecipesPage extends React.Component {
+class RecipeResultPage extends React.Component {
 
     constructor(props) {
       super(props)
@@ -29,15 +33,19 @@ class RecipesPage extends React.Component {
     goToRecipe(recipeId) {
       window.location = `/recipe?id=${recipeId}`
     }
+
+    displaySearchResults() {
+      getAllRecipes().then(res => {
+        this.setState({ recipesResults: res.results })
+      })
+    }
     
     componentDidMount() {
       getAllRecipes().then(res => {
         console.log(res.results)
         this.setState({ recipesResults: res.results })
       })
-      
     }
-  
   
     render() {
   
@@ -45,7 +53,10 @@ class RecipesPage extends React.Component {
         <div>
           <MenuBar />
           <div style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
-            <h3>Recipes </h3>
+            <div className="container search">
+              <SearchBar onSearch={getAllRecipes()}/>
+              <RecipeCardList results={this.state.recipesResults}/>
+            </div>
           </div>
         </div>
       )
@@ -53,4 +64,4 @@ class RecipesPage extends React.Component {
   
   }
   
-  export default RecipesPage
+  export default RecipeResultPage

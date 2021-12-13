@@ -10,7 +10,7 @@ import {
   Button,
 } from 'react-bootstrap';
 
-import logo from './logo.svg'
+import logo from '../images/logo.png';
 
 // Logo not working rn
 class MenuBar extends React.Component {
@@ -35,19 +35,11 @@ class MenuBar extends React.Component {
                 style={{ maxHeight: '100px' }}
                 navbarScroll
               >
+                <Nav.Link href="/recipes">Recipes</Nav.Link>
                 <Nav.Link href="/users">Users</Nav.Link>
                 <Nav.Link href="/mealmaker">Meal Maker</Nav.Link>
                 <Nav.Link href="/chopped">Chopped Inspiration</Nav.Link>
               </Nav>
-              <Form className="d-flex">
-                <FormControl
-                  type="search"
-                  placeholder="Find Recipes"
-                  className="me-2"
-                  aria-label="Search"
-                />
-                <Button><img src="https://img.icons8.com/material-outlined/24/000000/search--v1.png"/></Button>
-              </Form>
             </Navbar.Collapse>
           </Container>
         </Navbar>
