@@ -9,11 +9,22 @@ import {
 
 import { Route, Switch, withRouter } from "react-router-dom";
 
+/*
+props: url to render for results
+       placeholder
+       alert text
+       onSubmit
+*/
+
 class SearchBar extends React.Component {
   
   state = {
         searchText: ""
   };
+
+  onSubmit1(text) {
+    this.props.history.push(`/search/recipes/?s=${text}`);
+  }
 
   handleSearchInput = event => {
       this.setState({
@@ -21,17 +32,16 @@ class SearchBar extends React.Component {
       });
   };
 
-  handleSearchSubmit = () => {
+  handleSearchSubmit = e => {
       if (this.state.searchText) {
           let text = this.state.searchText;
           this.setState({ searchText: "" })
           console.log(this.state.searchText);
-          this.props.history.push({
-              pathname: '/search/recipes/',
-              state: { searchText: text }
-          });
+          // this.props.history.push(`/search/recipes/?s=${text}`);
+          this.props.onSubmit(text);
+          e.preventDefault();
       } else {
-          alert("Please enter a recipe to search for!");
+          alert(`${this.props.errorMsg}`);
       }
   };
 
@@ -53,7 +63,7 @@ class SearchBar extends React.Component {
             value={this.state.searchText}
             onKeyUp={this.handleSearchKeyUp}
             type="Search"
-            placeholder="Find Recipes"
+            placeholder={this.props.placeholder}
             className="mr-sm-2"
         />
         <Button onClick={this.handleSearchSubmit} variant="outline">
