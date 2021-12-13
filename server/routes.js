@@ -264,28 +264,37 @@ async function search_players(req, res) {
 // Route 1
 async function search_recipes_by_traits(req, res) {
     const recipe_name = req.query.Name ? req.query.Name : '';
-    const cook_time = req.query.TimeToCook ? req.query.TimeToCook : 9999999;
-    const num_steps = req.query.NumSteps ? req.query.NumSteps : 9999999;
-    const avg_rating = req.query.AvgRating ? req.query.AvgRating : 5;
+    const min_cook_time = req.query.MinTimeToCook ? req.query.TimeToCook : 0;
+    const max_cook_time = req.query.MaxTimeToCook ? req.query.TimeToCook : 9999999;
+    const min_num_steps = req.query.MinNumSteps ? req.query.NumSteps : 0;
+    const max_num_steps = req.query.MaxNumSteps ? req.query.NumSteps : 9999999;
+    const min_avg_rating = req.query.MinAvgRating ? req.query.AvgRating : 0;
+    const max_avg_rating = req.query.MaxAvgRating ? req.query.AvgRating : 5;
     const pageSize = req.query.pagesize ? req.query.pagesize : 10;
     // is searching by review a different route?? or should it be combined?
-    // combined them
+    // Update: combined them
     recipeSearchQuery = `SELECT *
         FROM Recipe
         WHERE name LIKE '%${recipe_name}%'
-        AND minutes <= ${cook_time}
-        AND n_steps <= ${num_steps}
-        AND avg_rating >= ${avg_rating}
+        AND minutes >= ${min_cook_time}
+        AND minutes <= ${max_cook_time}
+        AND n_steps >= ${min_num_steps}
+        AND n_steps <= ${max_num_steps}
+        AND avg_rating >= ${min_avg_rating}
+        AND avg_rating <= ${max_avg_rating}
         ;`
     if (req.query.page && !isNaN(req.query.page)) {
         recipeSearchQuery = `SELECT *
-            FROM Recipe
-            WHERE name LIKE '%${recipe_name}%'
-            AND minutes <= ${cook_time}
-            AND n_steps <= ${num_steps}
-            AND avg_rating >= ${avg_rating}
-            LIMIT ${pageSize} OFFSET ${pageSize * req.query.page}
-            ;`
+        FROM Recipe
+        WHERE name LIKE '%${recipe_name}%'
+        AND minutes >= ${min_cook_time}
+        AND minutes <= ${max_cook_time}
+        AND n_steps >= ${min_num_steps}
+        AND n_steps <= ${max_num_steps}
+        AND avg_rating >= ${min_avg_rating}
+        AND avg_rating <= ${max_avg_rating}
+        LIMIT ${pageSize} OFFSET ${pageSize * req.query.page}
+        ;`
     }
 
     connection.query(recipeSearchQuery, function (error, results, fields) {
