@@ -104,7 +104,7 @@ class RecipeResultPage extends React.Component {
             <div className="container search">
             <SearchBar placeholder={"Find recipes"}
             errorMsg={"Please enter a recipe to search for!"}
-            onSubmit={this.props.history.push(`/search/recipes/?s=${text}`)}
+            onSubmit={(text) => this.props.history.push(`/search/recipes/?s=${text}`)}
             />
               <RecipeCardList results={this.state.recipesResults}/>
             </div>
