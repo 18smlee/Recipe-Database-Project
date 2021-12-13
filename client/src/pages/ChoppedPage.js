@@ -9,9 +9,11 @@ import {
 } from 'antd'
 
 import MenuBar from '../components/MenuBar';
+import SearchBar from '../components/SearchBar';
 import { getAllChopped } from '../fetcher';
 import ChoppedEpisodeCard from '../components/ChoppedEpisodeCard.js';
 import ChoppedModal from '../components/ChoppedModal';
+import { ThemeConsumer } from 'react-bootstrap/esm/ThemeProvider';
 
 
 class ChoppedPage extends React.Component {
@@ -25,12 +27,14 @@ class ChoppedPage extends React.Component {
         choppedPageSize: 10,
         clickedEpisode: -1,
         clickedChoppedEpisode: null,
+        choppedSearchTerm: "",
         pagination: null,
         showModal: false
       }
       this.goToChoppedEpisode = this.goToChoppedEpisode.bind(this)
       this.showModal = this.showModal.bind(this);
       this.hideModal = this.hideModal.bind(this);
+      this.handleSearch = this.handleSearch.bind(this);
     }
   
   
@@ -46,10 +50,16 @@ class ChoppedPage extends React.Component {
     hideModal() {
         this.setState({ showModal: false })
     }
+
+    handleSearch(searchTerm) {
+        console.log("search")
+        console.log(searchTerm)
+        this.setState({ choppedSearchTerm: searchTerm })
+    }
     
     componentDidMount() {
       getAllChopped().then(res => {
-        console.log(res.results)
+        //console.log(res.results)
         this.setState({ choppedResults: res.results })
       })
     }
@@ -60,6 +70,10 @@ class ChoppedPage extends React.Component {
       return (
         <div>
           <MenuBar />
+          <SearchBar placeholder={"Find a Chopped episode"} 
+                    errorMsg={"Please enter a Chopped episode number to search for!"}
+                    onSubmit={this.handleSearch}
+          />
           <div style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
             <h1>Find some inspiration!</h1>
             <h3>Chopped Episodes</h3>

@@ -13,7 +13,8 @@ import RecipeCardList from '../components/RecipeCardList';
 import SearchBar from '../components/SearchBar';
 import Button from 'react-bootstrap/Button';
 
-import { getAllRecipes } from '../fetcher';
+import { getAllRecipes, getRecipeFromNameSearch } from '../fetcher';
+import queryString from 'query-string';
 
 class RecipeResultPage extends React.Component {
 
@@ -23,25 +24,21 @@ class RecipeResultPage extends React.Component {
       this.state = {
         recipesResults: [],
         recipesPageNumber: 1,
+        recipeSearchText: "",
         recipesPageSize: 10,
         pagination: null  
       }
       this.goToRecipe = this.goToRecipe.bind(this)
     }
   
-  
     goToRecipe(recipeId) {
       window.location = `/recipe?id=${recipeId}`
     }
-
-    displaySearchResults() {
-      getAllRecipes().then(res => {
-        this.setState({ recipesResults: res.results })
-      })
-    }
     
     componentDidMount() {
-      getAllRecipes().then(res => {
+      let params = queryString.parse(window.location.search)
+      this.setState({ recipeSearchText: params.s})
+      getRecipeFromNameSearch(params.s, null, null).then(res => {
         console.log(res.results)
         this.setState({ recipesResults: res.results })
       })
@@ -54,7 +51,7 @@ class RecipeResultPage extends React.Component {
           <MenuBar />
           <div style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
             <div className="container search">
-              <SearchBar onSearch={getAllRecipes()}/>
+              <SearchBar />
               <RecipeCardList results={this.state.recipesResults}/>
             </div>
           </div>

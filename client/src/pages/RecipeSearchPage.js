@@ -17,16 +17,19 @@ import {
   Stack,
   Button,
 } from 'react-bootstrap';
+import queryString from 'query-string';
 
 import { getAllRecipes } from '../fetcher';
+import { ThemeConsumer } from 'react-bootstrap/esm/ThemeProvider';
 
 class RecipeSearchPage extends React.Component {
 
     constructor(props) {
       super(props)
-  
+      
       this.state = {
         recipesResults: [],
+        params: null,
         recipesPageNumber: 1,
         recipesPageSize: 10,
         pagination: null  
@@ -46,10 +49,10 @@ class RecipeSearchPage extends React.Component {
     }
     
     componentDidMount() {
-      getAllRecipes().then(res => {
-        console.log(res.results)
-        this.setState({ recipesResults: res.results })
-      })
+      // getAllRecipes().then(res => {
+      //   //console.log(res.results)
+      //   this.setState({ recipesResults: res.results })
+      // })
     }
   
     render() {

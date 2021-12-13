@@ -145,22 +145,12 @@ const getChoppedEpisodeIngredients = async (episode_num) => {
     return res.json()
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+const getRecipeFromNameSearch = async (name, page, pagesize) => {
+    var res = await fetch(`http://${config.server_host}:${config.server_port}/search/recipes/name?RecipeName=${name}&page=${page}&pagesize=${pagesize}`, {
+        method: 'GET',
+    })
+    return res.json()
+}
 
 
 
@@ -186,5 +176,6 @@ export {
     getAllChopped,
     getAllUsers,
     getRecipe,
-    getChoppedEpisodeIngredients
+    getChoppedEpisodeIngredients,
+    getRecipeFromNameSearch
 }

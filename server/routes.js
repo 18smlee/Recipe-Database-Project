@@ -722,7 +722,7 @@ async function get_all_recipes(req, res) {
         if (error) {
             console.log(error)
         } else if (results) {
-            console.log(results)
+            //console.log(results)
             res.json({ results: results })
         }
     });
@@ -745,7 +745,7 @@ async function get_all_chopped(req, res) {
         if (error) {
             console.log(error)
         } else if (results) {
-            console.log(results)
+            //console.log(results)
             res.json({ results: results })
         }
     });
@@ -769,7 +769,7 @@ async function get_all_users(req, res) {
         if (error) {
             console.log(error)
         } else if (results) {
-            console.log(results)
+            //console.log(results)
             res.json({ results: results })
         }
     });
@@ -788,7 +788,7 @@ async function get_recipe_by_id(req, res) {
         if (error) {
             console.log(error)
         } else if (results) {
-            console.log(results)
+            //console.log(results)
             res.json({ results: results })
         }
     });
@@ -806,7 +806,7 @@ async function get_chopped_episode_ingredients(req, res) {
             if (error) {
                 console.log(error)
             } else if (results) {
-                console.log(results)
+                //console.log(results)
                 res.json({ results: results })
             }
         });
@@ -818,6 +818,28 @@ async function get_chopped_episode_ingredients(req, res) {
     
 }
 
+async function search_recipes_by_name(req, res) {
+    const recipe_name = req.query.RecipeName ? req.query.RecipeName : '';
+    const pageSize = req.query.pagesize ? req.query.pagesize : 10;
+
+    recipeSearchQuery = `SELECT *
+        FROM Recipe
+        WHERE name LIKE '%${recipe_name}%';`
+    
+    if (req.query.page && !isNaN(req.query.page)) { 
+        recipeSearchQuery = `SELECT *
+        FROM Recipe
+        WHERE name LIKE '%${recipe_name}%'
+        LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
+    }
+    connection.query(recipeSearchQuery, function (error, results, fields) {
+        if (error) {
+            res.json({ results: [] })
+        } else if (results) {
+            res.json({ results: results })
+        }
+    });
+}
 
 
 
@@ -845,5 +867,6 @@ module.exports = {
     get_all_chopped,
     get_all_users,
     get_recipe_by_id,
-    get_chopped_episode_ingredients
+    get_chopped_episode_ingredients,
+    search_recipes_by_name
 }
