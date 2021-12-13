@@ -10,7 +10,7 @@ import {
 
 import MenuBar from '../components/MenuBar';
 import SearchBar from '../components/SearchBar';
-import { getAllChopped } from '../fetcher';
+import { getAllChopped, getChoppedFromEpisodeSearch } from '../fetcher';
 import ChoppedEpisodeCard from '../components/ChoppedEpisodeCard.js';
 import ChoppedModal from '../components/ChoppedModal';
 import { ThemeConsumer } from 'react-bootstrap/esm/ThemeProvider';
