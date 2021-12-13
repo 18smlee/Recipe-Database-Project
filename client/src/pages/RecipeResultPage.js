@@ -55,6 +55,7 @@ class RecipeResultPage extends React.Component {
       this.handleTimeToCookChange = this.handleTimeToCookChange.bind(this)
       this.handleAvgRatingChange = this.handleAvgRatingChange.bind(this)
       this.goToRecipe = this.goToRecipe.bind(this)
+      this.handleSearch = this.handleSearch.bind(this);
     }
   
     goToRecipe(recipeId) {
@@ -84,6 +85,14 @@ class RecipeResultPage extends React.Component {
     handleAvgRatingChange(value) {
       this.setState({ minAvgRatingQuery: value[0] })
       this.setState({ maxAvgRatingQuery: value[1] })
+    }
+
+    handleSearch(searchTerm) {
+      console.log("search")
+      console.log(searchTerm)
+      this.setState({ nameQuery: searchTerm })
+      
+      // fix url
     }
 
     updateSearchResults() {
@@ -116,7 +125,7 @@ class RecipeResultPage extends React.Component {
             <div className="container search">
             {/* <SearchBar placeholder={"Find recipes"}
             errorMsg={"Please enter a recipe to search for!"}
-            onSubmit={(text) => this.props.history.push(`/search/recipes/?s=${text}`)}
+            onSubmit={this.handleSearch}
             /> */}
             <Row>
               <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>

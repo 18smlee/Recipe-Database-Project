@@ -38,6 +38,7 @@ class SearchBar extends React.Component {
           this.setState({ searchText: "" })
           console.log(this.state.searchText);
           // this.props.history.push(`/search/recipes/?s=${text}`);
+          console.log(`${this.props.errorMsg}`)
           this.props.onSubmit(text);
           e.preventDefault();
       } else {
