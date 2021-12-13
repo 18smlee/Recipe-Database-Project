@@ -2,16 +2,25 @@
 which will lead to recipe details page where users can re-search and add filters
 */
 import React from 'react';
+
+import { Form, FormInput, FormGroup, Button, Card, CardBody, CardTitle, Progress } from "shards-react";
+
 import {
-  Table,
-  Pagination,
-  Select
+    Table,
+    Pagination,
+    Select,
+    Row,
+    Col,
+    Divider,
+    Slider,
+    Rate 
 } from 'antd'
 
 import MenuBar from '../components/MenuBar';
+import RecipeCard from '../components/RecipeCard.js';
 import RecipeCardList from '../components/RecipeCardList';
 import SearchBar from '../components/SearchBar';
-import Button from 'react-bootstrap/Button';
+// import Button from 'react-bootstrap/Button';
 
 import { getAllRecipes, getRecipeFromNameSearch, getRecipeFromTraitSearch} from '../fetcher';
 import queryString from 'query-string';
@@ -100,16 +109,53 @@ class RecipeResultPage extends React.Component {
       return (
         <div>
           <MenuBar />
-          <div style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
+          <Form style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
+            <h1>Find a Recipe!</h1>
+            <h3>Food.com Recipes</h3>
+
             <div className="container search">
-            <SearchBar placeholder={"Find recipes"}
+            {/* <SearchBar placeholder={"Find recipes"}
             errorMsg={"Please enter a recipe to search for!"}
             onSubmit={(text) => this.props.history.push(`/search/recipes/?s=${text}`)}
-            />
-              <RecipeCardList results={this.state.recipesResults}/>
+            /> */}
+            <Row>
+              <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>
+                <label>Name</label>
+                <FormInput placeholder="Name" value={this.state.nameQuery} onChange={this.handleNameChange} />
+                </FormGroup>
+              </Col>
+            </Row>
+            <Row>
+                        <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>
+                            <label>Number of Steps</label>
+                            <Slider range defaultValue={[50, 100]} onChange={this.handleNumStepsChange} />
+                        </FormGroup></Col>
+                        <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>
+                            <label>Time to Cook</label>
+                            <Slider range defaultValue={[50, 100]} onChange={this.handleTimeToCookChange} />
+                        </FormGroup></Col>
+                        <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>
+                            <label>Average Rating</label>
+                            <Slider range defaultValue={[50, 100]} onChange={this.handleAvgRatingChange} />
+                        </FormGroup></Col>
+                        <Col flex={2}><FormGroup style={{ width: '10vw' }}>
+                            <Button style={{ marginTop: '4vh' }} onClick={this.updateSearchResults}>Search</Button>
+                        </FormGroup></Col>
+                    </Row>
             </div>
+            </Form>
+            <Divider />
+            {(!this.state.recipesResults || this.state.recipesResults.length < 1) ? (
+                     <>Oops... There's no matches.</>)
+                :
+                this.state.recipesResults.map((recipe) => (
+                  <RecipeCardList 
+                    key={recipe.recipeId}
+                    results={this.state.recipesResults}/>
+                ))
+            }
+
           </div>
-        </div>
       )
     }
   
