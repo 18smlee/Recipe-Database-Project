@@ -262,6 +262,7 @@ async function search_players(req, res) {
 // PROJECT ROUTES
 
 // Route 1
+// allows us to search based on name and a number of traits
 async function search_recipes_by_traits(req, res) {
     const recipe_name = req.query.Name ? req.query.Name : '';
     const min_cook_time = req.query.MinTimeToCook ? req.query.MinTimeToCook : 0;
@@ -326,6 +327,7 @@ async function search_recipes_by_review(req, res) {
 }
 
 // Route 3 (Mealmaker)
+// creates 3 plans for individuals based on calorie counts and sugar levels
 async function search_recipes_by_nutrition(req, res) {
     const pageSize = req.query.pagesize ? req.query.pagesize : 10;
     const num_calories = req.query.Calories ? req.query.Calories : 2400;
@@ -368,6 +370,7 @@ async function search_recipes_by_nutrition(req, res) {
 }
 
 // Route 4 
+// search chopped by judges
 async function search_chopped_by_episode(req, res) {
     const pageSize = req.query.pagesize ? req.query.pagesize : 10;
     const judge1Name = req.query.Judge1 ? req.query.Judge1 : '';
@@ -379,7 +382,7 @@ async function search_chopped_by_episode(req, res) {
         WHERE (Judge1 LIKE '%${judge1Name}%' OR Judge2 LIKE '%${judge1Name}%' OR Judge3 LIKE '%${judge1Name}%')
             AND (Judge1 LIKE '%${judge2Name}%' OR Judge2 LIKE '%${judge2Name}%' OR Judge3 LIKE '%${judge2Name}%')
             AND (Judge1 LIKE '%${judge3Name}%' OR Judge2 LIKE '%${judge3Name}%' OR Judge3 LIKE '%${judge3Name}%')
-            ORDER BY series_episode;`
+            ;`
 
         if (req.query.page && !isNaN(req.query.page)) {
             choppedSearchQuery = `SELECT *
@@ -387,7 +390,6 @@ async function search_chopped_by_episode(req, res) {
             WHERE (Judge1 LIKE '%${judge1Name}%' OR Judge2 LIKE '%${judge1Name}%' OR Judge3 LIKE '%${judge1Name}%')
             AND (Judge1 LIKE '%${judge2Name}%' OR Judge2 LIKE '%${judge2Name}%' OR Judge3 LIKE '%${judge2Name}%')
             AND (Judge1 LIKE '%${judge3Name}%' OR Judge2 LIKE '%${judge3Name}%' OR Judge3 LIKE '%${judge3Name}%')
-            ORDER BY series_episode
             LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
         }
 

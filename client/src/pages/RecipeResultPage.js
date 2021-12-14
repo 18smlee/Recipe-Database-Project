@@ -1,6 +1,8 @@
 /* Page to search recipe by name. Clicking on recipe will lead to a single search bar, 
 which will lead to recipe details page where users can re-search and add filters
 */
+
+// imports
 import React from 'react';
 
 import { Form, FormInput, FormGroup, Card, CardBody, CardTitle, Progress } from "shards-react";
@@ -35,7 +37,8 @@ class RecipeResultPage extends React.Component {
 
     constructor(props) {
       super(props)
-  
+      
+      // setting states
       this.state = {
         recipesResults: [],
         searched: false,
@@ -63,6 +66,7 @@ class RecipeResultPage extends React.Component {
         selectedRecipeDetails: null,
 
       }
+      // binds
       this.updateSearchResults = this.updateSearchResults.bind(this)
       this.handleNameQueryChange = this.handleNameQueryChange.bind(this)
       this.handleNumStepsChange = this.handleNumStepsChange.bind(this)
@@ -82,6 +86,7 @@ class RecipeResultPage extends React.Component {
       })
     }
 
+    // change handlers
     handleNameQueryChange(event) {
       this.setState({ nameQuery: event.target.value })
     }
@@ -127,10 +132,12 @@ class RecipeResultPage extends React.Component {
       this.setState({ ingredient3: event.target.value })
     }
 
+    // update search with new filters/keywords
     updateSearchResults() {
+      // ingredient toggle on
       if (this.state.ingredientOn) {
         if (this.state.ingredient1 == '' && this.state.ingredient2 == '' && this.state.ingredient3 == '') {
-          alert('Please fill out Ingredient 1 at the very least')
+          alert('Please add at least one ingredient!')
         } else {
           var tempIngr2 = this.state.ingredient2;
           var tempIngr3 = this.state.ingredient3;
@@ -148,6 +155,7 @@ class RecipeResultPage extends React.Component {
             this.setState({ recipesPageNumber: 0 })
           })
         }
+        // filter/keyword toggle on
       } else {
         // call getRecipesFromTraitsSearch and update recipesResults in state
         this.setState({ searched: true })
@@ -160,13 +168,14 @@ class RecipeResultPage extends React.Component {
       }
     }
 
+    // go to next page via pagination parameters
     nextPage() {
       var newPage = this.state.recipesPageNumber + 1
       console.log(newPage)
 
       if (this.state.ingredientOn) {
         if (this.state.ingredient1 == '') {
-          alert('Please fill out Ingredient 1 at the very least')
+          alert('Please add at least one ingredient!')
         } else {
           var tempIngr2 = this.state.ingredient2;
           var tempIngr3 = this.state.ingredient3;
