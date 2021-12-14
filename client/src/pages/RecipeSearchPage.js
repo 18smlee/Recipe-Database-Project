@@ -35,6 +35,7 @@ class RecipeSearchPage extends React.Component {
         pagination: null  
       }
       this.goToRecipe = this.goToRecipe.bind(this)
+      this.handleSearch = this.handleSearch.bind(this);
     }
   
   
@@ -46,6 +47,13 @@ class RecipeSearchPage extends React.Component {
       getAllRecipes().then(res => {
         this.setState({ recipesResults: res.results })
       })
+    }
+
+    handleSearch(searchTerm) {
+      console.log("search")
+      console.log(searchTerm)
+      //.props.history.push(`/search/recipes/?s=${searchTerm}`);
+      window.location.href = `search/recipes/?s=${searchTerm}`;
     }
     
     componentDidMount() {
@@ -63,8 +71,11 @@ class RecipeSearchPage extends React.Component {
           
           <div style={{ width: '100vw', marginLeft: 'auto', marginRight: 'auto', marginTop: '30vh' }}>
             <Stack gap={3} className="col-md-5 mx-auto">
-              <h3 class="d-flex justify-content-center">Search for your favorite recipes </h3>
-              <SearchBar onSearch={getAllRecipes()}/>
+              <h3 className="d-flex justify-content-center">Search for your favorite recipes </h3>
+              <SearchBar placeholder={"Find a recipe"} 
+                    errorMsg={"Please enter a recipe to search for!"}
+                    onSubmit={this.handleSearch}
+          />
             </Stack>
           </div>
         </div>
