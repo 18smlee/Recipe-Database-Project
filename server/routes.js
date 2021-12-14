@@ -301,9 +301,11 @@ async function search_recipes_by_traits(req, res) {
         if (error) {
             res.json({ results: [] })
         } else if (results) {
+            console.log(results)
             res.json({ results: results })
         }
     });
+    console.log("got to the route")
 }
 
 // Route 2 -- currently done in route 1, should it be separate? 
