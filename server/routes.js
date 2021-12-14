@@ -332,15 +332,15 @@ async function search_recipes_by_nutrition(req, res) {
     const max_sugar = req.query.Sugar ? req.query.Sugar : 300;
     console.log("calories")
     console.log(req.query.Calories)
-    recipeSearchQuery = `SELECT recipe1_id, recipe1_name, recipe2_id, recipe2_name, rec3.id AS recipe3_id, rec3.name AS recipe3_name, total_calories + rec3.num_calories AS total_calories, total_sugar + rec3.sugar
+    recipeSearchQuery = `SELECT recipe1_id, recipe1_name, recipe2_id, recipe2_name, rec3.id AS recipe3_id, rec3.name AS recipe3_name, total_calories + rec3.num_calories AS total_calories, total_sugar + rec3.sugar AS total_sugar, rec2sugar, rec2cals
         FROM
-        (SELECT rec1.id AS recipe1_id, rec1.name AS recipe1_name, rec2.id AS recipe2_id, rec2.name AS recipe2_name, rec1.num_calories + rec2.num_calories AS total_calories, rec1.sugar + rec2.sugar AS total_sugar
+        (SELECT rec1.id AS recipe1_id, rec1.name AS recipe1_name, rec2.id AS recipe2_id, rec2.name AS recipe2_name, rec1.num_calories + rec2.num_calories AS total_calories, rec1.sugar + rec2.sugar AS total_sugar, rec2.sugar AS rec2sugar, rec2.num_calories AS rec2cals
         FROM Recipe rec1
         JOIN Recipe rec2 ON (rec1.num_calories + rec2.num_calories < ${num_calories} AND rec1.sugar + rec2.sugar < ${max_sugar})
         WHERE rec1.id != rec2.id) agg
         JOIN Recipe rec3 ON ((total_calories + rec3.num_calories BETWEEN (${num_calories} - 5) AND (${num_calories} + 5)) AND (total_sugar + rec3.sugar BETWEEN (${max_sugar} - 5) AND (${max_sugar} + 5)))
         WHERE recipe1_id != rec3.id AND recipe2_id != rec3.id
-        LIMIT 10`;
+        LIMIT 3`;
 
     console.log(recipeSearchQuery)
 
@@ -917,12 +917,13 @@ async function find_similar_recipe_sugar_calories(req, res) {
     const recipeId = req.query.RecipeId;
     const num_calories = req.query.Calories;
     const max_sugar = req.query.Sugar;
-    console.log(recipeId)
+    console.log(req.query)
 
     if (recipeId) {
-        var recipeIngredientQuery = `SELECT id, name, sugar, calories
+        var recipeIngredientQuery = `SELECT id, name, sugar, num_calories
         FROM Recipe
-        WHERE id !=${recipeId} AND (sugar BETWEEN (${sugar} -5) AND ${sugar}) AND (num_calories BETWEEN (${num_calories} - 5) AND ${num_calories})`
+        WHERE id !=${recipeId} AND (sugar BETWEEN (${max_sugar} -5) AND ${max_sugar}) AND (num_calories BETWEEN (${num_calories} - 5) AND ${num_calories})
+        ORDER BY RAND()`
     
         connection.query(recipeIngredientQuery, function (error, results, fields) {
             if (error) {
