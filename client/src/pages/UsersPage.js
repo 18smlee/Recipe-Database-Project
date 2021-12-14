@@ -2,7 +2,7 @@
 Clicking on user should have modal pop up with more detail 
  */
 import React from 'react';
-import { Form, FormInput, FormGroup, Button, Card, CardBody, CardTitle, Progress } from "shards-react";
+import { Form, FormInput, FormGroup, Card, CardBody, CardTitle, Progress } from "shards-react";
 import {
   Table,
   Pagination,
@@ -11,6 +11,8 @@ import {
   Row,
   Col
 } from 'antd'
+import {Button} from 'react-bootstrap'
+
 
 import MenuBar from '../components/MenuBar';
 import { getAllUsers, getUserFromReviewSearch } from '../fetcher';
@@ -155,7 +157,7 @@ class UsersPage extends React.Component {
             }
           </div>
           <div style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
-            <Button onClick={this.nextPage}> More Results </Button>
+            <Button style={{marginBottom: "50px"}} variant='outline-secondary' onClick={this.nextPage}> More Results </Button>
           </div>
 
         </div>
