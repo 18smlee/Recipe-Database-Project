@@ -52,6 +52,7 @@ class HomePage extends React.Component {
           backgroundSize:"cover", 
           height:900,width:1600 }}>
         </div>
+
        
         {/* <h1 style={textStyle}>Text over image</h1> */}
         <Container style={{ position:'absolute', top: '30%', left: '10%'}}>
