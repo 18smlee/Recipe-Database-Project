@@ -14,7 +14,7 @@ import {
 
 import MenuBar from '../components/MenuBar';
 import { getAllUsers, getUserFromReviewSearch } from '../fetcher';
-import UserCard from '../components/UserCard.js';
+import UserCard from '../components/UserCard';
 
 
 class UsersPage extends React.Component {
@@ -24,7 +24,7 @@ class UsersPage extends React.Component {
   
       this.state = {
         usersResults: [],
-        usersPageNumber: 1,
+        usersPageNumber: 0,
         usersPageSize: 10,
         numRecipes: 0,
         numReviews: 0,
@@ -63,9 +63,9 @@ class UsersPage extends React.Component {
     updateSearchResults() {
       console.log("update search")
       //TASK 23: call getPlayerSearch and update playerResults in state. See componentDidMount() for a hint
-      getUserFromReviewSearch(this.state.numRecipes, this.state.numReviews, this.state.avgRatingReceived, this.state.avgRatingGiven, 1, null).then(res => {
+      getUserFromReviewSearch(this.state.numRecipes, this.state.numReviews, this.state.avgRatingReceived, this.state.avgRatingGiven, 0, this.state.usersPageSize).then(res => {
           console.log(res.results)
-          this.setState({ usersResults: res.results })
+          this.setState({ usersResults: res.results, usersPageNumber: 0 })
       })
     }
 
@@ -73,7 +73,7 @@ class UsersPage extends React.Component {
       var newPage = this.state.usersPageNumber + 1
       console.log(newPage)
       
-      getAllUsers(this.state.usersPageNumber, this.state.usersPageSize).then(res => {
+      getUserFromReviewSearch(this.state.numRecipes, this.state.numReviews, this.state.avgRatingReceived, this.state.avgRatingGiven, this.state.usersPageNumber, this.state.usersPageSize).then(res => {
         console.log(res.results)
         this.setState({usersResults: res.results, usersPageNumber: newPage})
       })
@@ -141,7 +141,7 @@ class UsersPage extends React.Component {
                   photo={"prof.png"}
                   avgRatingReceived={user.avg_rating_received}
                   handler = {() => {
-                    window.location = `/users?id=${user.id}`
+                    window.location = `/users/${user.id}`
                   }}
                   />
               ))

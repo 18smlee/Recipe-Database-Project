@@ -131,6 +131,12 @@ const getAllUsers = async (page, pagesize) => {
     })
     return res.json()
 }
+const getUser = async (user_id) => {
+    var res = await fetch(`http://${config.server_host}:${config.server_port}/users/${user_id}`, {
+        method: 'GET',
+    })
+    return res.json()
+}
 const getRecipe = async (recipe_id) => {
     var res = await fetch(`http://${config.server_host}:${config.server_port}/recipes/${recipe_id}`, {
         method: 'GET',
@@ -186,5 +192,6 @@ export {
     getAllChopped,
     getAllUsers,
     getRecipe,
+    getUser,
     getChoppedEpisodeIngredients
 }

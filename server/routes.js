@@ -616,7 +616,8 @@ async function search_users_by_reviews(req, res) {
     const avgRatingReceived = req.query.AvgRatingReceived ? req.query.AvgRatingReceived : 2.0;
     const avgRatingGiven = req.query.AvgRatingGiven ? req.query.AvgRatingGiven : 1.0;
 
-    userSearchQuery = `
+
+    var userSearchQuery = `
     SELECT *
     FROM Users
     WHERE num_recipes >= ${numRecipes} 
@@ -624,7 +625,7 @@ async function search_users_by_reviews(req, res) {
         AND avg_rating_received >= ${avgRatingReceived} 
         AND avg_rating_given >= ${avgRatingGiven};`
 
-    if (req.query.page && !isNaN(req.query.page)) { 
+    if (req.query.page && !isNaN(req.query.page)) {
         userSearchQuery = `
         SELECT *
         FROM Users
@@ -634,6 +635,8 @@ async function search_users_by_reviews(req, res) {
             AND avg_rating_given >= ${avgRatingGiven}
         LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
     }
+
+    console.log(userSearchQuery)
 
     connection.query(userSearchQuery, function (error, results, fields) {
         if (error) {
@@ -749,11 +752,11 @@ async function get_all_chopped(req, res) {
 }
 
 async function get_all_users(req, res) {
-    // const pageSize = req.query.pagesize ? req.query.pagesize : 10;
-    const pageSize = 10
+    const pageSize = req.query.pagesize ? req.query.pagesize : 10;
+    // const pageSize = 10
     var userQuery = `
     SELECT *
-    FROM Users LIMIT 20;`
+    FROM Users;`
 
     if (req.query.page && !isNaN(req.query.page)) { 
         userQuery = `
@@ -761,6 +764,8 @@ async function get_all_users(req, res) {
         FROM Users
         LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
     }
+
+    console.log(userQuery);
 
     connection.query(userQuery, function (error, results, fields) {
         if (error) {
@@ -772,6 +777,22 @@ async function get_all_users(req, res) {
     });
 }
 
+async function get_user_by_id(req, res) {
+    const userId = req.query.userId ? req.query.userId : 1;
+
+    var userQuery = `SELECT *
+    FROM Users
+    WHERE id =${userId}`
+
+    connection.query(userQuery, function (error, results, fields) {
+        if (error) {
+            console.log(error)
+        } else if (results) {
+            console.log(results)
+            res.json({ results: results })
+        }
+    });
+}
 
 // not tested -> test before using
 async function get_recipe_by_id(req, res) {
@@ -841,6 +862,7 @@ module.exports = {
     get_all_recipes,
     get_all_chopped,
     get_all_users,
+    get_user_by_id,
     get_recipe_by_id,
     get_chopped_episode_ingredients
 }

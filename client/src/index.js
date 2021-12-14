@@ -18,6 +18,7 @@ import MealMakerPage from './pages/MealMakerPage';
 import ChoppedPage from './pages/ChoppedPage';
 import RecipeDetailPage from './pages/RecipeDetailPage';
 import RecipesPage from './pages/RecipesPage';
+import UserDetailPage from './pages/UserDetailPage';
 
 ReactDOM.render(
   <div>
@@ -37,6 +38,11 @@ ReactDOM.render(
 							path="/matches"
 							render={() => (
 								<MatchesPage />
+							)}/>
+		<Route exact
+							path="/users/:userId"
+							render={(props) => (
+								<UserDetailPage {...props}/>
 							)}/>
 		<Route exact
 							path="/users"
