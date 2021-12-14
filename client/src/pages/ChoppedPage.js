@@ -77,14 +77,16 @@ class ChoppedPage extends React.Component {
           <Image style={{height:'auto',width:'100%'}} src="https://raw.githubusercontent.com/18smlee/Recipe-Database-Project/sam_dev/client/src/images/chopped_logo.jpg" responsive />
 
           <div style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
-            <h1>Find some inspiration</h1>
-            <p class="text-left">
-              Use your favorite chopped moments to find unique recipes to make in your own kitchen!
-            </p>
-            <p class="text-left">
+            <div style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
+              <h3 class="text-center">Inspired By Chopped</h3>
+              <hr></hr>
+              <p class="text-muted text-center"> Use your favorite chopped moments to find unique recipes to make in your own kitchen!</p>
+              <p class="text-muted text-center">
               Enter ingredients you would like to include in your recipe, and we'll find chopped episodes that use those ingredients.
               If there is a match with a recipe in our database and the chopped episode, we'll direct you to similar recipes you can make.
             </p>
+            </div>
+            
 
             <div className="col-md-5">
           </div>
