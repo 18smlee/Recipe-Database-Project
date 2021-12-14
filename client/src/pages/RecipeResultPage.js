@@ -40,9 +40,9 @@ class RecipeResultPage extends React.Component {
         // traits
         nameQuery: '',
         minNumStepsQuery: 0,
-        maxNumStepsQuery: 9999999,
+        maxNumStepsQuery: 500,
         minTimeToCookQuery: 0,
-        maxTimeToCookQuery: 9999999,
+        maxTimeToCookQuery: 500,
         minAvgRatingQuery: 0,
         maxAvgRatingQuery: 5,
         selectedRecipeId: window.location.search,
@@ -50,12 +50,12 @@ class RecipeResultPage extends React.Component {
 
       }
       this.updateSearchResults = this.updateSearchResults.bind(this)
-      this.handleNameChange = this.handleNameChange.bind(this)
+      this.handleNameQueryChange = this.handleNameQueryChange.bind(this)
       this.handleNumStepsChange = this.handleNumStepsChange.bind(this)
       this.handleTimeToCookChange = this.handleTimeToCookChange.bind(this)
       this.handleAvgRatingChange = this.handleAvgRatingChange.bind(this)
       this.goToRecipe = this.goToRecipe.bind(this)
-      this.handleSearch = this.handleSearch.bind(this);
+      // this.handleSearch = this.handleSearch.bind(this);
     }
   
     goToRecipe(recipeId) {
@@ -65,11 +65,10 @@ class RecipeResultPage extends React.Component {
     displaySearchResults() {
       getAllRecipes().then(res => {
         this.setState({ recipesResults: res.results })
-        console.log("none")
       })
     }
 
-    handleNameChange(event) {
+    handleNameQueryChange(event) {
       this.setState({ nameQuery: event.target.value })
     }
 
@@ -88,31 +87,35 @@ class RecipeResultPage extends React.Component {
       this.setState({ maxAvgRatingQuery: value[1] })
     }
 
-    handleSearch(searchTerm) {
-      console.log("search")
-      console.log(searchTerm)
-      this.setState({ nameQuery: searchTerm })
+    // handleSearch(searchTerm) {
+    //   console.log("search")
+    //   console.log(searchTerm)
+    //   this.setState({ nameQuery: searchTerm })
       
-      // fix url
-    }
+    //   // fix url
+    // }
 
     updateSearchResults() {
-      console.log("update search")
       // call getRecipesFromTraitsSearch and update recipesResults in state
+      console.log("search name: " + this.state.nameQuery)
+      console.log("min steps: " + this.state.minNumStepsQuery)
+      console.log("max steps: " + this.state.maxNumStepsQuery)
+      console.log("min time: " + this.state.minTimeToCookQuery)
+      console.log("max time: " + this.state.maxTimeToCookQuery)
+      console.log("min rate: " + this.state.minAvgRatingQuery)
+      console.log("max rate: " + this.state.maxAvgRatingQuery)
       getRecipeFromTraitSearch(this.state.nameQuery, this.state.minNumStepsQuery, this.state.maxNumStepsQuery, this.state.minTimeToCookQuery, this.state.maxTimeToCookQuery, this.state.minAvgRatingQuery, this.state.maxAvgRatingQuery, null, null).then(res => {
-          console.log("length: " + res.results.length)
-          this.setState({ recipesResults: res.results })
+        // console.log(res.results)
+        console.log("length: " + res.results.length)
+        this.setState({ recipesResults: res.results })
       })
-      if (this.state.recipesResults.length < 1) {
-        console.log('no results')
-      }
     }
 
     componentDidMount() {
       let params = queryString.parse(window.location.search)
       this.setState({ nameQuery: params.s})
       getRecipeFromNameSearch(params.s, null, null).then(res => {
-      console.log(res.results)
+      // console.log(res.results)
       this.setState({ recipesResults: res.results })
       })
     }

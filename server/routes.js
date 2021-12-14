@@ -264,35 +264,36 @@ async function search_players(req, res) {
 // Route 1
 async function search_recipes_by_traits(req, res) {
     const recipe_name = req.query.Name ? req.query.Name : '';
-    const min_cook_time = req.query.MinTimeToCook ? req.query.TimeToCook : 0;
-    const max_cook_time = req.query.MaxTimeToCook ? req.query.TimeToCook : 9999999;
-    const min_num_steps = req.query.MinNumSteps ? req.query.NumSteps : 0;
-    const max_num_steps = req.query.MaxNumSteps ? req.query.NumSteps : 9999999;
-    const min_avg_rating = req.query.MinAvgRating ? req.query.AvgRating : 0;
-    const max_avg_rating = req.query.MaxAvgRating ? req.query.AvgRating : 5;
+    const min_cook_time = req.query.MinTimeToCook ? req.query.MinTimeToCook : 0;
+    const max_cook_time = req.query.MaxTimeToCook ? req.query.MaxTimeToCook : 160;
+    const min_num_steps = req.query.MinNumSteps ? req.query.MinNumSteps : 0;
+    const max_num_steps = req.query.MaxNumSteps ? req.query.MaxNumSteps : 9999999;
+    const min_avg_rating = req.query.MinAvgRating ? req.query.MinAvgRating : 0;
+    const max_avg_rating = req.query.MaxAvgRating ? req.query.MaxAvgRating : 5;
     const pageSize = req.query.pagesize ? req.query.pagesize : 10;
     // is searching by review a different route?? or should it be combined?
     // Update: combined them
+    
     recipeSearchQuery = `SELECT *
-        FROM Recipe
-        WHERE name LIKE '%${recipe_name}%'
-        AND minutes >= ${min_cook_time}
-        AND minutes <= ${max_cook_time}
-        AND n_steps >= ${min_num_steps}
-        AND n_steps <= ${max_num_steps}
-        AND avg_rating >= ${min_avg_rating}
-        AND avg_rating <= ${max_avg_rating}
-        ;`
+    FROM Recipe
+    WHERE name LIKE '%${recipe_name}%'
+    AND minutes BETWEEN ${min_cook_time} AND ${max_cook_time}
+    AND n_steps BETWEEN  ${min_num_steps} AND ${max_num_steps}
+    AND ((avg_rating >= ${min_avg_rating}
+        AND avg_rating <= ${max_avg_rating})
+        OR avg_rating IS NULL);`
     if (req.query.page && !isNaN(req.query.page)) {
-        recipeSearchQuery = `SELECT *
+        recipeSearchQuery = 
+        `SELECT *
         FROM Recipe
         WHERE name LIKE '%${recipe_name}%'
         AND minutes >= ${min_cook_time}
         AND minutes <= ${max_cook_time}
         AND n_steps >= ${min_num_steps}
         AND n_steps <= ${max_num_steps}
-        AND avg_rating >= ${min_avg_rating}
-        AND avg_rating <= ${max_avg_rating}
+        AND ((avg_rating >= ${min_avg_rating}
+            AND avg_rating <= ${max_avg_rating})
+            OR avg_rating IS NULL)
         LIMIT ${pageSize} OFFSET ${pageSize * req.query.page}
         ;`
     }
@@ -301,19 +302,17 @@ async function search_recipes_by_traits(req, res) {
         if (error) {
             res.json({ results: [] })
         } else if (results) {
-            console.log(results)
             res.json({ results: results })
+            // console.log("got to the route")
+            // console.log(results.length)
         }
     });
-    console.log("got to the route")
 }
 
 // Route 2 -- currently done in route 1, should it be separate? 
 // Update: added it to route 1
 async function search_recipes_by_review(req, res) {
     const pageSize = req.query.pagesize ? req.query.pagesize : 10;
-
-
     recipeSearchQuery = ``
     connection.query(recipeSearchQuery, function (error, results, fields) {
         if (error) {
@@ -630,7 +629,8 @@ async function search_users_by_reviews(req, res) {
     const avgRatingReceived = req.query.AvgRatingReceived ? req.query.AvgRatingReceived : 2.0;
     const avgRatingGiven = req.query.AvgRatingGiven ? req.query.AvgRatingGiven : 1.0;
 
-    userSearchQuery = `
+
+    var userSearchQuery = `
     SELECT *
     FROM Users
     WHERE num_recipes >= ${numRecipes} 
@@ -638,7 +638,7 @@ async function search_users_by_reviews(req, res) {
         AND avg_rating_received >= ${avgRatingReceived} 
         AND avg_rating_given >= ${avgRatingGiven};`
 
-    if (req.query.page && !isNaN(req.query.page)) { 
+    if (req.query.page && !isNaN(req.query.page)) {
         userSearchQuery = `
         SELECT *
         FROM Users
@@ -648,6 +648,8 @@ async function search_users_by_reviews(req, res) {
             AND avg_rating_given >= ${avgRatingGiven}
         LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
     }
+
+    console.log(userSearchQuery)
 
     connection.query(userSearchQuery, function (error, results, fields) {
         if (error) {
@@ -764,17 +766,19 @@ async function get_all_chopped(req, res) {
 
 async function get_all_users(req, res) {
     const pageSize = req.query.pagesize ? req.query.pagesize : 10;
-
+    // const pageSize = 10
     var userQuery = `
     SELECT *
     FROM Users;`
 
     if (req.query.page && !isNaN(req.query.page)) { 
-        var userQuery = `
+        userQuery = `
         SELECT *
         FROM Users
         LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
     }
+
+    console.log(userQuery);
 
     connection.query(userQuery, function (error, results, fields) {
         if (error) {
@@ -786,6 +790,22 @@ async function get_all_users(req, res) {
     });
 }
 
+async function get_user_by_id(req, res) {
+    const userId = req.query.userId ? req.query.userId : 1;
+
+    var userQuery = `SELECT *
+    FROM Users
+    WHERE id =${userId}`
+
+    connection.query(userQuery, function (error, results, fields) {
+        if (error) {
+            console.log(error)
+        } else if (results) {
+            console.log(results)
+            res.json({ results: results })
+        }
+    });
+}
 
 // not tested -> test before using
 async function get_recipe_by_id(req, res) {
@@ -845,6 +865,7 @@ async function search_recipes_by_name(req, res) {
         if (error) {
             res.json({ results: [] })
         } else if (results) {
+            console.log(results.length)
             res.json({ results: results })
         }
     });
@@ -875,6 +896,7 @@ module.exports = {
     get_all_recipes,
     get_all_chopped,
     get_all_users,
+    get_user_by_id,
     get_recipe_by_id,
     get_chopped_episode_ingredients,
     search_recipes_by_name
