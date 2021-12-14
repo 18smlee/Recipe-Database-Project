@@ -329,32 +329,37 @@ async function search_recipes_by_review(req, res) {
 async function search_recipes_by_nutrition(req, res) {
     const pageSize = req.query.pagesize ? req.query.pagesize : 10;
     const num_calories = req.query.Calories ? req.query.Calories : 2400;
-
+    console.log("calories")
+    console.log(req.query.Calories)
     recipeSearchQuery = `SELECT recipe1_id, recipe2_id, rec3.id AS recipe3_id, total_calories + rec3.num_calories AS total_calories
         FROM
         (SELECT rec1.id AS recipe1_id, rec2.id AS recipe2_id, rec1.num_calories + rec2.num_calories AS total_calories
         FROM Recipe rec1
         JOIN Recipe rec2 ON rec1.num_calories + rec2.num_calories < ${num_calories}
         WHERE rec1.id != rec2.id) agg
-        JOIN Recipe rec3 ON total_calories + rec3.num_calories BETWEEN ${num_calories - 5} AND ${num_calories + 5}
-        WHERE recipe1_id != rec3.id AND recipe2_id != rec3.id;`
-
-    if (req.query.page && !isNaN(req.query.page)) {
-        recipeSearchQuery = `SELECT recipe1_id, recipe2_id, rec3.id AS recipe3_id, total_calories + rec3.num_calories AS total_calories
-        FROM
-        (SELECT rec1.id AS recipe1_id, rec2.id AS recipe2_id, rec1.num_calories + rec2.num_calories AS total_calories
-        FROM Recipe rec1
-        JOIN Recipe rec2 ON rec1.num_calories + rec2.num_calories < ${num_calories}
-        WHERE rec1.id != rec2.id) agg
-        JOIN Recipe rec3 ON total_calories + rec3.num_calories BETWEEN ${num_calories - 5} AND ${num_calories + 5}
+        JOIN Recipe rec3 ON total_calories + rec3.num_calories BETWEEN (${num_calories} - 5) AND (${num_calories} + 5)
         WHERE recipe1_id != rec3.id AND recipe2_id != rec3.id
-        LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
-    }
+        LIMIT 10`;
+    console.log(recipeSearchQuery)
+
+    // if (req.query.page && !isNaN(req.query.page)) {
+    //     recipeSearchQuery = `SELECT recipe1_id, recipe2_id, rec3.id AS recipe3_id, total_calories + rec3.num_calories AS total_calories
+    //     FROM
+    //     (SELECT rec1.id AS recipe1_id, rec2.id AS recipe2_id, rec1.num_calories + rec2.num_calories AS total_calories
+    //     FROM Recipe rec1
+    //     JOIN Recipe rec2 ON rec1.num_calories + rec2.num_calories < ${num_calories}
+    //     WHERE rec1.id != rec2.id) agg
+    //     JOIN Recipe rec3 ON total_calories + rec3.num_calories BETWEEN ${num_calories - 5} AND ${num_calories + 5}
+    //     WHERE recipe1_id != rec3.id AND recipe2_id != rec3.id
+    //     LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
+    // }
 
     connection.query(recipeSearchQuery, function (error, results, fields) {
         if (error) {
+            console.log(error)
             res.json({ results: [] })
         } else if (results) {
+            console.log(results)
             res.json({ results: results })
         }
     });
@@ -756,11 +761,12 @@ async function get_all_chopped(req, res) {
         LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
     }
 
+
     connection.query(choppedQuery, function (error, results, fields) {
         if (error) {
             console.log(error)
         } else if (results) {
-            //console.log(results)
+            console.log(results)
             res.json({ results: results })
         }
     });
