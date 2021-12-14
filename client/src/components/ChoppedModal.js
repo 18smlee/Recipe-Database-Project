@@ -106,7 +106,7 @@ class ChoppedModal extends React.Component {
                             <div>
                                 <h6>Similar Recipes</h6>
                                     {this.state.similarRecipes.map((rec) => {
-                                        var url = "/recipes/" + rec.id
+                                        var url = "/recipe/" + rec.id
                                         return(
                                             <Badge style={{margin: "10px"}} bg="light" key={rec.id} >
                                                 <a href={url}>{rec.name}</a>
