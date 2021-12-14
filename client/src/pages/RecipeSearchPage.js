@@ -71,7 +71,7 @@ class RecipeSearchPage extends React.Component {
           
           <div style={{ width: '100vw', marginLeft: 'auto', marginRight: 'auto', marginTop: '30vh' }}>
             <Stack gap={3} className="col-md-5 mx-auto">
-              <h3 class="d-flex justify-content-center">Search for your favorite recipes </h3>
+              <h3 className="d-flex justify-content-center">Search for your favorite recipes </h3>
               <SearchBar placeholder={"Find a recipe"} 
                     errorMsg={"Please enter a recipe to search for!"}
                     onSubmit={this.handleSearch}

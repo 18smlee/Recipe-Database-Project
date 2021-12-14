@@ -65,6 +65,7 @@ class RecipeResultPage extends React.Component {
     displaySearchResults() {
       getAllRecipes().then(res => {
         this.setState({ recipesResults: res.results })
+        console.log("none")
       })
     }
 
@@ -99,9 +100,12 @@ class RecipeResultPage extends React.Component {
       console.log("update search")
       // call getRecipesFromTraitsSearch and update recipesResults in state
       getRecipeFromTraitSearch(this.state.nameQuery, this.state.minNumStepsQuery, this.state.maxNumStepsQuery, this.state.minTimeToCookQuery, this.state.maxTimeToCookQuery, this.state.minAvgRatingQuery, this.state.maxAvgRatingQuery, null, null).then(res => {
-          console.log(res.results)
+          console.log("length: " + res.results.length)
           this.setState({ recipesResults: res.results })
       })
+      if (this.state.recipesResults.length < 1) {
+        console.log('no results')
+      }
     }
 
     componentDidMount() {
@@ -120,7 +124,6 @@ class RecipeResultPage extends React.Component {
           <MenuBar />
           <Form style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
             <h1>Find a Recipe!</h1>
-            <h3>Food.com Recipes</h3>
 
             <div className="container search">
             {/* <SearchBar placeholder={"Find recipes"}
@@ -134,6 +137,7 @@ class RecipeResultPage extends React.Component {
                 </FormGroup>
               </Col>
             </Row>
+            <br></br>
             <Row>
                         <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>
                             <label>Number of Steps</label>
@@ -158,9 +162,12 @@ class RecipeResultPage extends React.Component {
                      <>Oops... There's no matches.</>)
                 :
                 this.state.recipesResults.map((recipe) => (
-                  <RecipeCardList 
+                  <RecipeCard
                     key={recipe.recipeId}
-                    results={this.state.recipesResults}/>
+                    name = {recipe.name}
+                    contributor_id = {recipe.contributor_id}
+                    n_steps = {recipe.n_steps}
+                    minutes = {recipe.minutes}/>
                 ))
             }
 
