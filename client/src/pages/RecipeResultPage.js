@@ -32,6 +32,7 @@ class RecipeResultPage extends React.Component {
   
       this.state = {
         recipesResults: [],
+        searched: false,
         recipesPageNumber: 1,
         recipeSearchText: "",
         recipesPageSize: 10,
@@ -104,6 +105,7 @@ class RecipeResultPage extends React.Component {
       console.log("max time: " + this.state.maxTimeToCookQuery)
       console.log("min rate: " + this.state.minAvgRatingQuery)
       console.log("max rate: " + this.state.maxAvgRatingQuery)
+      this.setState({ searched: true })
       getRecipeFromTraitSearch(this.state.nameQuery, this.state.minTimeToCookQuery, this.state.maxTimeToCookQuery, this.state.minNumStepsQuery, this.state.maxNumStepsQuery, this.state.minAvgRatingQuery, this.state.maxAvgRatingQuery, null, null).then(res => {
         console.log(res.results)
         this.setState({ recipesResults: res.results })
@@ -162,7 +164,7 @@ class RecipeResultPage extends React.Component {
             </Form>
             <Divider />
             <div style={{ width: "70%", marginBottom: "50px" , marginLeft: "200px"}}>
-            {(!this.state.recipesResults || this.state.recipesResults.length < 1) ? (
+            {(this.state.searched && (!this.state.recipesResults || this.state.recipesResults.length < 1)) ? (
               // happens when the list is super long... so made it a "loading" rather than "no matches found"
                      <>Warming up your meal...</>)
                 :
