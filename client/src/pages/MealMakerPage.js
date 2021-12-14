@@ -2,7 +2,7 @@
 Different filters appear (nutrition vs ingredients/# steps/time) based on a "switch" feature -> refer to drawing
  */
 import React from 'react';
-import { Form, FormInput, FormGroup, Button, Card, CardBody, CardTitle, Progress } from "shards-react";
+import { Form, FormInput, FormGroup, Button, Card, CardHeader, CardImg, CardFooter, CardBody, CardTitle, Progress } from "shards-react";
 
 import {
     Table,
@@ -21,7 +21,6 @@ import {
 
 import MenuBar from '../components/MenuBar';
 import { getDailyMealPlanner, getRecipeFromIngredientSearch } from '../fetcher';
-import { ThemeConsumer } from 'react-bootstrap/esm/ThemeProvider';
 
 const { Step } = Steps
 
@@ -43,34 +42,29 @@ class MealMakerPage extends React.Component {
       super(props)
   
       this.state = {
-        showResults: false,
-        nutritionOn: false,
-        maxCalories: 0,
+        maxCalories: 2000,
         ingredient1: "",
         ingredient2: "",
         ingredient3: "",
         recipesResults: [],
+        recipe1Name: "",
+        recipe2Name: "",
+        recipe3Name: "",
+        recipe1CaloriesString: "",
+        recipe2CaloriesString: "",
+        recipe3CaloriesString: "",
         recipesPageNumber: 1,
         recipesPageSize: 10,
         pagination: null,
         currentStep: 0
       }
       this.goToRecipe = this.goToRecipe.bind(this)
-      this.handleToggleChange = this.handleToggleChange.bind(this)
       this.handleMaxCalorieChange = this.handleMaxCalorieChange.bind(this)
-      this.handleIngredient1Change = this.handleIngredient1Change.bind(this)
-      this.handleIngredient2Change = this.handleIngredient2Change.bind(this)
-      this.handleIngredient3Change = this.handleIngredient3Change.bind(this)
       this.searchRecipes = this.searchRecipes.bind(this)
     }
   
     goToRecipe(recipeId) {
       window.location = `/recipes?id=${recipeId}`
-    }
-
-    handleToggleChange() {
-      this.setState({ nutritionOn: !this.state.nutritionOn})
-      this.setState({ recipesResults: [] })
     }
 
     handleMaxCalorieChange(value) {
@@ -91,31 +85,18 @@ class MealMakerPage extends React.Component {
 
     searchRecipes() {
       console.log("searching")
-      if (this.state.nutritionOn) {
-        getDailyMealPlanner(this.state.maxCalories, null, null).then(res => {
-          console.log("meal plan search by nutrition")
-          console.log(res.results)
-          this.setState({ recipesResults: res.results })
-          })
-      } else {
-        if (this.state.ingredient1 == '') {
-          alert('Please fill out Ingredient 1 at the very least')
-        } else {
-          var tempIngr2 = this.state.ingredient2;
-          var tempIngr3 = this.state.ingredient3;
-          if (tempIngr2 == '') {
-            tempIngr2 = null;
-          }
-          if (tempIngr3 == '') {
-            tempIngr3 = null;
-          }
-          getRecipeFromIngredientSearch(this.state.ingredient1, tempIngr2, tempIngr3, null, null)
-          .then(res => {
-            console.log(res.results)
-            this.setState({ recipesResults: res.results })
-          })
-        }
-      }
+      getDailyMealPlanner(this.state.maxCalories, null, null).then(res => {
+        console.log("meal plan search by nutrition")
+        var calories1String = res.results[0].total_calories + " calories";
+        var calories2String = res.results[1].total_calories + " calories";
+        var calories3String = res.results[2].total_calories + " calories";
+        console.log(res.results)
+        this.setState({ recipesResults: res.results })
+        this.setState({ recipe1CaloriesString: calories1String})
+        this.setState({ recipe2CaloriesString: calories2String})
+        this.setState({ recipe3CaloriesString: calories3String})
+
+      })
     }
   
   
@@ -127,11 +108,6 @@ class MealMakerPage extends React.Component {
           <div style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
             <h3>Meal Maker</h3>
           </div>
-          <Row justify="center">
-            <Switch checkedChildren="Search by Nutrition" unCheckedChildren="Search by Ingredients" onChange={this.handleToggleChange}
-            />
-          </Row>
-          {this.state.nutritionOn == true ? (
           <Form style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
             <div className="container search">
             <Row>
@@ -147,53 +123,120 @@ class MealMakerPage extends React.Component {
             </Row>
             </div>
           </Form>
-          ) : 
-          (
-            <Form style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
-            <div className="container search">
-            <Row>
-                <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>
-                  <FormInput placeholder="Ingredient 1" value={this.state.ingredient1} onChange={this.handleIngredient1Change} />
-                  </FormGroup>
-                </Col>
-                <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>
-                  <FormInput placeholder="Ingredient 2" value={this.state.ingredient2} onChange={this.handleIngredient2Change} />
-                  </FormGroup>
-                </Col>
-                <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>
-                  <FormInput placeholder="Ingredient 3" value={this.state.ingredient3} onChange={this.handleIngredient3Change} />
-                  </FormGroup>
-                </Col>
-              </Row>
-              <Row justify="center"> 
-                <Button block style={{ marginTop: '2vh', span: "40px" }} onClick={this.searchRecipes}>Find me meals I can make!</Button>
-              </Row>
-            </div>
-            </Form>
-          )}
           <Divider />
           {this.state.recipesResults.length > 0 ? (
           <div>
-          <Steps current={2} progressDot={customDot}>
-            <Step title="Meal Plan 1" description="This is a description." />
-            <Step title="Meal Plan 2" description="This is a description." />
-            <Step title="Meal Plan 3" description="This is a description." />
-          </Steps>
+          
           <Divider />
-          <Row> 
-              <Col flex={2} offset={0}>
-                <div style={{paddingLeft:"20px"}}>
-                  
+          <Row justify="space-around">
+            <Col> Meal Plan 1</Col>
+            <Col> Meal Plan 2</Col>
+            <Col> Meal Plan 3</Col>
+          </Row>
+          <Row justify="space-around"> 
+            <Col >
+              <div style={{paddingLeft:"20px"}}>
+                <Card>
+                  <CardHeader>Meal 1</CardHeader>
+                  <CardBody>
+                    <CardTitle>{this.state.recipesResults[0].recipe1_name}</CardTitle>
+                    <Button onClick={()=>window.location = `/recipe/${this.state.recipesResults[0].recipe1_id}`}>Go to Recipe &rarr;</Button>
+                  </CardBody>
+                </Card>
                 </div>
               </Col>
-              <Col flex={2} offset={8}>
-                <div style={{paddingLeft:"20px"}}>
-
+              <Col>
+              <div style={{paddingLeft:"20px"}}>
+                <Card>
+                  <CardHeader>Meal 1</CardHeader>
+                  <CardBody>
+                    <CardTitle>{this.state.recipesResults[1].recipe1_name}</CardTitle>
+                    <Button onClick={()=>window.location = `/recipe/${this.state.recipesResults[1].recipe1_id}`}>Go to Recipe &rarr;</Button>
+                  </CardBody>
+                </Card>
                 </div>
               </Col>
-              <Col flex={2} offset={8}>
+              <Col>
                 <div style={{paddingLeft:"20px"}}>
-
+                <Card>
+                  <CardHeader>Meal 1</CardHeader>
+                  <CardBody>
+                    <CardTitle>{this.state.recipesResults[2].recipe1_name}</CardTitle>
+                    <Button onClick={()=>window.location = `/recipe/${this.state.recipesResults[2].recipe1_id}`}>Go to Recipe &rarr;</Button>
+                  </CardBody>
+                </Card>
+                </div>
+              </Col>
+          </Row>
+          <br></br>
+          <Row justify="space-around"> 
+              <Col>
+                <div style={{paddingLeft:"20px"}}>
+                <Card>
+                  <CardHeader>Meal 2</CardHeader>
+                  <CardBody>
+                    <CardTitle>{this.state.recipesResults[0].recipe2_name}</CardTitle>
+                    <Button onClick={()=>window.location = `/recipe/${this.state.recipesResults[0].recipe2_id}`}>Go to Recipe &rarr;</Button>
+                  </CardBody>
+                </Card>
+                </div>
+              </Col>
+              <Col>
+                <div style={{paddingLeft:"20px"}}>
+                <Card>
+                  <CardHeader>Meal 2</CardHeader>
+                  <CardBody>
+                    <CardTitle>{this.state.recipesResults[1].recipe2_name}</CardTitle>
+                    <Button onClick={()=>window.location = `/recipe/${this.state.recipesResults[1].recipe2_id}`}>Go to Recipe &rarr;</Button>
+                  </CardBody>
+                </Card>
+                </div>
+              </Col>
+              <Col>
+                <div style={{paddingLeft:"20px"}}>
+                <Card>
+                  <CardHeader>Meal 2</CardHeader>
+                  <CardBody>
+                    <CardTitle>{this.state.recipesResults[2].recipe2_name}</CardTitle>
+                    <Button onClick={()=>window.location = `/recipe/${this.state.recipesResults[2].recipe2_id}`}>Go to Recipe &rarr;</Button>
+                  </CardBody>
+                </Card>
+                </div>
+              </Col>
+          </Row>
+          <br></br>
+          <Row justify="space-around"> 
+              <Col className="gutter-row" span={6}>
+                <div style={{paddingLeft:"20px"}}>
+                <Card>
+                  <CardHeader>Meal 3</CardHeader>
+                  <CardBody>
+                    <CardTitle>{this.state.recipesResults[0].recipe3_name}</CardTitle>
+                    <Button onClick={()=>window.location = `/recipe/${this.state.recipesResults[0].recipe3_id}`}>Go to Recipe &rarr;</Button>
+                  </CardBody>
+                </Card>
+                </div>
+              </Col>
+              <Col className="gutter-row" span={6}>
+                <div style={{paddingLeft:"20px"}}>
+                <Card>
+                  <CardHeader>Meal 3</CardHeader>
+                  <CardBody>
+                    <CardTitle>{this.state.recipesResults[1].recipe3_name}</CardTitle>
+                    <Button onClick={()=>window.location = `/recipe/${this.state.recipesResults[1].recipe3_id}`}>Go to Recipe &rarr;</Button>
+                  </CardBody>
+                </Card>
+                </div>
+              </Col>
+              <Col className="gutter-row" span={6}>
+                <div style={{paddingLeft:"20px"}}>
+                <Card>
+                  <CardHeader>Meal 3</CardHeader>
+                  <CardBody>
+                    <CardTitle>{this.state.recipesResults[2].recipe3_name}</CardTitle>
+                    <Button onClick={()=>window.location = `/recipe/${this.state.recipesResults[2].recipe3_id}`}>Go to Recipe &rarr;</Button>
+                  </CardBody>
+                </Card>
                 </div>
               </Col>
           </Row>

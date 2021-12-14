@@ -331,9 +331,9 @@ async function search_recipes_by_nutrition(req, res) {
     const num_calories = req.query.Calories ? req.query.Calories : 2400;
     console.log("calories")
     console.log(req.query.Calories)
-    recipeSearchQuery = `SELECT recipe1_id, recipe2_id, rec3.id AS recipe3_id, total_calories + rec3.num_calories AS total_calories
+    recipeSearchQuery = `SELECT recipe1_id, recipe1_name, recipe2_id, recipe2_name, rec3.id AS recipe3_id, rec3.name AS recipe3_name, total_calories + rec3.num_calories AS total_calories
         FROM
-        (SELECT rec1.id AS recipe1_id, rec2.id AS recipe2_id, rec1.num_calories + rec2.num_calories AS total_calories
+        (SELECT rec1.id AS recipe1_id, rec1.name AS recipe1_name, rec2.id AS recipe2_id, rec2.name AS recipe2_name, rec1.num_calories + rec2.num_calories AS total_calories
         FROM Recipe rec1
         JOIN Recipe rec2 ON rec1.num_calories + rec2.num_calories < ${num_calories}
         WHERE rec1.id != rec2.id) agg
