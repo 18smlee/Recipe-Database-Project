@@ -303,7 +303,7 @@ async function search_recipes_by_traits(req, res) {
         if (error) {
             res.json({ results: [] })
         } else if (results) {
-            console.log(results.length)
+            // console.log(results)
             res.json({ results: results })
             // console.log("got to the route")
             // console.log(results.length)

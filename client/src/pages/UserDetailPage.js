@@ -46,10 +46,6 @@ class UserDetailPage extends React.Component {
     
     componentDidMount() {
 
-        // getAllUsersReviews(this.state.id, null, null).then(res => {
-        //     console.log(res.results)
-        // })
-
         Promise.all([
             getUser(this.state.id),
             getAllUsersRecipes(this.state.id, this.state.recipesPage, null),
@@ -57,7 +53,7 @@ class UserDetailPage extends React.Component {
         ]).then(([res1, res2, res3]) => {
             // console.log(res1)
             
-            this.setState({selectedUserDetails: res1.results, recipesWritten: res2.results, reviewsGiven: res3.results})
+            this.setState({selectedUserDetails: res1.results[0], recipesWritten: res2.results, reviewsGiven: res3.results})
         })
     }
 
@@ -73,11 +69,13 @@ class UserDetailPage extends React.Component {
                         <UserCard
                             key={this.state.selectedUserDetails.id}
                             id={'user_' + this.state.selectedUserDetails.id}
-                            name={"Blah Blah"}
-                            photo={"prof.png"}
+                            photo={"https://raw.githubusercontent.com/18smlee/Recipe-Database-Project/main/client/src/images/person_icon.png"}
                             avgRatingReceived={this.state.selectedUserDetails.avg_rating_received}
-                            handler={null}
-                        /> : null
+                            avgRatingGiven={this.state.selectedUserDetails.avg_rating_given}
+                            numRecipes={this.state.selectedUserDetails.num_recipes}
+                            numReviews={this.state.selectedUserDetails.numReviews}
+                            handler = {null}
+                            /> : null
                     }
                 </div>
                 <div style={{ width: '70vw', margin: '0 auto', marginTop: '2vh' }}>
