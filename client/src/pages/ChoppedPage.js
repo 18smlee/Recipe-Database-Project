@@ -247,7 +247,6 @@ class ChoppedPage extends React.Component {
             <div style={{ width: "50%", marginBottom: "50px" }}>
                 {this.state.showModal ? (
                     <ChoppedModal handleClose = {this.hideModal} seriesEpisode={this.state.clickedEpisode} choppedEpisode={this.state.clickedChoppedEpisode} />
-                    // make the toggle disappear
                 ) : (
                     <> </>
                 )}
@@ -258,19 +257,34 @@ class ChoppedPage extends React.Component {
             <div className="container search">
             <Row>
                 <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>
-                  <FormInput placeholder="Ingredient 1" value={this.state.ingredient1} onChange={this.handleIngredient1Change} />
+
+                {
+                this.state.showModal ?( <> </>) : (<FormInput placeholder="Ingredient 1" value={this.state.ingredient1} onChange={this.handleIngredient1Change} />)}
                   </FormGroup>
                 </Col>
+
                 <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>
-                  <FormInput placeholder="Ingredient 2" value={this.state.ingredient2} onChange={this.handleIngredient2Change} />
+                  {
+                this.state.showModal ?( <> </>) : (<FormInput placeholder="Ingredient 2" value={this.state.ingredient2} onChange={this.handleIngredient2Change} />)}
                   </FormGroup>
                 </Col>
+
                 <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>
-                  <FormInput placeholder="Ingredient 3" value={this.state.ingredient3} onChange={this.handleIngredient3Change} />
+                {
+                this.state.showModal ?( <> </>) : (<FormInput placeholder="Ingredient 3" value={this.state.ingredient3} onChange={this.handleIngredient3Change} />)}
                   </FormGroup>
                 </Col>
               </Row>
+<<<<<<< HEAD
+              {
+                this.state.showModal ? (<> </>) : (
+              <Row justify="center"> 
+                <Button block style={{ marginTop: '2vh', span: "40px" }} onClick={this.updateSearchResults}>Search</Button>
+              </Row>
+                )}
+=======
               <Button className="d-block mx-auto" style={{ marginTop: '2vh'}} onClick={this.updateSearchResults}>Search</Button>
+>>>>>>> 8b96bc1ae20a0f2893162546d3136b74759ca669
             </div>
             </Form>
           ) : ( 
@@ -278,19 +292,29 @@ class ChoppedPage extends React.Component {
             <div className="container search">
             <Row>
                 <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>
-                  <FormInput placeholder="Judge 1" value={this.state.judge1} onChange={this.handleJudge1Change} />
+                {
+                this.state.showModal ?( <> </>) : (<FormInput placeholder="Judge 1" value={this.state.judge1} onChange={this.handleJudge1Change} />)}
                   </FormGroup>
                 </Col>
                 <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>
-                  <FormInput placeholder="Judge 2" value={this.state.judge2} onChange={this.handleJudge2Change} />
+                {
+                this.state.showModal ?( <> </>) : (<FormInput placeholder="Judge 2" value={this.state.judge2} onChange={this.handleJudge2Change} />)}
                   </FormGroup>
                 </Col>
                 <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>
-                  <FormInput placeholder="Judge 3" value={this.state.judge3} onChange={this.handleJudge3Change} />
+                {
+                this.state.showModal ?( <> </>) : (<FormInput placeholder="Judge 3" value={this.state.judge3} onChange={this.handleJudge3Change} />)}
                   </FormGroup>
                 </Col>
               </Row>
+<<<<<<< HEAD
+              <Row justify="center"> 
+              {
+                this.state.showModal ?( <> </>) : (<Button block style={{ marginTop: '2vh', span: "40px" }} onClick={this.updateSearchResults}>Search</Button>)}
+              </Row>
+=======
             <Button className="d-block mx-auto" style={{ marginTop: '2vh'}} onClick={this.updateSearchResults}>Search</Button>
+>>>>>>> 8b96bc1ae20a0f2893162546d3136b74759ca669
             </div>
             </Form>
           ) }
@@ -317,8 +341,15 @@ class ChoppedPage extends React.Component {
             }
           </div>
 
+
+
           <div style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
+<<<<<<< HEAD
+            {
+                this.state.showModal ? (<> </>) : (<Button onClick={this.nextPage}> More Results </Button>)}
+=======
             <Button style={{marginBottom: "50px"}} variant='outline-secondary' onClick={this.nextPage}> More Results </Button>
+>>>>>>> 8b96bc1ae20a0f2893162546d3136b74759ca669
           </div>
         </div>
       )
