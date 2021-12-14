@@ -302,6 +302,7 @@ async function search_recipes_by_traits(req, res) {
         if (error) {
             res.json({ results: [] })
         } else if (results) {
+            console.log(results.length)
             res.json({ results: results })
             // console.log("got to the route")
             // console.log(results.length)
@@ -865,9 +866,9 @@ async function search_recipes_by_name(req, res) {
     }
     connection.query(recipeSearchQuery, function (error, results, fields) {
         if (error) {
+            console.log("error here")
             res.json({ results: [] })
         } else if (results) {
-            console.log(results.length)
             res.json({ results: results })
         }
     });

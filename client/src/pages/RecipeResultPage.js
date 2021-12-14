@@ -68,8 +68,8 @@ class RecipeResultPage extends React.Component {
       })
     }
 
-    handleNameQueryChange(event) {
-      this.setState({ nameQuery: event.target.value })
+    handleNameQueryChange(value) {
+      this.setState({ nameQuery: value })
     }
 
     handleNumStepsChange(value) {
@@ -136,7 +136,7 @@ class RecipeResultPage extends React.Component {
             <Row>
               <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>
                 <label>Name</label>
-                <FormInput placeholder="Name" value={this.state.nameQuery} onChange={this.handleNameChange} />
+                <FormInput value={this.state.nameQuery} onChange={this.handleNameChange} />
                 </FormGroup>
               </Col>
             </Row>
@@ -168,13 +168,13 @@ class RecipeResultPage extends React.Component {
                 :
                 this.state.recipesResults.map((recipe) => (
                   <RecipeCard
-                    key={recipe.recipeId}
+                    key={recipe.id}
                     name = {recipe.name}
                     contributor_id = {recipe.contributor_id}
                     n_steps = {recipe.n_steps}
                     minutes = {recipe.minutes}/>
-                ))
-
+                )
+                )
               }
             </div>
 
