@@ -8,6 +8,7 @@ import {
   Nav, 
   FormControl,
   Button,
+  Image,
 } from 'react-bootstrap';
 
 import logo from '../images/logo.png';

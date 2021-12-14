@@ -797,7 +797,7 @@ async function get_recipe_by_id(req, res) {
         if (error) {
             console.log(error)
         } else if (results) {
-            //console.log(results)
+            console.log(results)
             res.json({ results: results })
         }
     });

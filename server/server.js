@@ -55,7 +55,7 @@ app.get('/chopped', routes.get_all_chopped)
 
 app.get('/users', routes.get_all_users)
 
-app.get('/recipe/:recipeId', routes.get_recipe_by_id)
+app.get('/recipedetails', routes.get_recipe_by_id)
 
 app.get('/chopped/ingredients', routes.get_chopped_episode_ingredients)
 

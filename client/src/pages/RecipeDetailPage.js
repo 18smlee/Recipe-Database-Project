@@ -16,16 +16,15 @@ class RecipeDetailPage extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            selectedRecipeId: props.match.params.recipeId,
-            //selectedRecipeId: window.location.search ? window.location.search.substring(1).split('=')[1] : 229594,
+            selectedRecipeId: window.location.pathname.split('/')[2],
             selectedRecipeDetails: null,
 
         }
     }
 
     componentDidMount() {
+        console.log(this.state.selectedRecipeId)
         getRecipe(this.state.selectedRecipeId).then(res => {
-            console.log("get recipe")
             console.log(res.results)
             this.setState({ selectedRecipeDetails: res.results[0]})
         })
