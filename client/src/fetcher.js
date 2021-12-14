@@ -44,13 +44,14 @@ const getPlayerSearch = async (name, nationality, club, rating_high, rating_low,
 
 // PROJECT //
 
-const getRecipeFromTraitSearch = async (name, time_to_cook, num_steps, page, pagesize) => {
-    var res = await fetch(`http://${config.server_host}:${config.server_port}/search/recipes/traits?Name=${name}&TimeToCook=${time_to_cook}&NumSteps=${num_steps}&page=${page}&pagesize=${pagesize}`, {
+const getRecipeFromTraitSearch = async (name, min_time_to_cook, max_time_to_cook, min_num_steps, max_num_steps, min_avg_rating, max_avg_rating, page, pagesize) => {
+    var res = await fetch(`http://${config.server_host}:${config.server_port}/search/recipes/traits?Name=${name}&MinTimeToCook=${min_time_to_cook}&MaxTimeToCook=${max_time_to_cook}&MinNumSteps=${min_num_steps}&MaxNumSteps=${max_num_steps}&MinAvgRating=${min_avg_rating}&MaxAvgRating=${max_avg_rating}&page=${page}&pagesize=${pagesize}`, {
         method: 'GET',
     })
     return res.json()
 }
 
+// not using this because combined it with the trait search
 const getRecipeFromReviewSearch = async (avg_rating, page, pagesize) => {
     var res = await fetch(`http://${config.server_host}:${config.server_port}/search/recipes/reviews?AvgRating=${avg_rating}&page=${page}&pagesize=${pagesize}`, {
         method: 'GET',
@@ -151,22 +152,12 @@ const getChoppedEpisodeIngredients = async (episode_num) => {
     return res.json()
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+const getRecipeFromNameSearch = async (name, page, pagesize) => {
+    var res = await fetch(`http://${config.server_host}:${config.server_port}/search/recipes/name?RecipeName=${name}&page=${page}&pagesize=${pagesize}`, {
+        method: 'GET',
+    })
+    return res.json()
+}
 
 
 
@@ -193,5 +184,6 @@ export {
     getAllUsers,
     getRecipe,
     getUser,
-    getChoppedEpisodeIngredients
+    getChoppedEpisodeIngredients,
+    getRecipeFromNameSearch
 }

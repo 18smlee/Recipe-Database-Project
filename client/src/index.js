@@ -9,16 +9,15 @@ import {
 import HomePage from './pages/HomePage';
 import PlayersPage from './pages/PlayersPage';
 import 'antd/dist/antd.css';
-
-import 'bootstrap/dist/css/bootstrap.min.css'; 
-import "shards-ui/dist/css/shards.min.css"
+import 'bootstrap/dist/css/bootstrap.min.css';
 import MatchesPage from './pages/MatchesPage';
 import UsersPage from './pages/UsersPage';
 import MealMakerPage from './pages/MealMakerPage';
 import ChoppedPage from './pages/ChoppedPage';
 import RecipeDetailPage from './pages/RecipeDetailPage';
-import RecipesPage from './pages/RecipesPage';
 import UserDetailPage from './pages/UserDetailPage';
+import RecipeSearchPage from './pages/RecipeSearchPage';
+import RecipeResultPage from './pages/RecipeResultPage';
 
 ReactDOM.render(
   <div>
@@ -67,7 +66,12 @@ ReactDOM.render(
 		<Route exact
 							path="/recipes"
 							render={() => (
-								<RecipesPage />
+								<RecipeSearchPage />
+							)}/>
+		<Route exact
+							path="/search/recipes"
+							render={() => (
+								<RecipeResultPage />
 							)}/>
       </Switch>
     </Router>
