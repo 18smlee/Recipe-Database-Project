@@ -32,6 +32,7 @@ class RecipeResultPage extends React.Component {
   
       this.state = {
         recipesResults: [],
+        searched: false,
         recipesPageNumber: 1,
         recipeSearchText: "",
         recipesPageSize: 10,
@@ -40,9 +41,9 @@ class RecipeResultPage extends React.Component {
         // traits
         nameQuery: '',
         minNumStepsQuery: 0,
-        maxNumStepsQuery: 9999999,
+        maxNumStepsQuery: 500,
         minTimeToCookQuery: 0,
-        maxTimeToCookQuery: 9999999,
+        maxTimeToCookQuery: 500,
         minAvgRatingQuery: 0,
         maxAvgRatingQuery: 5,
         selectedRecipeId: window.location.search,
@@ -50,12 +51,12 @@ class RecipeResultPage extends React.Component {
 
       }
       this.updateSearchResults = this.updateSearchResults.bind(this)
-      this.handleNameChange = this.handleNameChange.bind(this)
+      this.handleNameQueryChange = this.handleNameQueryChange.bind(this)
       this.handleNumStepsChange = this.handleNumStepsChange.bind(this)
       this.handleTimeToCookChange = this.handleTimeToCookChange.bind(this)
       this.handleAvgRatingChange = this.handleAvgRatingChange.bind(this)
       this.goToRecipe = this.goToRecipe.bind(this)
-      this.handleSearch = this.handleSearch.bind(this);
+      // this.handleSearch = this.handleSearch.bind(this);
     }
   
     goToRecipe(recipeId) {
@@ -68,7 +69,7 @@ class RecipeResultPage extends React.Component {
       })
     }
 
-    handleNameChange(event) {
+    handleNameQueryChange(event) {
       this.setState({ nameQuery: event.target.value })
     }
 
@@ -96,21 +97,25 @@ class RecipeResultPage extends React.Component {
     }
 
     updateSearchResults() {
-      console.log("update search")
       // call getRecipesFromTraitsSearch and update recipesResults in state
-      getRecipeFromTraitSearch(this.state.nameQuery, this.state.minNumStepsQuery, this.state.maxNumStepsQuery, this.state.minTimeToCookQuery, this.state.maxTimeToCookQuery, this.state.minAvgRatingQuery, this.state.maxAvgRatingQuery, null, null).then(res => {
-          console.log(res.results)
-          this.setState({ recipesResults: res.results })
+      console.log("search name: " + this.state.nameQuery)
+      console.log("min steps: " + this.state.minNumStepsQuery)
+      console.log("max steps: " + this.state.maxNumStepsQuery)
+      console.log("min time: " + this.state.minTimeToCookQuery)
+      console.log("max time: " + this.state.maxTimeToCookQuery)
+      console.log("min rate: " + this.state.minAvgRatingQuery)
+      console.log("max rate: " + this.state.maxAvgRatingQuery)
+      this.setState({ searched: true })
+      getRecipeFromTraitSearch(this.state.nameQuery, this.state.minTimeToCookQuery, this.state.maxTimeToCookQuery, this.state.minNumStepsQuery, this.state.maxNumStepsQuery, this.state.minAvgRatingQuery, this.state.maxAvgRatingQuery, null, null).then(res => {
+        console.log(res.results)
+        this.setState({ recipesResults: res.results })
       })
     }
 
     componentDidMount() {
-      let params = queryString.parse(window.location.search)
-      this.setState({ nameQuery: params.s})
-      getRecipeFromNameSearch(params.s, null, null).then(res => {
-      console.log(res.results)
-      this.setState({ recipesResults: res.results })
-      })
+      // getRecipeFromTraitSearch(this.state.nameQuery, this.state.minNumStepsQuery, this.state.maxNumStepsQuery, this.state.minTimeToCookQuery, this.state.maxTimeToCookQuery, this.state.minAvgRatingQuery, this.state.maxAvgRatingQuery, null, null).then(res => {
+      //   this.setState({ recipesResults: res.results })
+      // })
     }
   
     render() {
@@ -120,51 +125,62 @@ class RecipeResultPage extends React.Component {
           <MenuBar />
           <Form style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
             <h1>Find a Recipe!</h1>
-            <h3>Food.com Recipes</h3>
 
-            <div className="container search">
-            {/* <SearchBar placeholder={"Find recipes"}
-            errorMsg={"Please enter a recipe to search for!"}
-            onSubmit={this.handleSearch}
-            /> */}
+            {/* <div className="container search"> */}
             <Row>
-              <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>
-                <label>Name</label>
-                <FormInput placeholder="Name" value={this.state.nameQuery} onChange={this.handleNameChange} />
-                </FormGroup>
-              </Col>
+            <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>
+                            <label>Search by Keyword</label>
+                            <FormInput placeholder="Name" value={this.state.nameQuery} onChange={this.handleNameQueryChange} />
+                        </FormGroup></Col>
             </Row>
-            <Row>
-                        <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>
+            <br></br>
+            <br></br>
+                <Row>
+                <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>
                             <label>Number of Steps</label>
-                            <Slider range defaultValue={[50, 100]} onChange={this.handleNumStepsChange} />
-                        </FormGroup></Col>
-                        <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>
+                            <Slider range defaultValue={[0, 100]} max={100} onChange={this.handleNumStepsChange} />
+                        </FormGroup></Col> 
+                </Row>
+
+                <Row>
+                <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>
                             <label>Time to Cook</label>
-                            <Slider range defaultValue={[50, 100]} onChange={this.handleTimeToCookChange} />
+                            <Slider range defaultValue={[0, 500]} max={500} onChange={this.handleTimeToCookChange} />
                         </FormGroup></Col>
-                        <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>
+                </Row>
+
+                <Row>
+                <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>
                             <label>Average Rating</label>
-                            <Slider range defaultValue={[50, 100]} onChange={this.handleAvgRatingChange} />
+                            <Slider range defaultValue={[0, 5]} max={5} onChange={this.handleAvgRatingChange} />
                         </FormGroup></Col>
-                        <Col flex={2}><FormGroup style={{ width: '10vw' }}>
+                </Row>
+
+                <Row>
+                <Col flex={2}><FormGroup style={{ width: '10vw' }}>
                             <Button style={{ marginTop: '4vh' }} onClick={this.updateSearchResults}>Search</Button>
                         </FormGroup></Col>
-                    </Row>
-            </div>
+                </Row>
             </Form>
             <Divider />
-            {(!this.state.recipesResults || this.state.recipesResults.length < 1) ? (
-                     <>Oops... There's no matches.</>)
+            <div style={{ width: "70%", marginBottom: "50px" , marginLeft: "200px"}}>
+            {(this.state.searched && (!this.state.recipesResults || this.state.recipesResults.length < 1)) ? (
+              // happens when the list is super long... so made it a "loading" rather than "no matches found"
+                     <>Warming up your meal...</>)
                 :
                 this.state.recipesResults.map((recipe) => (
-                  <RecipeCardList 
-                    key={recipe.recipeId}
-                    results={this.state.recipesResults}/>
-                ))
-            }
+                  <RecipeCard
+                    key={recipe.id}
+                    name = {recipe.name}
+                    contributor_id = {recipe.contributor_id}
+                    n_steps = {recipe.n_steps}
+                    minutes = {recipe.minutes}/>
+                )
+                )
+              }
+            </div>
 
-          </div>
+        </div>
       )
     }
   

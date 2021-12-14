@@ -52,10 +52,11 @@ class HomePage extends React.Component {
           backgroundSize:"cover", 
           height:900,width:1600 }}>
         </div>
+
        
         {/* <h1 style={textStyle}>Text over image</h1> */}
         <Container style={{ position:'absolute', top: '30%', left: '10%'}}>
-          <div class="d-flex justify-content-center">
+          <div className="d-flex justify-content-center">
           <img
                   alt=""
                   src={logo}
@@ -63,13 +64,13 @@ class HomePage extends React.Component {
                   height="100"
               />
           </div>
-          <h3 class="d-flex justify-content-center">Creative Cuisine </h3>
+          <h3 className="d-flex justify-content-center">Creative Cuisine </h3>
           <Card style={{marginTop: '30px'}}>
             <Card.Text style={{margin: '30px'}}>
-              <p class="text-center">
+              <p className="text-center">
                 Creative Cuisine is a tool to inspire creativity in your cooking! 
               </p>
-              <p class="text-left">
+              <p className="text-left">
                 <ul>
                 Our features include: 
                   <li style={{marginLeft: '30px'}}>

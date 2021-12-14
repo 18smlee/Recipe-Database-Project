@@ -2,18 +2,22 @@
 Clicking on episode will show information about episode AND similar recipes to chopped episode
 */
 import React from 'react';
-import {
-  Table,
-  Pagination,
-  Select
-} from 'antd'
 
 import MenuBar from '../components/MenuBar';
-import SearchBar from '../components/SearchBar';
-import { getAllChopped, getChoppedFromEpisodeSearch } from '../fetcher';
+import { getAllChopped } from '../fetcher';
 import ChoppedEpisodeCard from '../components/ChoppedEpisodeCard.js';
 import ChoppedModal from '../components/ChoppedModal';
 import { ThemeConsumer } from 'react-bootstrap/esm/ThemeProvider';
+
+import {
+  Container,
+  Row,
+  Col,
+  Stack,
+  Button,
+  Image,
+  Card,
+} from 'react-bootstrap';
 
 
 class ChoppedPage extends React.Component {
@@ -70,14 +74,21 @@ class ChoppedPage extends React.Component {
       return (
         <div>
           <MenuBar />
-          <SearchBar placeholder={"Find a Chopped episode"} 
-                    errorMsg={"Please enter a Chopped episode number to search for!"}
-                    onSubmit={this.handleSearch}
-          />
+          <Image style={{height:'auto',width:'100%'}} src="https://raw.githubusercontent.com/18smlee/Recipe-Database-Project/sam_dev/client/src/images/chopped_logo.jpg" responsive />
+
           <div style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
-            <h1>Find some inspiration!</h1>
-            <h3>Chopped Episodes</h3>
-            
+            <h1>Find some inspiration</h1>
+            <p class="text-left">
+              Use your favorite chopped moments to find unique recipes to make in your own kitchen!
+            </p>
+            <p class="text-left">
+              Enter ingredients you would like to include in your recipe, and we'll find chopped episodes that use those ingredients.
+              If there is a match with a recipe in our database and the chopped episode, we'll direct you to similar recipes you can make.
+            </p>
+
+            <div className="col-md-5">
+          </div>
+            {/* <h3 style={{margin:"30px"}}>Chopped Episodes</h3> */}
             <div style={{ width: "50%", marginBottom: "50px" }}>
                 {this.state.showModal ? (
                     <ChoppedModal handleClose = {this.hideModal} seriesEpisode={this.state.clickedEpisode} choppedEpisode={this.state.clickedChoppedEpisode} />
