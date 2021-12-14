@@ -125,7 +125,7 @@ class RecipeResultPage extends React.Component {
 
     updateSearchResults() {
       if (this.state.ingredientOn) {
-        if (this.state.ingredient1 == '') {
+        if (this.state.ingredient1 == '' && this.state.ingredient2 == '' && this.state.ingredient3 == '') {
           alert('Please fill out Ingredient 1 at the very least')
         } else {
           var tempIngr2 = this.state.ingredient2;
@@ -164,11 +164,37 @@ class RecipeResultPage extends React.Component {
     nextPage() {
       var newPage = this.state.recipesPageNumber + 1
       console.log(newPage)
-      
-      getRecipeFromTraitSearch(this.state.nameQuery, this.state.minTimeToCookQuery, this.state.maxTimeToCookQuery, this.state.minNumStepsQuery, this.state.maxNumStepsQuery, this.state.minAvgRatingQuery, this.state.maxAvgRatingQuery, this.state.recipesPageNumber, this.state.recipesPageSize).then(res => {
-        console.log(res.results)
-        this.setState({recipesResults: res.results, recipesPageNumber: newPage})
-      })
+
+
+
+      if (this.state.ingredientOn) {
+        if (this.state.ingredient1 == '') {
+          alert('Please fill out Ingredient 1 at the very least')
+        } else {
+          var tempIngr2 = this.state.ingredient2;
+          var tempIngr3 = this.state.ingredient3;
+          if (tempIngr2 == '') {
+            tempIngr2 = null;
+          }
+          if (tempIngr3 == '') {
+            tempIngr3 = null;
+          }
+          getRecipeFromIngredientSearch(this.state.ingredient1, tempIngr2, tempIngr3, this.state.recipesPageNumbeer, this.state.recipesPageSize)
+          .then(res => {
+            console.log(res.results)
+            this.setState({ recipesResults: res.results })
+            this.setState({ recipesPageNumber: this.state.recipesPageNumber + 1 })
+          })
+        }
+      } else {
+        // call getRecipesFromTraitsSearch and update recipesResults in state
+        this.setState({ searched: true })
+        getRecipeFromTraitSearch(this.state.nameQuery, this.state.minTimeToCookQuery, this.state.maxTimeToCookQuery, this.state.minNumStepsQuery, this.state.maxNumStepsQuery, this.state.minAvgRatingQuery, this.state.maxAvgRatingQuery, this.state.recipesPageNumber, this.state.recipesPageSize).then(res => {
+          console.log(res.results)
+          this.setState({ recipesResults: res.results })
+          this.setState({ recipesPageNumber: this.state.recipesPageNumber + 1})
+        })
+      }
     }
 
     componentDidMount() {
