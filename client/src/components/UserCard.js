@@ -1,42 +1,40 @@
 import React from "react";
-import {Card, Rate, Row, Col} from "antd"
-import { CardImg, Image } from "react-bootstrap";
+import {Rate, } from "antd"
+import { Card, Row, Col} from "react-bootstrap";
 
 
 const UserCard = ({ id, photo, avgRatingReceived, avgRatingGiven, numRecipes, numReviews, handler}) => {
     return (
         <div className="card" style={{ margin: "20px", padding: "20px" }} onClick={handler}>
         <Row justify="left">
-            <Row justify="left">
-                <CardImg src={photo} height={100} width={100}/>
-            </Row>
-            <Row justify="left">
-                <h3>{id}</h3>
-            </Row>
+        <div style={{marginTop:"10px"}}>
+            <img style={{verticalAlign: 'middle'}} src="https://raw.githubusercontent.com/18smlee/Recipe-Database-Project/sam_dev/client/src/images/person_icon.png" height="40" width="40"/>
+            <h3 style={{verticalAlign: 'middle', display:'inline', marginLeft:'15px'}}>@{id}</h3>
+                            </div>
         </Row>
         
           
           <Row>
             <Col>
-                <h5> Average Rating Received</h5>
-                <Rate disabled value={avgRatingReceived} />
+                <h6 style={{marginTop:"10px"}}> Average Rating Received</h6>
+                <Rate style={{marginBottom:"10px"}} disabled value={avgRatingReceived} />
             </Col>
             </Row>
             <Row>
             <Col>
-                <h5> Average Rating Given</h5>
-                <Rate disabled value={avgRatingGiven} />
+                <h6 style={{marginTop:"10px"}}> Average Rating Given</h6>
+                <Rate  style={{marginBottom:"10px"}} disabled value={avgRatingGiven} />
             </Col>
             </Row>
             <Row>
                 <Col>
-                    <h5> Recipes Contributed: {numRecipes ? numRecipes : 0}</h5>
+                    <h6> Recipes Contributed: {numRecipes ? numRecipes : 0}</h6>
                     
                 </Col>
             </Row>
             <Row>
                 <Col>
-                    <h5> Reviews Given: {numReviews ? numReviews : 0}</h5>
+                    <h6> Reviews Given: {numReviews ? numReviews : 0}</h6>
                 </Col>
             </Row>
             

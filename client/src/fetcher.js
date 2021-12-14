@@ -66,8 +66,8 @@ const getDailyMealPlanner = async (max_calories, max_sugar, page, pagesize) => {
     return res.json()
 }
 
-const getChoppedFromEpisodeSearch = async (episode_num, judge1_name, judge2_name, judge3_name, page, pagesize) => {
-    var res = await fetch(`http://${config.server_host}:${config.server_port}/search/chopped/episode?EpisodeNum=${episode_num}&Judge1=${judge1_name}&Judge2=${judge2_name}&Judge3=${judge3_name}&page=${page}&pagesize=${pagesize}`, {
+const getChoppedFromEpisodeSearch = async (judge1_name, judge2_name, judge3_name, page, pagesize) => {
+    var res = await fetch(`http://${config.server_host}:${config.server_port}/search/chopped/episode?Judge1=${judge1_name}&Judge2=${judge2_name}&Judge3=${judge3_name}&page=${page}&pagesize=${pagesize}`, {
         method: 'GET',
     })
     return res.json()

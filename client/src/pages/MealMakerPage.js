@@ -33,6 +33,12 @@ import {
 import MenuBar from '../components/MenuBar';
 import { getDailyMealPlanner, getRecipeFromIngredientSearch, findSimilarRecipe } from '../fetcher';
 
+function capitalizeFirstLetters(string) {
+  return string.replace(/\w\S*/g, function(txt){
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+  });
+}
+
 const { Step } = Steps
 function capitalizeFirstLetters(string) {
   return string.replace(/\w\S*/g, function(txt){

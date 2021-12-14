@@ -3,7 +3,7 @@ which will lead to recipe details page where users can re-search and add filters
 */
 import React from 'react';
 
-import { Form, FormInput, FormGroup, Button, Card, CardBody, CardTitle, Progress } from "shards-react";
+import { Form, FormInput, FormGroup, Card, CardBody, CardTitle, Progress } from "shards-react";
 
 import {
     Table,
@@ -16,6 +16,10 @@ import {
     Switch,
     Rate 
 } from 'antd'
+
+import {
+  Button
+} from 'react-bootstrap'
 
 import MenuBar from '../components/MenuBar';
 import RecipeCard from '../components/RecipeCard.js';
@@ -125,7 +129,7 @@ class RecipeResultPage extends React.Component {
 
     updateSearchResults() {
       if (this.state.ingredientOn) {
-        if (this.state.ingredient1 == '') {
+        if (this.state.ingredient1 == '' && this.state.ingredient2 == '' && this.state.ingredient3 == '') {
           alert('Please fill out Ingredient 1 at the very least')
         } else {
           var tempIngr2 = this.state.ingredient2;
@@ -164,14 +168,41 @@ class RecipeResultPage extends React.Component {
     nextPage() {
       var newPage = this.state.recipesPageNumber + 1
       console.log(newPage)
-      
-      getRecipeFromTraitSearch(this.state.nameQuery, this.state.minTimeToCookQuery, this.state.maxTimeToCookQuery, this.state.minNumStepsQuery, this.state.maxNumStepsQuery, this.state.minAvgRatingQuery, this.state.maxAvgRatingQuery, this.state.recipesPageNumber, this.state.recipesPageSize).then(res => {
-        console.log(res.results)
-        this.setState({recipesResults: res.results, recipesPageNumber: newPage})
-      })
+
+
+
+      if (this.state.ingredientOn) {
+        if (this.state.ingredient1 == '') {
+          alert('Please fill out Ingredient 1 at the very least')
+        } else {
+          var tempIngr2 = this.state.ingredient2;
+          var tempIngr3 = this.state.ingredient3;
+          if (tempIngr2 == '') {
+            tempIngr2 = null;
+          }
+          if (tempIngr3 == '') {
+            tempIngr3 = null;
+          }
+          getRecipeFromIngredientSearch(this.state.ingredient1, tempIngr2, tempIngr3, this.state.recipesPageNumbeer, this.state.recipesPageSize)
+          .then(res => {
+            console.log(res.results)
+            this.setState({ recipesResults: res.results })
+            this.setState({ recipesPageNumber: this.state.recipesPageNumber + 1 })
+          })
+        }
+      } else {
+        // call getRecipesFromTraitsSearch and update recipesResults in state
+        this.setState({ searched: true })
+        getRecipeFromTraitSearch(this.state.nameQuery, this.state.minTimeToCookQuery, this.state.maxTimeToCookQuery, this.state.minNumStepsQuery, this.state.maxNumStepsQuery, this.state.minAvgRatingQuery, this.state.maxAvgRatingQuery, this.state.recipesPageNumber, this.state.recipesPageSize).then(res => {
+          console.log(res.results)
+          this.setState({ recipesResults: res.results })
+          this.setState({ recipesPageNumber: this.state.recipesPageNumber + 1})
+        })
+      }
     }
 
     componentDidMount() {
+      this.setState({ recipesPageNumber: this.state.recipesPageNumber + 1 })
       // getRecipeFromTraitSearch(this.state.nameQuery, this.state.minNumStepsQuery, this.state.maxNumStepsQuery, this.state.minTimeToCookQuery, this.state.maxTimeToCookQuery, this.state.minAvgRatingQuery, this.state.maxAvgRatingQuery, null, null).then(res => {
       //   this.setState({ recipesResults: res.results })
       // })
@@ -183,7 +214,11 @@ class RecipeResultPage extends React.Component {
         <div>
           <MenuBar />
           <Form style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
-            <h1 class="text-center" style={{marginBottom:"20px"}}>Find your favorite recipes!</h1>
+            <div style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
+            <h3 class="text-center">Discover New Recipes</h3>
+            <hr></hr>
+            <p class="text-muted text-center">Search for new recipes by ingredients, or keywords and other recipe attributes. Our database has over 15,000 recipes to choose from!</p>
+          </div>
 
             <Row justify="center">
               <Switch checkedChildren="Search by Ingredient" unCheckedChildren="Search by Recipe" onChange={this.handleToggleChange}
@@ -291,7 +326,9 @@ class RecipeResultPage extends React.Component {
             </div>
 
             {(this.state.searched) ? (<div style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
-            <Button onClick={this.nextPage}> More Results </Button>
+            <div style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
+            <Button style={{marginBottom: "50px"}} variant='outline-secondary' onClick={this.nextPage}> More Results </Button>
+          </div>
           </div> ) : ( <> </>)
             
           }

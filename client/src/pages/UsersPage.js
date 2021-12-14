@@ -2,7 +2,7 @@
 Clicking on user should have modal pop up with more detail 
  */
 import React from 'react';
-import { Form, FormInput, FormGroup, Button, Card, CardBody, CardTitle, Progress } from "shards-react";
+import { Form, FormInput, FormGroup, Card, CardBody, CardTitle, Progress } from "shards-react";
 import {
   Table,
   Pagination,
@@ -11,6 +11,8 @@ import {
   Row,
   Col
 } from 'antd'
+import {Button} from 'react-bootstrap'
+
 
 import MenuBar from '../components/MenuBar';
 import { getAllUsers, getUserFromReviewSearch } from '../fetcher';
@@ -100,6 +102,11 @@ class UsersPage extends React.Component {
       return (
         <div>
           <MenuBar />
+          <div style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
+            <h3 class="text-center">Find Users</h3>
+            <hr></hr>
+            <p class="text-muted text-center">Find your favorite recipe contributers by filtering on number of recipes written, ratings given to the user, average quality of reviews they've written, or the average score of the ratings they have recieved on their recipes.</p>
+          </div>
             <Form style={{ width: '80vw', margin: '0 auto', marginTop: '5vh' }}>
                 <Row>
                     <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>
@@ -131,7 +138,7 @@ class UsersPage extends React.Component {
                 
               </Form>
           <div style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
-            <h3>Users</h3>
+            <h5>Results:</h5>
             {
               this.state.usersResults.map((user) => (
                 <UserCard
@@ -150,7 +157,7 @@ class UsersPage extends React.Component {
             }
           </div>
           <div style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
-            <Button onClick={this.nextPage}> More Results </Button>
+            <Button style={{marginBottom: "50px"}} variant='outline-secondary' onClick={this.nextPage}> More Results </Button>
           </div>
 
         </div>
