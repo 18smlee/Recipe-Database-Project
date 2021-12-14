@@ -172,6 +172,7 @@ class RecipeResultPage extends React.Component {
     }
 
     componentDidMount() {
+      this.setState({ recipesPageNumber: this.state.recipesPageNumber + 1 })
       // getRecipeFromTraitSearch(this.state.nameQuery, this.state.minNumStepsQuery, this.state.maxNumStepsQuery, this.state.minTimeToCookQuery, this.state.maxTimeToCookQuery, this.state.minAvgRatingQuery, this.state.maxAvgRatingQuery, null, null).then(res => {
       //   this.setState({ recipesResults: res.results })
       // })
