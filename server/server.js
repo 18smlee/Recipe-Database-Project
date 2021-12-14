@@ -60,7 +60,7 @@ app.get('/users/:userid', routes.get_user_by_id)
 
 
 app.get('/chopped/ingredients', routes.get_chopped_episode_ingredients)
-
+app.get('/recipe/ingredients', routes.get_recipe_ingredients);
 app.get('/search/recipes/name', routes.search_recipes_by_name);
 
 

@@ -871,6 +871,31 @@ async function search_recipes_by_name(req, res) {
     });
 }
 
+async function get_recipe_ingredients(req, res) {
+    const recipeId = req.query.RecipeId;
+    console.log(recipeId)
+
+    if (recipeId) {
+        var recipeIngredientQuery = `SELECT *
+        FROM IngredientDescriptions
+        WHERE id =${recipeId}`
+    
+        connection.query(recipeIngredientQuery, function (error, results, fields) {
+            if (error) {
+                console.log(error)
+            } else if (results) {
+                console.log(results)
+                res.json({ results: results })
+            }
+        });
+    } else {
+        //error
+        console.log(error)
+        res.json({ results: [] })
+    }
+    
+}
+
 
 
 module.exports = {
@@ -899,5 +924,6 @@ module.exports = {
     get_user_by_id,
     get_recipe_by_id,
     get_chopped_episode_ingredients,
-    search_recipes_by_name
+    search_recipes_by_name,
+    get_recipe_ingredients
 }

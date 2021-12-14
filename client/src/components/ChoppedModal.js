@@ -60,7 +60,6 @@ class ChoppedModal extends React.Component {
                     <Badge bg="light" text="dark">Aired on {this.props.choppedEpisode.air_date}</Badge>{' '}
                   </div>
                       <div>
-                      
                         <h6 class="text-center" style={{margin: "25px"}}>Judges</h6>
                         <Container>
                         <Row>
