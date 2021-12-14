@@ -275,16 +275,12 @@ class ChoppedPage extends React.Component {
                   </FormGroup>
                 </Col>
               </Row>
-<<<<<<< HEAD
               {
                 this.state.showModal ? (<> </>) : (
               <Row justify="center"> 
                 <Button block style={{ marginTop: '2vh', span: "40px" }} onClick={this.updateSearchResults}>Search</Button>
               </Row>
                 )}
-=======
-              <Button className="d-block mx-auto" style={{ marginTop: '2vh'}} onClick={this.updateSearchResults}>Search</Button>
->>>>>>> 8b96bc1ae20a0f2893162546d3136b74759ca669
             </div>
             </Form>
           ) : ( 
@@ -307,14 +303,10 @@ class ChoppedPage extends React.Component {
                   </FormGroup>
                 </Col>
               </Row>
-<<<<<<< HEAD
               <Row justify="center"> 
               {
                 this.state.showModal ?( <> </>) : (<Button block style={{ marginTop: '2vh', span: "40px" }} onClick={this.updateSearchResults}>Search</Button>)}
               </Row>
-=======
-            <Button className="d-block mx-auto" style={{ marginTop: '2vh'}} onClick={this.updateSearchResults}>Search</Button>
->>>>>>> 8b96bc1ae20a0f2893162546d3136b74759ca669
             </div>
             </Form>
           ) }
@@ -344,12 +336,8 @@ class ChoppedPage extends React.Component {
 
 
           <div style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
-<<<<<<< HEAD
             {
                 this.state.showModal ? (<> </>) : (<Button onClick={this.nextPage}> More Results </Button>)}
-=======
-            <Button style={{marginBottom: "50px"}} variant='outline-secondary' onClick={this.nextPage}> More Results </Button>
->>>>>>> 8b96bc1ae20a0f2893162546d3136b74759ca669
           </div>
         </div>
       )
