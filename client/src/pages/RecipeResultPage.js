@@ -55,12 +55,7 @@ class RecipeResultPage extends React.Component {
       this.handleNumStepsChange = this.handleNumStepsChange.bind(this)
       this.handleTimeToCookChange = this.handleTimeToCookChange.bind(this)
       this.handleAvgRatingChange = this.handleAvgRatingChange.bind(this)
-      this.goToRecipe = this.goToRecipe.bind(this)
       // this.handleSearch = this.handleSearch.bind(this);
-    }
-  
-    goToRecipe(recipeId) {
-      window.location = `/recipe?id=${recipeId}`
     }
 
     displaySearchResults() {
@@ -172,9 +167,13 @@ class RecipeResultPage extends React.Component {
                     name = {recipe.name}
                     contributor_id = {recipe.contributor_id}
                     n_steps = {recipe.n_steps}
-                    minutes = {recipe.minutes}/>
-                )
-                )
+                    minutes = {recipe.minutes}
+                    handler = {() => {
+                      window.location = `/recipe/${recipe.id}`
+                    }}
+                    />
+                ))
+
               }
             </div>
 

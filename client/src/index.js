@@ -70,8 +70,8 @@ ReactDOM.render(
 							)}/>
 		<Route exact
 							path="/search/recipes"
-							render={() => (
-								<RecipeResultPage />
+							render={(props) => (
+								<RecipeResultPage {...props}/>
 							)}/>
       </Switch>
     </Router>

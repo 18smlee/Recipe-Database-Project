@@ -139,7 +139,7 @@ const getUser = async (user_id) => {
     return res.json()
 }
 const getRecipe = async (recipe_id) => {
-    var res = await fetch(`http://${config.server_host}:${config.server_port}/recipes/${recipe_id}`, {
+    var res = await fetch(`http://${config.server_host}:${config.server_port}/recipedetails?recipeId=${recipe_id}`, {
         method: 'GET',
     })
     return res.json()
@@ -154,6 +154,13 @@ const getChoppedEpisodeIngredients = async (episode_num) => {
 
 const getRecipeFromNameSearch = async (name, page, pagesize) => {
     var res = await fetch(`http://${config.server_host}:${config.server_port}/search/recipes/name?RecipeName=${name}&page=${page}&pagesize=${pagesize}`, {
+        method: 'GET',
+    })
+    return res.json()
+}
+
+const getRecipeIngredients = async (recipe_id) => {
+    var res = await fetch(`http://${config.server_host}:${config.server_port}/recipe/ingredients?RecipeId=${recipe_id}`, {
         method: 'GET',
     })
     return res.json()
@@ -185,5 +192,6 @@ export {
     getRecipe,
     getUser,
     getChoppedEpisodeIngredients,
-    getRecipeFromNameSearch
+    getRecipeFromNameSearch,
+    getRecipeIngredients
 }

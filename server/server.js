@@ -22,7 +22,7 @@ app.get('/search/recipes/traits', routes.search_recipes_by_traits)
 app.get('/search/recipes/reviews', routes.search_recipes_by_review)
 
 // Route 3
-app.get('/dailymealplanner', routes.search_recipes_by_ingredients)
+app.get('/dailymealplanner', routes.search_recipes_by_nutrition)
 
 // Route 4
 app.get('/search/chopped/episode', routes.search_chopped_by_episode)
@@ -55,16 +55,13 @@ app.get('/chopped', routes.get_all_chopped)
 
 app.get('/users', routes.get_all_users)
 
+app.get('/recipedetails', routes.get_recipe_by_id)
 app.get('/users/:userid', routes.get_user_by_id)
 
-app.get('/recipe/:recipeId', routes.get_recipe_by_id)
 
 app.get('/chopped/ingredients', routes.get_chopped_episode_ingredients)
-
+app.get('/recipe/ingredients', routes.get_recipe_ingredients);
 app.get('/search/recipes/name', routes.search_recipes_by_name);
-
-
-
 
 
 

@@ -1,19 +1,17 @@
 import React from 'react';
 
-import { 
-  Form, 
-  FormControl,
-  Button,
+import {
+  Card,
 } from 'react-bootstrap';
 
-const RecipeCard = ({ name, id, minutes, contributor_id, n_steps}) => {
+const RecipeCard = ({ name, id, minutes, contributor_id, n_steps, showRecipeDetails, handler}) => {
   return (
-    <div className="card" style={{ marginRight: "20px", marginTop: "20px", padding: "20px" }}>
-      <h3>{name}</h3>
-      <h6>{minutes} minutes</h6>
-      <h6>{n_steps} steps</h6>
-      {/* <span>Contributing User ID: {contributor_id}</span> */}
-    </div>
+    <Card style={{ marginRight: "20px", marginTop: "20px", padding: "20px" }} onClick = {handler}>
+      <h4>Recipe Name: {name}</h4>
+      <h4>{minutes} minutes</h4>
+      <h4>{n_steps} steps</h4>
+      <span>Contributing User ID: {contributor_id}</span>
+    </Card>
   )
 };
 
