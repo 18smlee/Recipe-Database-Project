@@ -141,15 +141,15 @@ class RecipeResultPage extends React.Component {
             <Row>
                         <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>
                             <label>Number of Steps</label>
-                            <Slider range defaultValue={[50, 100]} onChange={this.handleNumStepsChange} />
+                            <Slider range defaultValue={[0, 500]} max={500} onChange={this.handleNumStepsChange} />
                         </FormGroup></Col>
                         <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>
                             <label>Time to Cook</label>
-                            <Slider range defaultValue={[50, 100]} onChange={this.handleTimeToCookChange} />
+                            <Slider range defaultValue={[0, 500]} max={500} onChange={this.handleTimeToCookChange} />
                         </FormGroup></Col>
                         <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>
                             <label>Average Rating</label>
-                            <Slider range defaultValue={[50, 100]} onChange={this.handleAvgRatingChange} />
+                            <Slider range defaultValue={[0, 5]} max={5} onChange={this.handleAvgRatingChange} />
                         </FormGroup></Col>
                         <Col flex={2}><FormGroup style={{ width: '10vw' }}>
                             <Button style={{ marginTop: '4vh' }} onClick={this.updateSearchResults}>Search</Button>
@@ -158,8 +158,10 @@ class RecipeResultPage extends React.Component {
             </div>
             </Form>
             <Divider />
+            <div style={{ width: "70%", marginBottom: "50px" , marginLeft: "200px"}}>
             {(!this.state.recipesResults || this.state.recipesResults.length < 1) ? (
-                     <>Oops... There's no matches.</>)
+              // happens when the list is super long... so made it a "loading" rather than "no matches found"
+                     <>Warming up your meal...</>)
                 :
                 this.state.recipesResults.map((recipe) => (
                   <RecipeCard
@@ -169,7 +171,9 @@ class RecipeResultPage extends React.Component {
                     n_steps = {recipe.n_steps}
                     minutes = {recipe.minutes}/>
                 ))
-            }
+
+              }
+            </div>
 
           </div>
       )
