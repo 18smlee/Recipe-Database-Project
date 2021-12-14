@@ -73,7 +73,7 @@ class UserDetailPage extends React.Component {
                             avgRatingReceived={this.state.selectedUserDetails.avg_rating_received}
                             avgRatingGiven={this.state.selectedUserDetails.avg_rating_given}
                             numRecipes={this.state.selectedUserDetails.num_recipes}
-                            numReviews={this.state.selectedUserDetails.numReviews}
+                            numReviews={this.state.selectedUserDetails.num_reviews}
                             handler = {null}
                             /> : null
                     }
