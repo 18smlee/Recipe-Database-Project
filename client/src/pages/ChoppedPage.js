@@ -98,6 +98,7 @@ class ChoppedPage extends React.Component {
       getAllChopped(this.state.choppedPageNumber, this.state.choppedPageSize).then(res => {
         //console.log(res.results)
         this.setState({ choppedResults: res.results })
+        this.setState({ searched: true })
         this.setState({ choppedPageNumber: this.state.choppedPageNumber + 1 })
       })
     }
@@ -127,15 +128,11 @@ class ChoppedPage extends React.Component {
     }
 
     handleToggleChange() {
-      if (this.state.ingredientOn) {
-        this.setState({ ingredientOn: false})
-      } else {
-        this.setState({ ingredientOn: true})
-      }
-      console.log(this.state.ingredientOn)
+      this.setState({ ingredientOn : !this.state.ingredientOn })
       this.setState({ choppedResults: [] })
       this.setState({ searched : false })
       this.setState({ choppedPageNumber : 0 })
+      this.setState({ searched : false })
     }
 
     nextPage() {
@@ -147,6 +144,7 @@ class ChoppedPage extends React.Component {
           // by default just display all chopped episodes
           getAllChopped(this.state.choppedPageNumber, this.state.choppedPageSize).then(res => {
             //console.log(res.results)
+            this.setState({ searched : true })
             this.setState({choppedResults: res.results, choppedPageNumber: newPage})
           })
         } else {
@@ -154,6 +152,7 @@ class ChoppedPage extends React.Component {
           // search by ingredients
           getChoppedFromIngredientSearch(this.state.ingredient1, this.state.ingredient2, this.state.ingredient3, this.state.choppedPageNumber, this.state.choppedPageSize).then(res => {
             //console.log(res.results)
+            this.setState({ searched : true })
             this.setState({choppedResults: res.results, choppedPageNumber: newPage})
           })
         }
@@ -162,12 +161,14 @@ class ChoppedPage extends React.Component {
           // by default just display all chopped episodes
           getAllChopped(this.state.choppedPageNumber, this.state.choppedPageSize).then(res => {
             //console.log(res.results)
+            this.setState({ searched : true })
             this.setState({choppedResults: res.results, choppedPageNumber: newPage})
           })
         } else {
           // search by judges
           getChoppedFromEpisodeSearch(this.state.judge1, this.state.judge2, this.state.judge3, this.state.choppedPageNumber, this.state.choppedPageSize).then(res => {
             //console.log(res.results)
+            this.setState({ searched : true })
             this.setState({choppedResults: res.results, choppedPageNumber: newPage})
           })
         }
@@ -175,6 +176,7 @@ class ChoppedPage extends React.Component {
       
       getAllChopped(this.state.choppedPageNumber, this.state.choppedPageSize).then(res => {
         console.log(res.results)
+        this.setState({ searched : true })
         this.setState({choppedResults: res.results, choppedPageNumber: newPage})
       })
     }
@@ -187,6 +189,7 @@ class ChoppedPage extends React.Component {
           // by default just display all chopped episodes
           getAllChopped(0, this.state.choppedPageSize).then(res => {
             //console.log(res.results)
+            this.setState({ searched : true })
             this.setState({ choppedResults: res.results })
             this.setState({ choppedPageNumber: 0 })
           })
@@ -195,6 +198,7 @@ class ChoppedPage extends React.Component {
           // search by ingredients
           getChoppedFromIngredientSearch(this.state.ingredient1, this.state.ingredient2, this.state.ingredient3, this.state.choppedPageNumber, this.state.choppedPageSize).then(res => {
             //console.log(res.results)
+            this.setState({ searched : true })
             this.setState({ choppedResults: res.results })
             this.setState({ choppedPageNumber: 0 })
           })
@@ -204,6 +208,7 @@ class ChoppedPage extends React.Component {
           // by default just display all chopped episodes
           getAllChopped(0, this.state.choppedPageSize).then(res => {
             //console.log(res.results)
+            this.setState({ searched : true })
             this.setState({ choppedResults: res.results })
             this.setState({ choppedPageNumber: 0 })
           })
@@ -211,6 +216,7 @@ class ChoppedPage extends React.Component {
           // search by judges
           getChoppedFromEpisodeSearch(this.state.judge1, this.state.judge2, this.state.judge3, this.state.choppedPageNumber, this.state.choppedPageSize).then(res => {
             //console.log(res.results)
+            this.setState({ searched : true })
             this.setState({ choppedResults: res.results })
             this.setState({ choppedPageNumber: 0 })
           })
@@ -334,10 +340,11 @@ class ChoppedPage extends React.Component {
           </div>
 
 
-
+          
           <div style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
             {
-                this.state.showModal ? (<> </>) : (<Button onClick={this.nextPage}> More Results </Button>)}
+                ((!this.state.showModal) && (this.state.searched) && this.state.choppedResults.length >= 10) ? (
+                <Button onClick={this.nextPage}> More Results </Button>) : (<> </>) }
           </div>
         </div>
       )
