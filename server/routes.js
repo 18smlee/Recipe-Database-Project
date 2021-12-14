@@ -368,7 +368,6 @@ async function search_recipes_by_nutrition(req, res) {
 // Route 4 
 async function search_chopped_by_episode(req, res) {
     const pageSize = req.query.pagesize ? req.query.pagesize : 10;
-    const episodeNum = req.query.EpisodeNum;
     const judge1Name = req.query.Judge1 ? req.query.Judge1 : '';
     const judge2Name = req.query.Judge2 ? req.query.Judge2 : '';
     const judge3Name = req.query.Judge3 ? req.query.Judge3 : '';
@@ -377,8 +376,7 @@ async function search_chopped_by_episode(req, res) {
     if (episodeNum) {
         choppedSearchQuery = `SELECT *
         FROM ChoppedEpisode
-        WHERE series_episode = ${episodeNum}
-            AND (Judge1 LIKE '%${judge1Name}%'
+            WHERE (Judge1 LIKE '%${judge1Name}%'
             OR Judge2 LIKE '%${judge2Name}%'
             OR Judge3 LIKE '%${judge3Name}%');`
 
@@ -761,13 +759,14 @@ async function get_all_chopped(req, res) {
         FROM ChoppedEpisode 
         LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
     }
+    console.log(choppedQuery)
 
 
     connection.query(choppedQuery, function (error, results, fields) {
         if (error) {
             console.log(error)
         } else if (results) {
-            console.log(results)
+            // console.log(results)
             res.json({ results: results })
         }
     });
