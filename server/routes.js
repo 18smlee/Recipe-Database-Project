@@ -653,6 +653,7 @@ async function search_users_by_reviews(req, res) {
 // Route 10
 async function get_all_recipes_from_user(req, res) {
     const pageSize = req.query.pagesize ? req.query.pagesize : 10;
+    console.log("pagesize: " + pageSize)
     const userId = req.params.userId;
 
     recipeSearchQuery = `
@@ -667,6 +668,8 @@ async function get_all_recipes_from_user(req, res) {
         WHERE contributor_id = ${userId}
         LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
     }
+
+    console.log(recipeSearchQuery)
 
     connection.query(recipeSearchQuery, function (error, results, fields) {
         if (error) {

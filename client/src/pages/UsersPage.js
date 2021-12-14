@@ -123,7 +123,7 @@ class UsersPage extends React.Component {
                     </FormGroup></Col>
                 </Row>
                 <br></br>
-                <Row>
+                <Row justify="center">
                    <Col><FormGroup style={{ width: '10vw' }}>
                             <Button style={{ marginTop: '4vh' }} onClick={this.updateSearchResults}>Search</Button>
                   </FormGroup></Col>
@@ -137,9 +137,11 @@ class UsersPage extends React.Component {
                 <UserCard
                   key={user.id}
                   id={'user_' + user.id}
-                  name={"Blah Blah"}
-                  photo={"prof.png"}
+                  photo={"https://raw.githubusercontent.com/18smlee/Recipe-Database-Project/main/client/src/images/person_icon.png"}
                   avgRatingReceived={user.avg_rating_received}
+                  avgRatingGiven={user.avg_rating_given}
+                  numRecipes={user.num_recipes}
+                  numReviews={user.num_reviews}
                   handler = {() => {
                     window.location = `/users/${user.id}`
                   }}

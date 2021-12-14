@@ -94,11 +94,16 @@ class RecipeDetailPage extends React.Component {
                         (<>
                             <h1>{capitalizeFirstLetters(this.state.selectedRecipeDetails.name)}</h1>
                             <Rate disabled value={this.state.selectedRecipeDetails.avg_rating}></Rate>
+
+                            <p class="fw-light">Prep Time: {this.state.selectedRecipeDetails.minutes} minutes</p>
+
+                            <Badge></Badge>
+
                             <p style={{marginTop:"20px"}}>{capitalizeAfterPeriods(this.state.selectedRecipeDetails.description)}</p>
                             
                             <div style={{marginTop:"30px"}}>
                                 <img style={{verticalAlign: 'middle'}} src="https://raw.githubusercontent.com/18smlee/Recipe-Database-Project/sam_dev/client/src/images/person_icon.png" height="40" width="40"/>
-                                <p style={{verticalAlgin: 'middle', display:'inline', marginLeft:'15px'}}>By @user_{this.state.selectedRecipeDetails.contributor_id}</p>
+                                <p style={{verticalAlign: 'middle', display:'inline', marginLeft:'15px'}}>By @user_{this.state.selectedRecipeDetails.contributor_id}</p>
                             </div>
 
                             <Card style={{marginTop:"20px", width: '20rem'}}>
