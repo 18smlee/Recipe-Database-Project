@@ -57,10 +57,10 @@ class RecipeSearchPage extends React.Component {
     }
     
     componentDidMount() {
-      // getAllRecipes().then(res => {
-      //   //console.log(res.results)
-      //   this.setState({ recipesResults: res.results })
-      // })
+      getAllRecipes().then(res => {
+        //console.log(res.results)
+        this.setState({ recipesResults: res.results })
+      })
     }
   
     render() {

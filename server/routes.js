@@ -794,12 +794,10 @@ async function get_recipe_by_id(req, res) {
     var recipeQuery = `SELECT *
     FROM Recipe
     WHERE id =${recipeId}`
-
     connection.query(recipeQuery, function (error, results, fields) {
         if (error) {
             console.log(error)
         } else if (results) {
-            console.log(results)
             res.json({ results: results })
         }
     });
