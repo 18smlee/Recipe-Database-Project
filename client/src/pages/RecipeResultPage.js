@@ -119,7 +119,7 @@ class RecipeResultPage extends React.Component {
         <div>
           <MenuBar />
           <Form style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
-            <h1>Find a Recipe!</h1>
+            <h1>Looking for Recipes?</h1>
 
             {/* <div className="container search"> */}
             <Row>
@@ -151,10 +151,8 @@ class RecipeResultPage extends React.Component {
                         </FormGroup></Col>
                 </Row>
 
-                <Row>
-                <Col flex={2}><FormGroup style={{ width: '10vw' }}>
+                <Row justify="center">
                             <Button style={{ marginTop: '4vh' }} onClick={this.updateSearchResults}>Search</Button>
-                        </FormGroup></Col>
                 </Row>
             </Form>
             <Divider />
