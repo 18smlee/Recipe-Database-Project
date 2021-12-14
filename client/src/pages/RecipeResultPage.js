@@ -22,6 +22,7 @@ import RecipeCardList from '../components/RecipeCardList';
 import SearchBar from '../components/SearchBar';
 // import Button from 'react-bootstrap/Button';
 
+import rocket_taco from '../images/rocket_taco.gif';
 import { getAllRecipes, getRecipeFromNameSearch, getRecipeFromTraitSearch} from '../fetcher';
 import queryString from 'query-string';
 
@@ -119,47 +120,65 @@ class RecipeResultPage extends React.Component {
         <div>
           <MenuBar />
           <Form style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
-            <h1>Looking for Recipes?</h1>
+            <h1 class="text-center" style={{marginBottom:"20px"}}>Find your favorite recipes!</h1>
 
             {/* <div className="container search"> */}
             <Row>
-            <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>
-                            <label>Search by Keyword</label>
-                            <FormInput placeholder="Name" value={this.state.nameQuery} onChange={this.handleNameQueryChange} />
-                        </FormGroup></Col>
+              <Col className="d-flex align-items-center justify-content-center" flex={2}>
+                <FormGroup style={{ width: '30vw' }}>
+                    <label style={{marginBottom:"10px"}}>Search by Keyword</label>
+                    <FormInput placeholder="Enter a keyword" value={this.state.nameQuery} onChange={this.handleNameQueryChange} />
+                </FormGroup>
+              </Col>
+              <Col>
+                <Row>
+                  <Col flex={2}>
+                    <FormGroup style={{ width: '20vw', margin: '0 auto' }}>
+                        <label>Number of Steps</label>
+                        <Slider range defaultValue={[0, 100]} max={100} onChange={this.handleNumStepsChange} />
+                    </FormGroup>
+                  </Col> 
+                </Row>
+                <Row>
+                  <Col flex={2}>
+                    <FormGroup style={{ width: '20vw', margin: '0 auto' }}>
+                        <label>Time to Cook</label>
+                        <Slider range defaultValue={[0, 500]} max={500} onChange={this.handleTimeToCookChange} />
+                    </FormGroup>
+                  </Col>
+                </Row>
+                <Row>
+                    <Col flex={2}>
+                      <FormGroup style={{ width: '20vw', margin: '0 auto' }}>
+                          <label>Average Rating</label>
+                          <Slider range defaultValue={[0, 5]} max={5} onChange={this.handleAvgRatingChange} />
+                      </FormGroup>
+                    </Col>
+                </Row>
+              </Col>
             </Row>
-            <br></br>
-            <br></br>
-                <Row>
-                <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>
-                            <label>Number of Steps</label>
-                            <Slider range defaultValue={[0, 100]} max={100} onChange={this.handleNumStepsChange} />
-                        </FormGroup></Col> 
-                </Row>
-
-                <Row>
-                <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>
-                            <label>Time to Cook</label>
-                            <Slider range defaultValue={[0, 500]} max={500} onChange={this.handleTimeToCookChange} />
-                        </FormGroup></Col>
-                </Row>
-
-                <Row>
-                <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>
-                            <label>Average Rating</label>
-                            <Slider range defaultValue={[0, 5]} max={5} onChange={this.handleAvgRatingChange} />
-                        </FormGroup></Col>
-                </Row>
-
-                <Row justify="center">
-                            <Button style={{ marginTop: '4vh' }} onClick={this.updateSearchResults}>Search</Button>
-                </Row>
+            <Row justify="center">
+              <Button style={{ marginTop: '4vh' }} onClick={this.updateSearchResults}>Search</Button>
+            </Row>
             </Form>
             <Divider />
             <div style={{ width: "70%", marginBottom: "50px" , marginLeft: "200px"}}>
             {(this.state.searched && (!this.state.recipesResults || this.state.recipesResults.length < 1)) ? (
               // happens when the list is super long... so made it a "loading" rather than "no matches found"
-                     <>Warming up your meal...</>)
+                     <>
+                     <Row justify="center">
+                     <img
+                        alt=""
+                        src={rocket_taco}
+                        width="100"
+                        height="100"
+                        className="align-top"
+                    />{' '}
+                     </Row>
+                     <Row justify="center">
+                     <p class="text-muted">Warming up your meal...</p>
+                     </Row>
+                     </>)
                 :
                 this.state.recipesResults.map((recipe) => (
                   <RecipeCard
