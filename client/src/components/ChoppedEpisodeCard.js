@@ -1,18 +1,24 @@
 
 import React from "react";
-
+import {
+  Card,
+  Badge
+} from "react-bootstrap"
 
 const ChoppedEpisodeCard = ({ episodeName, airDate, seriesEpisode, modalFunc }) => {
     return (
-        <div className="card" style={{ margin: "20px", padding: "20px" }} onClick={modalFunc}>
+      <Card style={{ margin: "20px", padding: "20px" }} onClick={modalFunc}>
           <div className="card-content">
             <h5>{episodeName}</h5>
-            <h6>
-              {airDate}
-            </h6>
-            <p className="content">{seriesEpisode}</p>
+            <Badge bg="info">
+            Ep. {seriesEpisode}
+            </Badge>{' '}
+            <Badge bg="light" text="dark">
+            Aired on {airDate} 
+            </Badge>{' '}
           </div>
-        </div>
+      </Card>
+       
       );
 };
 
