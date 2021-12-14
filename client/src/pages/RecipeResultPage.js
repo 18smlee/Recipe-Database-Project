@@ -3,7 +3,7 @@ which will lead to recipe details page where users can re-search and add filters
 */
 import React from 'react';
 
-import { Form, FormInput, FormGroup, Button, Card, CardBody, CardTitle, Progress } from "shards-react";
+import { Form, FormInput, FormGroup, Card, CardBody, CardTitle, Progress } from "shards-react";
 
 import {
     Table,
@@ -16,6 +16,10 @@ import {
     Switch,
     Rate 
 } from 'antd'
+
+import {
+  Button
+} from 'react-bootstrap'
 
 import MenuBar from '../components/MenuBar';
 import RecipeCard from '../components/RecipeCard.js';
@@ -315,7 +319,9 @@ class RecipeResultPage extends React.Component {
             </div>
 
             {(this.state.searched) ? (<div style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
-            <Button onClick={this.nextPage}> More Results </Button>
+            <div style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
+            <Button style={{marginBottom: "50px"}} variant='outline-secondary' onClick={this.nextPage}> More Results </Button>
+          </div>
           </div> ) : ( <> </>)
             
           }

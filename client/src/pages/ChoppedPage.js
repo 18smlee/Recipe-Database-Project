@@ -9,7 +9,7 @@ import ChoppedEpisodeCard from '../components/ChoppedEpisodeCard.js';
 import ChoppedModal from '../components/ChoppedModal';
 import { ThemeConsumer } from 'react-bootstrap/esm/ThemeProvider';
 
-import { Form, FormInput, FormGroup, Button, CardBody, CardTitle, Progress } from "shards-react";
+import { Form, FormInput, FormGroup, CardBody, CardTitle, Progress } from "shards-react";
 
 import {
   Container,
@@ -18,6 +18,7 @@ import {
   Stack,
   Image,
   Card,
+  Button,
 } from 'react-bootstrap';
 
 import {
@@ -235,13 +236,10 @@ class ChoppedPage extends React.Component {
             </p>
             </div>
             
-
-            <Row justify="center">
             {
                 this.state.showModal ? (<> </>) :
-              (<Switch checkedChildren="Search by Judges" unCheckedChildren="Search by Ingredients" onChange={this.handleToggleChange}
+              (<Switch className="d-block mx-auto" checkedChildren="Search by Judges" unCheckedChildren="Search by Ingredients" onChange={this.handleToggleChange}
             />)}
-          </Row>
 
             <div className="col-md-5">
           </div>
@@ -277,12 +275,16 @@ class ChoppedPage extends React.Component {
                   </FormGroup>
                 </Col>
               </Row>
+<<<<<<< HEAD
               {
                 this.state.showModal ? (<> </>) : (
               <Row justify="center"> 
                 <Button block style={{ marginTop: '2vh', span: "40px" }} onClick={this.updateSearchResults}>Search</Button>
               </Row>
                 )}
+=======
+              <Button className="d-block mx-auto" style={{ marginTop: '2vh'}} onClick={this.updateSearchResults}>Search</Button>
+>>>>>>> 8b96bc1ae20a0f2893162546d3136b74759ca669
             </div>
             </Form>
           ) : ( 
@@ -305,10 +307,14 @@ class ChoppedPage extends React.Component {
                   </FormGroup>
                 </Col>
               </Row>
+<<<<<<< HEAD
               <Row justify="center"> 
               {
                 this.state.showModal ?( <> </>) : (<Button block style={{ marginTop: '2vh', span: "40px" }} onClick={this.updateSearchResults}>Search</Button>)}
               </Row>
+=======
+            <Button className="d-block mx-auto" style={{ marginTop: '2vh'}} onClick={this.updateSearchResults}>Search</Button>
+>>>>>>> 8b96bc1ae20a0f2893162546d3136b74759ca669
             </div>
             </Form>
           ) }
@@ -338,10 +344,13 @@ class ChoppedPage extends React.Component {
 
 
           <div style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
+<<<<<<< HEAD
             {
                 this.state.showModal ? (<> </>) : (<Button onClick={this.nextPage}> More Results </Button>)}
+=======
+            <Button style={{marginBottom: "50px"}} variant='outline-secondary' onClick={this.nextPage}> More Results </Button>
+>>>>>>> 8b96bc1ae20a0f2893162546d3136b74759ca669
           </div>
-          
         </div>
       )
     }

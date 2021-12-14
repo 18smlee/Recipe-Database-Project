@@ -59,8 +59,8 @@ const getRecipeFromReviewSearch = async (avg_rating, page, pagesize) => {
     return res.json()
 }
 
-const getDailyMealPlanner = async (max_calories, page, pagesize) => {
-    var res = await fetch(`http://${config.server_host}:${config.server_port}/dailymealplanner?Calories=${max_calories}&page=${page}&pagesize=${pagesize}`, {
+const getDailyMealPlanner = async (max_calories, max_sugar, page, pagesize) => {
+    var res = await fetch(`http://${config.server_host}:${config.server_port}/dailymealplanner?Calories=${max_calories}&Sugar=${max_sugar}&page=${page}&pagesize=${pagesize}`, {
         method: 'GET',
     })
     return res.json()
@@ -166,6 +166,13 @@ const getRecipeIngredients = async (recipe_id) => {
     return res.json()
 }
 
+const findSimilarRecipe = async (recipeId, max_calories, max_sugar, page, pagesize) => {
+    var res = await fetch(`http://${config.server_host}:${config.server_port}/findsimilarrecipe?RecipeId=${recipeId}&Calories=${max_calories}&Sugar=${max_sugar}&page=${page}&pagesize=${pagesize}`, {
+        method: 'GET',
+    })
+    return res.json()
+}
+
 
 
 export {
@@ -193,5 +200,6 @@ export {
     getUser,
     getChoppedEpisodeIngredients,
     getRecipeFromNameSearch,
-    getRecipeIngredients
+    getRecipeIngredients,
+    findSimilarRecipe
 }
