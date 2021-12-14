@@ -141,7 +141,7 @@ class UsersPage extends React.Component {
                   avgRatingReceived={user.avg_rating_received}
                   avgRatingGiven={user.avg_rating_given}
                   numRecipes={user.num_recipes}
-                  numReviews={user.numReviews}
+                  numReviews={user.num_reviews}
                   handler = {() => {
                     window.location = `/users/${user.id}`
                   }}
