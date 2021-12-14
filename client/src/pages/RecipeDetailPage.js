@@ -17,7 +17,6 @@ import {
     Badge
 } from 'react-bootstrap'
 
-import person_icon from  '../images/logo.png';
 import { getRecipe, getRecipeChoppedLikelihood, getRecipeIngredients } from '../fetcher';
 import MenuBar from '../components/MenuBar';
 
@@ -74,9 +73,8 @@ class RecipeDetailPage extends React.Component {
             console.log(res1)
             console.log(res2)
             console.log(res3)
-            const recipeIngrs = res2.results.map((result) => result.ingredients)
-            // const recipeIngrs = res3.results
-            // console.log(recipeIngrs)
+            const recipeIngrs = stringToArray(res3.results[0].ingredient);
+            console.log(recipeIngrs)
             this.setState({ selectedRecipeDetails: res1.results[0], selectedRecipeIngredients: recipeIngrs, selectedRecipeIngrChoppedDetails: res2.results})
         })
         // getRecipe(this.state.selectedRecipeId).then(res => {
@@ -103,17 +101,17 @@ class RecipeDetailPage extends React.Component {
                                 <p style={{verticalAlgin: 'middle', display:'inline', marginLeft:'15px'}}>By @user_{this.state.selectedRecipeDetails.contributor_id}</p>
                             </div>
 
-                            <Card style={{marginTop:"20px"}}>
+                            <Card style={{marginTop:"20px", width: '20rem'}}>
                                 <div style={{margin:"20px"}}>
                                 <h6>Ingredients:</h6>
                                 <ul>
-                                    {/* {(this.state.selectedRecipeIngredients).map((ingredient) => {
+                                    {(this.state.selectedRecipeIngredients).map((ingredient) => {
                                             return(
                                                 <div style={{margin: "10px"}} bg="light">
                                                     <li key={ingredient.id}>{ingredient}</li>
                                                 </div>
                                             );
-                                        })} */}
+                                        })}
                                 </ul>
                                 <p style={{margin:"20px"}}>{this.state.selectedRecipeDetails.ingredients}</p>
                                 </div>
@@ -129,9 +127,9 @@ class RecipeDetailPage extends React.Component {
                                 })}
                             </ol>
                             <hr></hr>
-                            <Container style={{marginBottom:"60px"}}>
+                            <Container>
                                     <div style={{margin:"20px"}}>
-                                        <h3 class="text-center">Nutrition Facts</h3>
+                                        <h3 class="text-left">Nutrition Facts</h3>
                                     
                                         <div>
                                             {
@@ -167,6 +165,50 @@ class RecipeDetailPage extends React.Component {
 
                                             <h6 style={{marginTop: "20px"}}>Total Calories : {this.state.selectedRecipeDetails.num_calories}kCal</h6>
                                             
+                                        </div>
+                                    </div>
+                            </Container>
+                            <hr></hr>
+                            <Container>
+                                    <div style={{margin:"20px"}}>
+                                        <div>
+                                            {
+                                                (this.state.selectedRecipeIngrChoppedDetails == null) ? (<></>) :
+                                                (<>
+                                                    <h3 class="text-left">Chopped Statistics</h3>
+                                                    <p class="text-muted">If any of this recipe's ingredients has appeared in a Chopped episode, we have provided some interesting statistics on each ingredient.</p>
+                                                    <h5></h5>
+                                                    {(this.state.selectedRecipeIngrChoppedDetails).map((chopped) => {
+                                                            return(
+                                                                <>
+                                                                <Row>
+                                                                    <Col></Col>
+                                                                    <Col><p class="text-muted"># Years Appeared on Chopped</p></Col>
+                                                                    {/* <div style={{margin: "10px"}} bg="light">
+                                                                    <p key={chopped.id}>{chopped.ingredients}</p>
+                                                                    <p>{avg_episode_occurrence_per_yr}</p>
+                                                                    </div> */}
+                                                                    <Col><p class="text-muted">Avg Episode Appearance Per Year</p></Col>
+                                                                    <Col><p class="text-muted">Total Appearance</p></Col>
+                                                                </Row>
+                                                                <Row>
+                                                                    <Col><p key={chopped.id}>{chopped.ingredients}</p></Col>
+                                                                    <Col>
+                                                                        <Badge bg="warning">{chopped.num_years_appeared}</Badge> {' '}
+                                                                    </Col>
+                                                                    <Col>
+                                                                        <Badge bg="warning">{chopped.avg_episode_occurrence_per_yr}</Badge> {' '}
+                                                                    </Col>
+                                                                    <Col>
+                                                                        <Badge bg="warning">{chopped.total_occurrences}</Badge> {' '}
+                                                                    </Col>
+                                                                </Row>
+                                                                </>
+                                                                
+                                                            );
+                                                        })}
+                                                </>)
+                                            }                           
                                         </div>
                                     </div>
                             </Container>
