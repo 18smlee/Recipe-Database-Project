@@ -210,7 +210,11 @@ class RecipeResultPage extends React.Component {
         <div>
           <MenuBar />
           <Form style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
-            <h1 class="text-center" style={{marginBottom:"20px"}}>Find your favorite recipes!</h1>
+            <div style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
+            <h3 class="text-center">Discover New Recipes</h3>
+            <hr></hr>
+            <p class="text-muted text-center">Search for new recipes by ingredients, or keywords and other recipe attributes. Our database has over 15,000 recipes to choose from!</p>
+          </div>
 
             <Row justify="center">
               <Switch checkedChildren="Search by Ingredient" unCheckedChildren="Search by Recipe" onChange={this.handleToggleChange}
