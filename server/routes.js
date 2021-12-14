@@ -670,7 +670,7 @@ async function search_users_by_reviews(req, res) {
 // Route 10
 async function get_all_recipes_from_user(req, res) {
     const pageSize = req.query.pagesize ? req.query.pagesize : 10;
-    const userId = req.params.user_id;
+    const userId = req.params.userId;
 
     recipeSearchQuery = `
     SELECT *
@@ -697,7 +697,7 @@ async function get_all_recipes_from_user(req, res) {
 // Route 11
 async function get_all_reviews_from_user(req, res) {
     const pageSize = req.query.pagesize ? req.query.pagesize : 10;
-    const userId = req.params.user_id;
+    const userId = req.params.userId;
 
     reviewSearchQuery = `
     SELECT *
@@ -716,6 +716,7 @@ async function get_all_reviews_from_user(req, res) {
         if (error) {
             res.json({ results: [] })
         } else if (results) {
+            console.log(results)
             res.json({ results: results })
         }
         
@@ -786,7 +787,6 @@ async function get_all_users(req, res) {
         LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
     }
 
-    console.log(userQuery);
 
     connection.query(userQuery, function (error, results, fields) {
         if (error) {
@@ -799,7 +799,8 @@ async function get_all_users(req, res) {
 }
 
 async function get_user_by_id(req, res) {
-    const userId = req.query.userId ? req.query.userId : 1;
+    const userId = req.params.userid ? req.params.userid : 1;
+    console.log(userId)
 
     var userQuery = `SELECT *
     FROM Users
