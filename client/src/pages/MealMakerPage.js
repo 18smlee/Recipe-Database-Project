@@ -9,7 +9,7 @@ function capitalizeFirstLetters(string) {
 }
 
 import React from 'react';
-import { Form, FormInput, FormGroup, Button, CardHeader, CardImg, CardFooter, CardBody, CardTitle, Progress } from "shards-react";
+import { Form, FormInput, FormGroup, CardHeader, CardImg, CardFooter, CardBody, CardTitle, Progress } from "shards-react";
 
 import {
     // Table,
@@ -29,7 +29,8 @@ import {
   Card,
   Row,
   Col,
-  Table
+  Table,
+  Button
 } from 'react-bootstrap'
 
 
@@ -120,7 +121,9 @@ class MealMakerPage extends React.Component {
         <div>
           <MenuBar />
           <div style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
-            <h3>Meal Maker</h3>
+            <h3 class="text-center">Meal Maker</h3>
+            <hr></hr>
+            <p class="text-muted text-center"> Enter your preferred daily calorie intake and we will give you 3 meal plans consisting of 3 different recipes you can try!</p>
           </div>
           <Form style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
             <div className="container search">
@@ -132,9 +135,9 @@ class MealMakerPage extends React.Component {
                 </FormGroup>
               </Col>
             </Row>
-            <Row justify="center"> 
-              <Button style={{ marginTop: '2vh' }} onClick={this.searchRecipes}>Make My Meal Plan!</Button>
-            </Row>
+            {/* <Row justify="center">  */}
+              <Button className="d-block mx-auto" style={{ marginTop: '2vh'}} onClick={this.searchRecipes}>Make My Meal Plan!</Button>
+            {/* </Row> */}
             </div>
           </Form>
           <Divider />
