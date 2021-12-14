@@ -236,13 +236,10 @@ class ChoppedPage extends React.Component {
             </p>
             </div>
             
-
-            <Row justify="center">
             {
                 this.state.showModal ? (<> </>) :
-              (<Switch checkedChildren="Search by Judges" unCheckedChildren="Search by Ingredients" onChange={this.handleToggleChange}
+              (<Switch className="d-block mx-auto" checkedChildren="Search by Judges" unCheckedChildren="Search by Ingredients" onChange={this.handleToggleChange}
             />)}
-          </Row>
 
             <div className="col-md-5">
           </div>
@@ -273,9 +270,7 @@ class ChoppedPage extends React.Component {
                   </FormGroup>
                 </Col>
               </Row>
-              <Row justify="center"> 
-                <Button block style={{ marginTop: '2vh', span: "40px" }} onClick={this.updateSearchResults}>Search</Button>
-              </Row>
+              <Button className="d-block mx-auto" style={{ marginTop: '2vh'}} onClick={this.updateSearchResults}>Search</Button>
             </div>
             </Form>
           ) : ( 
@@ -295,9 +290,7 @@ class ChoppedPage extends React.Component {
                   </FormGroup>
                 </Col>
               </Row>
-              <Row justify="center"> 
-                <Button block style={{ marginTop: '2vh', span: "40px" }} onClick={this.updateSearchResults}>Search</Button>
-              </Row>
+            <Button className="d-block mx-auto" style={{ marginTop: '2vh'}} onClick={this.updateSearchResults}>Search</Button>
             </div>
             </Form>
           ) }
