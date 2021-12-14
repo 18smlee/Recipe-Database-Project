@@ -1,7 +1,7 @@
 /* Page to show details about user (id, contributions, ratings) 
  */
 import React from 'react';
-import { Form, FormInput, FormGroup, Button, Card, CardBody, CardTitle, Progress } from "shards-react";
+import { Form, FormInput, FormGroup, Card, CardBody, CardTitle, Progress } from "shards-react";
 import {
   Table,
   Pagination,
@@ -10,6 +10,9 @@ import {
   Row,
   Col
 } from 'antd'
+import {
+    Button
+} from "react-bootstrap"
 
 import { getAllUsersReviews, getAllUsersRecipes, getUser } from '../fetcher';
 import MenuBar from '../components/MenuBar';
@@ -63,7 +66,6 @@ class UserDetailPage extends React.Component {
             <div>
                 <MenuBar />
                 <div style={{ width: '70vw', margin: '0 auto', marginTop: '2vh' }}>
-                    <h3>User Details</h3>
                     {
                         this.state.selectedUserDetails ?
                         <UserCard
@@ -78,8 +80,11 @@ class UserDetailPage extends React.Component {
                             /> : null
                     }
                 </div>
+                <br></br>
+                <hr></hr>
+                <br></br>
                 <div style={{ width: '70vw', margin: '0 auto', marginTop: '2vh' }}>
-                    <h3>User Recipes</h3>
+                    <h4>Recipes by @user_{this.state.id}</h4>
                     {
                         // console.log(this.state.recipesWritten)
                         this.state.recipesWritten ? this.state.recipesWritten.map((recipe) => (
@@ -88,7 +93,7 @@ class UserDetailPage extends React.Component {
                                 name={recipe.name}
                                 minutes={recipe.minutes}
                                 n_steps={recipe.n_steps}
-                                submitted={recipe.date}
+                                submitted={recipe.submitted}
                                 handler = {() => {
                                     window.location = `/recipe/${recipe.id}`
                                 }}
@@ -96,12 +101,15 @@ class UserDetailPage extends React.Component {
                         )) : null
                     }
                     {
-                        this.state.recipesWritten ? <Button onClick={this.nextRecipePage}> More Recipes </Button> : null
+                        this.state.recipesWritten ? <Button style={{marginTop: "20px"}} variant="outline-secondary" onClick={this.nextRecipePage}> More Recipes </Button> : null
                     }
                     
                 </div>
+                <br></br>
+                <hr></hr>
+                <br></br>
                 <div style={{ width: '70vw', margin: '0 auto', marginTop: '2vh' }}>
-                    <h3>User Reviews</h3>
+                <h4>Reviews written by @user_{this.state.id}</h4>
                     {
                         // console.log(this.state.reviewsGiven)
                         this.state.reviewsGiven ? this.state.reviewsGiven.map((review) => (
@@ -116,7 +124,9 @@ class UserDetailPage extends React.Component {
                                 />
                             )) : null
                     }
+                    <br></br>
                 </div>
+                
             </div>
         )
     }

@@ -10,7 +10,7 @@ const RecipeCard = ({ name, id, minutes, contributor_id, n_steps, showRecipeDeta
     <Card style={{ marginRight: "20px", marginTop: "20px", padding: "20px" }} onClick = {handler}>
       <div className="card-content">
         <h4 style={{textTransform: 'capitalize'}}>{name}</h4>
-        <h6>Published {submitted}</h6>
+        <p class="fw-light">Published {submitted}</p>
         <Badge bg="secondary" text="light">
             </Badge>{' '}
         <Badge bg="warning" text="dark">
