@@ -372,48 +372,32 @@ async function search_chopped_by_episode(req, res) {
     const judge2Name = req.query.Judge2 ? req.query.Judge2 : '';
     const judge3Name = req.query.Judge3 ? req.query.Judge3 : '';
 
-
-    if (episodeNum) {
-        choppedSearchQuery = `SELECT *
+    choppedSearchQuery = `SELECT *
         FROM ChoppedEpisode
-            WHERE (Judge1 LIKE '%${judge1Name}%'
-            OR Judge2 LIKE '%${judge2Name}%'
-            OR Judge3 LIKE '%${judge3Name}%');`
-
-        if (req.query.page && !isNaN(req.query.page)) {
-            choppedSearchQuery = `SELECT *
-                FROM ChoppedEpisode
-                WHERE series_episode = ${episodeNum}
-                    AND (Judge1 LIKE '%${judge1Name}%'
-                    OR Judge2 LIKE '%${judge2Name}%'
-                    OR Judge3 LIKE '%${judge3Name}%')
-                LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
-        }
-
-    } else {
-        choppedSearchQuery = `SELECT *
-        FROM ChoppedEpisode
-        WHERE (Judge1 LIKE '%${judge1Name}%'
-            OR Judge2 LIKE '%${judge2Name}%'
-            OR Judge3 LIKE '%${judge3Name}%');`
+        WHERE (Judge1 LIKE '%${judge1Name}%' OR Judge2 LIKE '%${judge1Name}%' OR Judge3 LIKE '%${judge1Name}%')
+            AND (Judge1 LIKE '%${judge2Name}%' OR Judge2 LIKE '%${judge2Name}%' OR Judge3 LIKE '%${judge2Name}%')
+            AND (Judge1 LIKE '%${judge3Name}%' OR Judge2 LIKE '%${judge3Name}%' OR Judge3 LIKE '%${judge3Name}%')
+            ORDER BY series_episode;`
 
         if (req.query.page && !isNaN(req.query.page)) {
             choppedSearchQuery = `SELECT *
             FROM ChoppedEpisode
-            WHERE (Judge1 LIKE '%${judge1Name}%'
-                OR Judge2 LIKE '%${judge2Name}%'
-                OR Judge3 LIKE '%${judge3Name}%')
+            WHERE (Judge1 LIKE '%${judge1Name}%' OR Judge2 LIKE '%${judge1Name}%' OR Judge3 LIKE '%${judge1Name}%')
+            AND (Judge1 LIKE '%${judge2Name}%' OR Judge2 LIKE '%${judge2Name}%' OR Judge3 LIKE '%${judge2Name}%')
+            AND (Judge1 LIKE '%${judge3Name}%' OR Judge2 LIKE '%${judge3Name}%' OR Judge3 LIKE '%${judge3Name}%')
+            ORDER BY series_episode
             LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
         }
-    }
 
     connection.query(choppedSearchQuery, function (error, results, fields) {
         if (error) {
             res.json({ results: [] })
         } else if (results) {
+            console.log(results.length)
             res.json({ results: results })
         }
     });
+    console.log(choppedSearchQuery)
 }
 
 // Route 5
@@ -426,15 +410,15 @@ async function search_chopped_by_ingredients(req, res) {
     choppedSearchQuery = `SELECT *
     FROM ChoppedEpisode
     WHERE (LOWER(episode_name) LIKE '%${ingredient1Name}%'
-        OR LOWER(episode_name) LIKE '%${ingredient2Name}%'
-        OR LOWER(episode_name) LIKE '%${ingredient3Name}%');`
+        AND LOWER(episode_name) LIKE '%${ingredient2Name}%'
+        AND LOWER(episode_name) LIKE '%${ingredient3Name}%');`
 
     if (req.query.page && !isNaN(req.query.page)) {
         choppedSearchQuery = `SELECT *
         FROM ChoppedEpisode
         WHERE (LOWER(episode_name) LIKE '%${ingredient1Name}%'
-            OR LOWER(episode_name) LIKE '%${ingredient2Name}%'
-            OR LOWER(episode_name) LIKE '%${ingredient3Name}%')
+            AND LOWER(episode_name) LIKE '%${ingredient2Name}%'
+            AND LOWER(episode_name) LIKE '%${ingredient3Name}%')
         LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
     }
 
@@ -445,6 +429,7 @@ async function search_chopped_by_ingredients(req, res) {
             res.json({ results: results })
         }
     });
+    console.log(choppedSearchQuery)
 }
 
 // Route 6
@@ -759,7 +744,7 @@ async function get_all_chopped(req, res) {
         FROM ChoppedEpisode 
         LIMIT ${pageSize} OFFSET ${pageSize * req.query.page};`
     }
-    console.log(choppedQuery)
+    // console.log(choppedQuery)
 
 
     connection.query(choppedQuery, function (error, results, fields) {
@@ -852,7 +837,6 @@ async function get_chopped_episode_ingredients(req, res) {
         console.log(error)
         res.json({ results: [] })
     }
-    
 }
 
 async function search_recipes_by_name(req, res) {

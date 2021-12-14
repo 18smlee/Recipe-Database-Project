@@ -134,11 +134,43 @@ class ChoppedPage extends React.Component {
       console.log(this.state.ingredientOn)
       this.setState({ choppedResults: [] })
       this.setState({ searched : false })
+      this.setState({ choppedPageNumber : 0 })
     }
 
     nextPage() {
       var newPage = this.state.choppedPageNumber + 1
       console.log(newPage)
+
+      if (this.state.ingredientOn) {
+        if (this.state.ingredient1 == '' && this.state.ingredient2 == '' && this.state.ingredient3 == '') {
+          // by default just display all chopped episodes
+          getAllChopped(this.state.choppedPageNumber, this.state.choppedPageSize).then(res => {
+            //console.log(res.results)
+            this.setState({choppedResults: res.results, choppedPageNumber: newPage})
+          })
+        } else {
+          console.log("GOT HERE")
+          // search by ingredients
+          getChoppedFromIngredientSearch(this.state.ingredient1, this.state.ingredient2, this.state.ingredient3, this.state.choppedPageNumber, this.state.choppedPageSize).then(res => {
+            //console.log(res.results)
+            this.setState({choppedResults: res.results, choppedPageNumber: newPage})
+          })
+        }
+      } else {
+        if (this.state.judge1 == '' && this.state.judge2 == '' && this.state.judge3 == '') {
+          // by default just display all chopped episodes
+          getAllChopped(this.state.choppedPageNumber, this.state.choppedPageSize).then(res => {
+            //console.log(res.results)
+            this.setState({choppedResults: res.results, choppedPageNumber: newPage})
+          })
+        } else {
+          // search by judges
+          getChoppedFromEpisodeSearch(this.state.judge1, this.state.judge2, this.state.judge3, this.state.choppedPageNumber, this.state.choppedPageSize).then(res => {
+            //console.log(res.results)
+            this.setState({choppedResults: res.results, choppedPageNumber: newPage})
+          })
+        }
+      }
       
       getAllChopped(this.state.choppedPageNumber, this.state.choppedPageSize).then(res => {
         console.log(res.results)
@@ -147,16 +179,18 @@ class ChoppedPage extends React.Component {
     }
   
     updateSearchResults() {
+      this.setState({ choppedResults: [] })
       console.log(this)
       if (this.state.ingredientOn) {
         if (this.state.ingredient1 == '' && this.state.ingredient2 == '' && this.state.ingredient3 == '') {
           // by default just display all chopped episodes
-          getAllChopped(this.state.choppedPageNumber, this.state.choppedPageSize).then(res => {
+          getAllChopped(0, this.state.choppedPageSize).then(res => {
             //console.log(res.results)
             this.setState({ choppedResults: res.results })
             this.setState({ choppedPageNumber: 0 })
           })
         } else {
+          console.log("GOT HERE")
           // search by ingredients
           getChoppedFromIngredientSearch(this.state.ingredient1, this.state.ingredient2, this.state.ingredient3, this.state.choppedPageNumber, this.state.choppedPageSize).then(res => {
             //console.log(res.results)
@@ -167,7 +201,7 @@ class ChoppedPage extends React.Component {
       } else {
         if (this.state.judge1 == '' && this.state.judge2 == '' && this.state.judge3 == '') {
           // by default just display all chopped episodes
-          getAllChopped(this.state.choppedPageNumber, this.state.choppedPageSize).then(res => {
+          getAllChopped(0, this.state.choppedPageSize).then(res => {
             //console.log(res.results)
             this.setState({ choppedResults: res.results })
             this.setState({ choppedPageNumber: 0 })
@@ -201,8 +235,10 @@ class ChoppedPage extends React.Component {
             </p>
 
             <Row justify="center">
-              <Switch checkedChildren="Search by Judges" unCheckedChildren="Search by Ingredients" onChange={this.handleToggleChange}
-            />
+            {
+                this.state.showModal ? (<> </>) :
+              (<Switch checkedChildren="Search by Judges" unCheckedChildren="Search by Ingredients" onChange={this.handleToggleChange}
+            />)}
           </Row>
 
             <div className="col-md-5">
@@ -211,6 +247,7 @@ class ChoppedPage extends React.Component {
             <div style={{ width: "50%", marginBottom: "50px" }}>
                 {this.state.showModal ? (
                     <ChoppedModal handleClose = {this.hideModal} seriesEpisode={this.state.clickedEpisode} choppedEpisode={this.state.clickedChoppedEpisode} />
+                    // make the toggle disappear
                 ) : (
                     <> </>
                 )}
