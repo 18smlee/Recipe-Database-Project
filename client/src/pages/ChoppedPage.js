@@ -283,9 +283,7 @@ class ChoppedPage extends React.Component {
               </Row>
               {
                 this.state.showModal ? (<> </>) : (
-              <Row justify="center"> 
-                <Button block style={{ marginTop: '2vh', span: "40px" }} onClick={this.updateSearchResults}>Search</Button>
-              </Row>
+                <Button className="d-flex block mx-auto" style={{ marginTop: '2vh' }} onClick={this.updateSearchResults}>Search</Button>
                 )}
             </div>
             </Form>
@@ -309,10 +307,8 @@ class ChoppedPage extends React.Component {
                   </FormGroup>
                 </Col>
               </Row>
-              <Row justify="center"> 
               {
-                this.state.showModal ?( <> </>) : (<Button block style={{ marginTop: '2vh', span: "40px" }} onClick={this.updateSearchResults}>Search</Button>)}
-              </Row>
+                this.state.showModal ?( <> </>) : (<Button className="d-flex block mx-auto" style={{ marginTop: '2vh'}} onClick={this.updateSearchResults}>Search</Button>)}
             </div>
             </Form>
           ) }
@@ -344,8 +340,10 @@ class ChoppedPage extends React.Component {
           <div style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
             {
                 ((!this.state.showModal) && (this.state.searched) && this.state.choppedResults.length >= 10) ? (
-                <Button onClick={this.nextPage}> More Results </Button>) : (<> </>) }
+                <Button style={{marginBottom:"50px"}} variant="outline-secondary" onClick={this.nextPage}> More Results </Button>) : (<> </>) }
           </div>
+          <Row></Row>
+          <Row></Row>
         </div>
       )
     }
