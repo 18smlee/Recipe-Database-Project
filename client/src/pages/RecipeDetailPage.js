@@ -133,7 +133,7 @@ class RecipeDetailPage extends React.Component {
                             </ol>
                             <hr></hr>
                             <Container>
-                                    <div style={{margin:"20px"}}>
+                                    <div style={{marginTop:"30px", marginBottom:"30px"}}>
                                         <h3 class="text-left">Nutrition Facts</h3>
                                     
                                         <div>
@@ -175,7 +175,7 @@ class RecipeDetailPage extends React.Component {
                             </Container>
                             <hr></hr>
                             <Container>
-                                    <div style={{margin:"20px"}}>
+                                    <div style={{marginTop:"30px"}}>
                                         <div>
                                             {
                                                 (this.state.selectedRecipeIngrChoppedDetails == null) ? (<></>) :
@@ -220,6 +220,8 @@ class RecipeDetailPage extends React.Component {
                             <Row></Row>
                         </>)
                     }
+                    <br></br>
+                    <br></br>
                 </div>
             </div>
         )

@@ -281,6 +281,7 @@ class MealMakerPage extends React.Component {
                 </Table>
               </>)}
               </div>
+              <br></br>
           </div>
           ) : <></>}
         </div>
