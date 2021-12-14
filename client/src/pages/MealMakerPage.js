@@ -1,15 +1,22 @@
 /* Page to get meal recommendations and add conditions like ingredients, number of steps, time, nutrition
 Different filters appear (nutrition vs ingredients/# steps/time) based on a "switch" feature -> refer to drawing
  */
+
+function capitalizeFirstLetters(string) {
+  return string.replace(/\w\S*/g, function(txt){
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+  });
+}
+
 import React from 'react';
-import { Form, FormInput, FormGroup, Button, Card, CardHeader, CardImg, CardFooter, CardBody, CardTitle, Progress } from "shards-react";
+import { Form, FormInput, FormGroup, Button, CardHeader, CardImg, CardFooter, CardBody, CardTitle, Progress } from "shards-react";
 
 import {
-    Table,
+    // Table,
     Pagination,
     Select,
-    Row,
-    Col,
+    // Row,
+    // Col,
     Divider,
     Slider,
     Rate,
@@ -17,6 +24,13 @@ import {
     Steps,
     Popover
 } from 'antd';
+
+import {
+  Card,
+  Row,
+  Col,
+  Table
+} from 'react-bootstrap'
 
 
 import MenuBar from '../components/MenuBar';
@@ -87,9 +101,9 @@ class MealMakerPage extends React.Component {
       console.log("searching")
       getDailyMealPlanner(this.state.maxCalories, null, null).then(res => {
         console.log("meal plan search by nutrition")
-        var calories1String = res.results[0].total_calories + " calories";
-        var calories2String = res.results[1].total_calories + " calories";
-        var calories3String = res.results[2].total_calories + " calories";
+        var calories1String = res.results[0].total_calories + " cal";
+        var calories2String = res.results[1].total_calories + " cal";
+        var calories3String = res.results[2].total_calories + " cal";
         console.log(res.results)
         this.setState({ recipesResults: res.results })
         this.setState({ recipe1CaloriesString: calories1String})
@@ -126,120 +140,62 @@ class MealMakerPage extends React.Component {
           <Divider />
           {this.state.recipesResults.length > 0 ? (
           <div>
-          
-          <Divider />
-          <Row justify="space-around">
-            <Col> Meal Plan 1</Col>
-            <Col> Meal Plan 2</Col>
-            <Col> Meal Plan 3</Col>
-          </Row>
-          <Row justify="space-around"> 
-            <Col >
-              <div style={{paddingLeft:"20px"}}>
-                <Card>
-                  <CardHeader>Meal 1</CardHeader>
-                  <CardBody>
-                    <CardTitle>{this.state.recipesResults[0].recipe1_name}</CardTitle>
-                    <Button onClick={()=>window.location = `/recipe/${this.state.recipesResults[0].recipe1_id}`}>Go to Recipe &rarr;</Button>
-                  </CardBody>
-                </Card>
-                </div>
-              </Col>
-              <Col>
-              <div style={{paddingLeft:"20px"}}>
-                <Card>
-                  <CardHeader>Meal 1</CardHeader>
-                  <CardBody>
-                    <CardTitle>{this.state.recipesResults[1].recipe1_name}</CardTitle>
-                    <Button onClick={()=>window.location = `/recipe/${this.state.recipesResults[1].recipe1_id}`}>Go to Recipe &rarr;</Button>
-                  </CardBody>
-                </Card>
-                </div>
-              </Col>
-              <Col>
-                <div style={{paddingLeft:"20px"}}>
-                <Card>
-                  <CardHeader>Meal 1</CardHeader>
-                  <CardBody>
-                    <CardTitle>{this.state.recipesResults[2].recipe1_name}</CardTitle>
-                    <Button onClick={()=>window.location = `/recipe/${this.state.recipesResults[2].recipe1_id}`}>Go to Recipe &rarr;</Button>
-                  </CardBody>
-                </Card>
-                </div>
-              </Col>
-          </Row>
-          <br></br>
-          <Row justify="space-around"> 
-              <Col>
-                <div style={{paddingLeft:"20px"}}>
-                <Card>
-                  <CardHeader>Meal 2</CardHeader>
-                  <CardBody>
-                    <CardTitle>{this.state.recipesResults[0].recipe2_name}</CardTitle>
-                    <Button onClick={()=>window.location = `/recipe/${this.state.recipesResults[0].recipe2_id}`}>Go to Recipe &rarr;</Button>
-                  </CardBody>
-                </Card>
-                </div>
-              </Col>
-              <Col>
-                <div style={{paddingLeft:"20px"}}>
-                <Card>
-                  <CardHeader>Meal 2</CardHeader>
-                  <CardBody>
-                    <CardTitle>{this.state.recipesResults[1].recipe2_name}</CardTitle>
-                    <Button onClick={()=>window.location = `/recipe/${this.state.recipesResults[1].recipe2_id}`}>Go to Recipe &rarr;</Button>
-                  </CardBody>
-                </Card>
-                </div>
-              </Col>
-              <Col>
-                <div style={{paddingLeft:"20px"}}>
-                <Card>
-                  <CardHeader>Meal 2</CardHeader>
-                  <CardBody>
-                    <CardTitle>{this.state.recipesResults[2].recipe2_name}</CardTitle>
-                    <Button onClick={()=>window.location = `/recipe/${this.state.recipesResults[2].recipe2_id}`}>Go to Recipe &rarr;</Button>
-                  </CardBody>
-                </Card>
-                </div>
-              </Col>
-          </Row>
-          <br></br>
-          <Row justify="space-around"> 
-              <Col className="gutter-row" span={6}>
-                <div style={{paddingLeft:"20px"}}>
-                <Card>
-                  <CardHeader>Meal 3</CardHeader>
-                  <CardBody>
-                    <CardTitle>{this.state.recipesResults[0].recipe3_name}</CardTitle>
-                    <Button onClick={()=>window.location = `/recipe/${this.state.recipesResults[0].recipe3_id}`}>Go to Recipe &rarr;</Button>
-                  </CardBody>
-                </Card>
-                </div>
-              </Col>
-              <Col className="gutter-row" span={6}>
-                <div style={{paddingLeft:"20px"}}>
-                <Card>
-                  <CardHeader>Meal 3</CardHeader>
-                  <CardBody>
-                    <CardTitle>{this.state.recipesResults[1].recipe3_name}</CardTitle>
-                    <Button onClick={()=>window.location = `/recipe/${this.state.recipesResults[1].recipe3_id}`}>Go to Recipe &rarr;</Button>
-                  </CardBody>
-                </Card>
-                </div>
-              </Col>
-              <Col className="gutter-row" span={6}>
-                <div style={{paddingLeft:"20px"}}>
-                <Card>
-                  <CardHeader>Meal 3</CardHeader>
-                  <CardBody>
-                    <CardTitle>{this.state.recipesResults[2].recipe3_name}</CardTitle>
-                    <Button onClick={()=>window.location = `/recipe/${this.state.recipesResults[2].recipe3_id}`}>Go to Recipe &rarr;</Button>
-                  </CardBody>
-                </Card>
-                </div>
-              </Col>
-          </Row>
+            <div style={{margin: "50px"}}>
+              
+              <Table bordered>
+                  <thead justify="center">
+                    <tr>
+                      <th style={{width: "33.33%"}} class="text-center">
+                        <h3 style={{margin:"10px"}}>Meal Plan A</h3>
+                        <p class="fw-light">Total Cal: {this.state.recipe1CaloriesString}</p>
+                      </th>
+                      <th style={{width: "33.33%"}} class="text-center">
+                        <h3 style={{margin:"10px"}}>Meal Plan B</h3>
+                        <p class="fw-light">Total Cal: {this.state.recipe2CaloriesString}</p>
+                      </th>
+                      <th style={{width: "33.33%"}} class="text-center">
+                        <h3 style={{margin:"10px"}}>Meal Plan C</h3>
+                        <p class="fw-light">Total Cal: {this.state.recipe3CaloriesString}</p>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="text-center" onClick={()=>window.location = `/recipe/${this.state.recipesResults[0].recipe1_id}`}>
+                        <h6>1. {capitalizeFirstLetters(this.state.recipesResults[0].recipe1_name)}</h6>
+                      </td>
+                      <td class="text-center" onClick={()=>window.location = `/recipe/${this.state.recipesResults[1].recipe1_id}`}>
+                        <h6>1. {capitalizeFirstLetters(this.state.recipesResults[1].recipe1_name)}</h6>
+                      </td>
+                      <td class="text-center" onClick={()=>window.location = `/recipe/${this.state.recipesResults[2].recipe1_id}`}>
+                        <h6>1. {capitalizeFirstLetters(this.state.recipesResults[2].recipe1_name)}</h6>
+                      </td>
+                    </tr>
+                    <tr>
+                    <td class="text-center" onClick={()=>window.location = `/recipe/${this.state.recipesResults[0].recipe2_id}`}>
+                        <h6>2. {capitalizeFirstLetters(this.state.recipesResults[0].recipe2_name)}</h6>
+                      </td>
+                      <td class="text-center" onClick={()=>window.location = `/recipe/${this.state.recipesResults[1].recipe2_id}`}>
+                        <h6>2. {capitalizeFirstLetters(this.state.recipesResults[1].recipe2_name)}</h6>
+                      </td>
+                      <td class="text-center" onClick={()=>window.location = `/recipe/${this.state.recipesResults[2].recipe2_id}`}>
+                        <h6>2. {capitalizeFirstLetters(this.state.recipesResults[2].recipe2_name)}</h6>
+                      </td>
+                    </tr>
+                    <tr>
+                    <td class="text-center" onClick={()=>window.location = `/recipe/${this.state.recipesResults[0].recipe3_id}`}>
+                        <h6>3. {capitalizeFirstLetters(this.state.recipesResults[0].recipe3_name)}</h6>
+                      </td>
+                      <td class="text-center" onClick={()=>window.location = `/recipe/${this.state.recipesResults[1].recipe3_id}`}>
+                        <h6>3. {capitalizeFirstLetters(this.state.recipesResults[1].recipe3_name)}</h6>
+                      </td>
+                      <td class="text-center" onClick={()=>window.location = `/recipe/${this.state.recipesResults[2].recipe3_id}`}>
+                        <h6>3. {capitalizeFirstLetters(this.state.recipesResults[2].recipe3_name)}</h6>
+                      </td>
+                    </tr>
+                  </tbody>
+                </Table>
+              </div>
           </div>
           ) : <></>}
         </div>
