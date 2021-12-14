@@ -136,25 +136,20 @@ class RecipeResultPage extends React.Component {
           if (tempIngr3 == '') {
             tempIngr3 = null;
           }
-          getRecipeFromIngredientSearch(this.state.ingredient1, tempIngr2, tempIngr3, this.state.recipesPageNumbeer, this.state.recipesPageSize)
+          getRecipeFromIngredientSearch(this.state.ingredient1, tempIngr2, tempIngr3, this.state.recipesPageNumber, this.state.recipesPageSize)
           .then(res => {
             console.log(res.results)
+            this.setState({ searched : true })
             this.setState({ recipesResults: res.results })
             this.setState({ recipesPageNumber: 0 })
           })
         }
       } else {
         // call getRecipesFromTraitsSearch and update recipesResults in state
-        console.log("search name: " + this.state.nameQuery)
-        console.log("min steps: " + this.state.minNumStepsQuery)
-        console.log("max steps: " + this.state.maxNumStepsQuery)
-        console.log("min time: " + this.state.minTimeToCookQuery)
-        console.log("max time: " + this.state.maxTimeToCookQuery)
-        console.log("min rate: " + this.state.minAvgRatingQuery)
-        console.log("max rate: " + this.state.maxAvgRatingQuery)
         this.setState({ searched: true })
         getRecipeFromTraitSearch(this.state.nameQuery, this.state.minTimeToCookQuery, this.state.maxTimeToCookQuery, this.state.minNumStepsQuery, this.state.maxNumStepsQuery, this.state.minAvgRatingQuery, this.state.maxAvgRatingQuery, this.state.recipesPageNumber, this.state.recipesPageSize).then(res => {
           console.log(res.results)
+          this.setState({ searched : true })
           this.setState({ recipesResults: res.results })
           this.setState({ recipesPageNumber: 0 })
         })
@@ -164,8 +159,6 @@ class RecipeResultPage extends React.Component {
     nextPage() {
       var newPage = this.state.recipesPageNumber + 1
       console.log(newPage)
-
-
 
       if (this.state.ingredientOn) {
         if (this.state.ingredient1 == '') {
@@ -179,7 +172,7 @@ class RecipeResultPage extends React.Component {
           if (tempIngr3 == '') {
             tempIngr3 = null;
           }
-          getRecipeFromIngredientSearch(this.state.ingredient1, tempIngr2, tempIngr3, this.state.recipesPageNumbeer, this.state.recipesPageSize)
+          getRecipeFromIngredientSearch(this.state.ingredient1, tempIngr2, tempIngr3, this.state.recipesPageNumber, this.state.recipesPageSize)
           .then(res => {
             console.log(res.results)
             this.setState({ recipesResults: res.results })

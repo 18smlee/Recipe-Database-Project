@@ -557,15 +557,15 @@ async function search_recipes_by_ingredients(req, res) {
              FROM (
                       SELECT ingr1.ingredient as ingredient, ingr1.recipe_id as recipe_id
                       from Ingredients_Correct ingr1
-                      WHERE ingr1.ingredient LIKE '%${ingredient1Name}%'
+                      WHERE ingr1.ingredient LIKE ' % ${ingredient1Name} % '
                       UNION ALL
                       SELECT ingr2.ingredient as ingredient, ingr2.recipe_id as recipe_id
                       from Ingredients_Correct ingr2
-                      WHERE ingr2.ingredient = '%${ingredient2Name}%'
+                      WHERE ingr2.ingredient = ' % ${ingredient2Name} % '
                       UNION ALL
                       SELECT ingr3.ingredient as ingredient, ingr3.recipe_id as recipe_id
                       from Ingredients_Correct ingr3
-                      WHERE ingr3.ingredient = '%${ingredient3Name}%'
+                      WHERE ingr3.ingredient = ' % ${ingredient3Name} % '
                   ) AS matching_recipes
              WHERE recipe_id IS NOT NULL
              GROUP BY recipe_id
@@ -605,6 +605,7 @@ async function search_recipes_by_ingredients(req, res) {
         if (error) {
             res.json({ results: [] })
         } else if (results) {
+            console.log(results.length)
             res.json({ results: results })
         }
     });
