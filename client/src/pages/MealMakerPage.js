@@ -1,13 +1,6 @@
 /* Page to get meal recommendations and add conditions like ingredients, number of steps, time, nutrition
 Different filters appear (nutrition vs ingredients/# steps/time) based on a "switch" feature -> refer to drawing
  */
-
-function capitalizeFirstLetters(string) {
-  return string.replace(/\w\S*/g, function(txt){
-      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-  });
-}
-
 import React from 'react';
 import { Form, FormInput, FormGroup, CardHeader, CardImg, CardFooter, CardBody, CardTitle, Progress } from "shards-react";
 
@@ -36,6 +29,12 @@ import {
 
 import MenuBar from '../components/MenuBar';
 import { getDailyMealPlanner, getRecipeFromIngredientSearch } from '../fetcher';
+
+function capitalizeFirstLetters(string) {
+  return string.replace(/\w\S*/g, function(txt){
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+  });
+}
 
 const { Step } = Steps
 
