@@ -68,8 +68,8 @@ class RecipeResultPage extends React.Component {
       })
     }
 
-    handleNameQueryChange(value) {
-      this.setState({ nameQuery: value })
+    handleNameQueryChange(event) {
+      this.setState({ nameQuery: event.target.value })
     }
 
     handleNumStepsChange(value) {
@@ -87,13 +87,13 @@ class RecipeResultPage extends React.Component {
       this.setState({ maxAvgRatingQuery: value[1] })
     }
 
-    // handleSearch(searchTerm) {
-    //   console.log("search")
-    //   console.log(searchTerm)
-    //   this.setState({ nameQuery: searchTerm })
+    handleSearch(searchTerm) {
+      console.log("search")
+      console.log(searchTerm)
+      this.setState({ nameQuery: searchTerm })
       
-    //   // fix url
-    // }
+      // fix url
+    }
 
     updateSearchResults() {
       // call getRecipesFromTraitsSearch and update recipesResults in state
@@ -104,20 +104,16 @@ class RecipeResultPage extends React.Component {
       console.log("max time: " + this.state.maxTimeToCookQuery)
       console.log("min rate: " + this.state.minAvgRatingQuery)
       console.log("max rate: " + this.state.maxAvgRatingQuery)
-      getRecipeFromTraitSearch(this.state.nameQuery, this.state.minNumStepsQuery, this.state.maxNumStepsQuery, this.state.minTimeToCookQuery, this.state.maxTimeToCookQuery, this.state.minAvgRatingQuery, this.state.maxAvgRatingQuery, null, null).then(res => {
-        // console.log(res.results)
-        console.log("length: " + res.results.length)
+      getRecipeFromTraitSearch(this.state.nameQuery, this.state.minTimeToCookQuery, this.state.maxTimeToCookQuery, this.state.minNumStepsQuery, this.state.maxNumStepsQuery, this.state.minAvgRatingQuery, this.state.maxAvgRatingQuery, null, null).then(res => {
+        console.log(res.results)
         this.setState({ recipesResults: res.results })
       })
     }
 
     componentDidMount() {
-      let params = queryString.parse(window.location.search)
-      this.setState({ nameQuery: params.s})
-      getRecipeFromNameSearch(params.s, null, null).then(res => {
-      // console.log(res.results)
-      this.setState({ recipesResults: res.results })
-      })
+      // getRecipeFromTraitSearch(this.state.nameQuery, this.state.minNumStepsQuery, this.state.maxNumStepsQuery, this.state.minTimeToCookQuery, this.state.maxTimeToCookQuery, this.state.minAvgRatingQuery, this.state.maxAvgRatingQuery, null, null).then(res => {
+      //   this.setState({ recipesResults: res.results })
+      // })
     }
   
     render() {
@@ -128,37 +124,41 @@ class RecipeResultPage extends React.Component {
           <Form style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
             <h1>Find a Recipe!</h1>
 
-            <div className="container search">
-            {/* <SearchBar placeholder={"Find recipes"}
-            errorMsg={"Please enter a recipe to search for!"}
-            onSubmit={this.handleSearch}
-            /> */}
+            {/* <div className="container search"> */}
             <Row>
-              <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>
-                <label>Name</label>
-                <FormInput value={this.state.nameQuery} onChange={this.handleNameChange} />
-                </FormGroup>
-              </Col>
+            <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>
+                            <label>Search by Keyword</label>
+                            <FormInput placeholder="Name" value={this.state.nameQuery} onChange={this.handleNameQueryChange} />
+                        </FormGroup></Col>
             </Row>
             <br></br>
-            <Row>
-                        <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>
+            <br></br>
+                <Row>
+                <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>
                             <label>Number of Steps</label>
-                            <Slider range defaultValue={[0, 500]} max={500} onChange={this.handleNumStepsChange} />
-                        </FormGroup></Col>
-                        <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>
+                            <Slider range defaultValue={[0, 100]} max={100} onChange={this.handleNumStepsChange} />
+                        </FormGroup></Col> 
+                </Row>
+
+                <Row>
+                <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>
                             <label>Time to Cook</label>
                             <Slider range defaultValue={[0, 500]} max={500} onChange={this.handleTimeToCookChange} />
                         </FormGroup></Col>
-                        <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>
+                </Row>
+
+                <Row>
+                <Col flex={2}><FormGroup style={{ width: '20vw', margin: '0 auto' }}>
                             <label>Average Rating</label>
                             <Slider range defaultValue={[0, 5]} max={5} onChange={this.handleAvgRatingChange} />
                         </FormGroup></Col>
-                        <Col flex={2}><FormGroup style={{ width: '10vw' }}>
+                </Row>
+
+                <Row>
+                <Col flex={2}><FormGroup style={{ width: '10vw' }}>
                             <Button style={{ marginTop: '4vh' }} onClick={this.updateSearchResults}>Search</Button>
                         </FormGroup></Col>
-                    </Row>
-            </div>
+                </Row>
             </Form>
             <Divider />
             <div style={{ width: "70%", marginBottom: "50px" , marginLeft: "200px"}}>
@@ -178,7 +178,7 @@ class RecipeResultPage extends React.Component {
               }
             </div>
 
-          </div>
+        </div>
       )
     }
   

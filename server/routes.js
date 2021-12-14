@@ -276,9 +276,9 @@ async function search_recipes_by_traits(req, res) {
     
     recipeSearchQuery = `SELECT *
     FROM Recipe
-    WHERE name LIKE '%${recipe_name}%'
+    WHERE name LIKE '% ${recipe_name} %'
     AND minutes BETWEEN ${min_cook_time} AND ${max_cook_time}
-    AND n_steps BETWEEN  ${min_num_steps} AND ${max_num_steps}
+    AND n_steps BETWEEN ${min_num_steps} AND ${max_num_steps}
     AND ((avg_rating >= ${min_avg_rating}
         AND avg_rating <= ${max_avg_rating})
         OR avg_rating IS NULL);`
@@ -297,6 +297,7 @@ async function search_recipes_by_traits(req, res) {
         LIMIT ${pageSize} OFFSET ${pageSize * req.query.page}
         ;`
     }
+    console.log(recipeSearchQuery)
 
     connection.query(recipeSearchQuery, function (error, results, fields) {
         if (error) {
@@ -853,10 +854,12 @@ async function get_chopped_episode_ingredients(req, res) {
 async function search_recipes_by_name(req, res) {
     const recipe_name = req.query.RecipeName ? req.query.RecipeName : '';
     const pageSize = req.query.pagesize ? req.query.pagesize : 10;
+    console.log("made it here")
 
-    recipeSearchQuery = `SELECT *
+    recipeSearchQuery = `SELECT name, n_steps, minutes
         FROM Recipe
-        WHERE name LIKE '%${recipe_name}%';`
+        WHERE name LIKE '%${recipe_name}%'
+        LIMIT 10;`
     
     if (req.query.page && !isNaN(req.query.page)) { 
         recipeSearchQuery = `SELECT *
@@ -869,6 +872,7 @@ async function search_recipes_by_name(req, res) {
             console.log("error here")
             res.json({ results: [] })
         } else if (results) {
+            console.log(results)
             res.json({ results: results })
         }
     });
