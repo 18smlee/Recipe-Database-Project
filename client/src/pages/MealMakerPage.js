@@ -30,6 +30,7 @@ import {
 } from 'react-bootstrap'
 
 
+import rocket_taco from '../images/rocket_taco.gif';
 import MenuBar from '../components/MenuBar';
 import { getDailyMealPlanner, getRecipeFromIngredientSearch, findSimilarRecipe } from '../fetcher';
 
@@ -78,7 +79,9 @@ class MealMakerPage extends React.Component {
         recipesPageNumber: 1,
         recipesPageSize: 10,
         pagination: null,
-        currentStep: 0
+        currentStep: 0,
+        searched: false,
+        numClicks: 0,
       }
       this.goToRecipe = this.goToRecipe.bind(this)
       this.handleMaxCalorieChange = this.handleMaxCalorieChange.bind(this)
@@ -91,7 +94,8 @@ class MealMakerPage extends React.Component {
     }
 
     handleMaxCalorieChange(value) {
-      this.setState({ maxCalories: value })
+      this.setState({ maxCalories: value, searched: false, recipesResults: [] })
+      this.setState({ numClicks: this.state.numClicks + 1 })
     }
 
     handleIngredient1Change(event) {
@@ -107,7 +111,8 @@ class MealMakerPage extends React.Component {
     }
 
     handleMaxSugarChange(value) {
-      this.setState({ maxSugar: value })
+      this.setState({ maxSugar: value, searched: false, recipesResults: [] })
+      this.setState({ numClicks: this.state.numClicks + 1 })
     }
 
     searchRecipes() {
@@ -164,6 +169,8 @@ class MealMakerPage extends React.Component {
           this.setState({ recipe1SugarString: sugar1String})
           this.setState({ recipe2SugarString: sugar2String})
           this.setState({ recipe3SugarString: sugar3String})
+          this.setState({ searched: true });
+          this.setState({ numClicks: this.state.numClicks + 1 })
         })
       })
     }
@@ -197,10 +204,25 @@ class MealMakerPage extends React.Component {
             </div>
           </Form>
           <Divider />
-          {this.state.recipesResults.length > 0 ? (
+          {(this.state.recipesResults.length > 0 || !this.state.searched)? (
           <div>
             <div style={{margin: "50px"}}>
-              
+            {(!this.state.searched) ? (
+              this.state.numClicks > 0 ? 
+              // happens when the list is super long... so made it a "loading" rather than "no matches found"
+                     (<>
+                     <img
+                        alt=""
+                        src={rocket_taco}
+                        width="100"
+                        height="100"
+                        className="d-flex block mx-auto"
+                    />{' '}
+                     <p class="text-center text-muted">Loading your meals...</p>
+                     </>) : (<></>)
+                )
+                :
+              (<>
               <Table bordered>
                   <thead justify="center">
                     <tr>
@@ -257,6 +279,7 @@ class MealMakerPage extends React.Component {
                     </tr>
                   </tbody>
                 </Table>
+              </>)}
               </div>
           </div>
           ) : <></>}
