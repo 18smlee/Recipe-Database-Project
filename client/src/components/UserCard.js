@@ -21,7 +21,8 @@ const UserCard = ({ id, photo, avgRatingReceived, avgRatingGiven, numRecipes, nu
                 <h5> Average Rating Received</h5>
                 <Rate disabled value={avgRatingReceived} />
             </Col>
-            <Col></Col>
+            </Row>
+            <Row>
             <Col>
                 <h5> Average Rating Given</h5>
                 <Rate disabled value={avgRatingGiven} />
@@ -32,7 +33,8 @@ const UserCard = ({ id, photo, avgRatingReceived, avgRatingGiven, numRecipes, nu
                     <h5> Recipes Contributed: {numRecipes ? numRecipes : 0}</h5>
                     
                 </Col>
-                <Col></Col>
+            </Row>
+            <Row>
                 <Col>
                     <h5> Reviews Given: {numReviews ? numReviews : 0}</h5>
                 </Col>

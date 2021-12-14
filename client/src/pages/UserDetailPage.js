@@ -24,7 +24,7 @@ class UserDetailPage extends React.Component {
         super(props)
         this.state = {
             id: this.props.match.params.userId,
-            recipesPage: 0,
+            recipesPage: 1,
             //selectedRecipeId: window.location.search ? window.location.search.substring(1).split('=')[1] : 229594,
             selectedUserDetails: null,
             recipesWritten: null,
@@ -48,10 +48,10 @@ class UserDetailPage extends React.Component {
 
         Promise.all([
             getUser(this.state.id),
-            getAllUsersRecipes(this.state.id, this.state.recipesPage, null),
+            getAllUsersRecipes(this.state.id, this.state.recipesPage, 10),
             getAllUsersReviews(this.state.id, null, null)
         ]).then(([res1, res2, res3]) => {
-            // console.log(res1)
+            console.log(res2)
             
             this.setState({selectedUserDetails: res1.results[0], recipesWritten: res2.results, reviewsGiven: res3.results})
         })
@@ -84,17 +84,21 @@ class UserDetailPage extends React.Component {
                         // console.log(this.state.recipesWritten)
                         this.state.recipesWritten ? this.state.recipesWritten.map((recipe) => (
                             <RecipeCard 
-                                key={recipe.recipe_id}
+                                key={recipe.id}
                                 name={recipe.name}
-                                minutes={recipe.rating}
-                                n_steps={recipe.steps}
+                                minutes={recipe.minutes}
+                                n_steps={recipe.n_steps}
+                                submitted={recipe.date}
                                 handler = {() => {
-                                    window.location = `/recipe/${recipe.recipe_id}`
+                                    window.location = `/recipe/${recipe.id}`
                                 }}
                             />
                         )) : null
                     }
-                    <Button onClick={this.nextRecipePage}> More Recipes </Button>
+                    {
+                        this.state.recipesWritten ? <Button onClick={this.nextRecipePage}> More Recipes </Button> : null
+                    }
+                    
                 </div>
                 <div style={{ width: '70vw', margin: '0 auto', marginTop: '2vh' }}>
                     <h3>User Reviews</h3>
